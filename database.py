@@ -117,5 +117,21 @@ if __name__ == "__main__":
         mod_id=1,
         image="Rag.png"
     )
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS tags (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT UNIQUE NOT NULL
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS item_tags (
+            item_id INTEGER NOT NULL,
+            tag_id INTEGER NOT NULL,
+            PRIMARY KEY (item_id, tag_id),
+            FOREIGN KEY (item_id) REFERENCES items(id),
+            FOREIGN KEY (tag_id) REFERENCES tags(id)
+        )
+    """)
 
     print("✅ Starter data added successfully.")
