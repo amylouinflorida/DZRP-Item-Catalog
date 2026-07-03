@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from database import get_all_items
 
 app = Flask(__name__)
 
@@ -8,9 +9,15 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/items")
-def items():
-    return render_template("items.html")
+@app.route("/catalog")
+def catalog():
+
+    items = get_all_items()
+
+    return render_template(
+        "catalog.html",
+        items=items
+    )
 
 
 if __name__ == "__main__":

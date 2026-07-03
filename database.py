@@ -80,6 +80,28 @@ def add_item(classname, display_name, description=None, category=None, subcatego
 
     conn.commit()
     conn.close()
+def get_all_items():
+    """Return every item in the catalog."""
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            items.*,
+            mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods
+            ON items.mod_id = mods.id
+        ORDER BY display_name
+    """)
+
+    items = cursor.fetchall()
+
+    conn.close()
+
+    return items
 
 if __name__ == "__main__":
     initialize_database()

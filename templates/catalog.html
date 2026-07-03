@@ -1,9 +1,13 @@
-{% extends "base.html" %}
+<h1>DayZRP Item Catalog</h1>
 
-{% block content %}
-<section class="page-header">
-    <a href="/" class="back-link">← Dashboard</a>
-    <h1>Item Catalog</h1>
-    <p>Version 0.1 — item search coming next.</p>
-</section>
-{% endblock %}
+{% for item in items %}
+
+<h2>{{ item.display_name }}</h2>
+
+<p>Classname: {{ item.classname }}</p>
+
+<p>Source: {{ item.mod_name }}</p>
+
+<hr>
+
+{% endfor %}
