@@ -1,17 +1,12 @@
-# DZRP Item Catalog Design
+# DZRP Item Catalog
 
 ## Mission
 
 Help DayZRP staff find, understand, and use server items quickly.
 
-## Core Principles
+## Core Goal
 
-1. Find the correct item in under 10 seconds.
-2. Never require deep DayZ item knowledge.
-3. Everything is connected.
-4. Never lose your place.
-5. Keep official data, DZRP server data, and staff knowledge separate.
-6. The catalog should get smarter as staff use it.
+A staff member should be able to identify the correct item in under 10 seconds.
 
 ## Data Layers
 
@@ -20,21 +15,20 @@ Imported from DayZ/mod configs.
 
 - Display name
 - Classname
-- Category
 - Image
+- Category
 - Description
 - Compatibility
 
 ### DZRP Server Data
-Specific to how DZRP uses the item.
+Imported from Season files.
 
-- Enabled
-- Disabled
-- Item shop
-- Trader
-- Event only
-- Admin only
-- Faction only
+- Season
+- Last updated
+- Spawn status
+- Trader status
+- Item shop status
+- Disabled/restricted status
 
 ### Staff Knowledge
 Editable by staff.
@@ -44,23 +38,22 @@ Editable by staff.
 - Common player descriptions
 - Aliases
 
-## Required Navigation
+## Required Features
 
-Every item page needs:
-
-- Back to Search Results
-- Back to Previous Item
-- Clickable related items
-
-## Version 0.1 Goals
-
-- Homepage
-- Search bar
-- Item cards
-- Item detail page
-- Item image
-- Display name
-- Classname
-- Copy classname button
-- Server status badge
+### Version 0.1
+- Search items
+- Show image
+- Show display name
+- Show classname
+- Copy classname
+- Show server status badge
+- Back to search
 - Staff tags display
+
+### Later
+- Add/delete staff tags
+- Compatibility pages
+- Item shop badges
+- Trader badges
+- Season data imports
+- RCON spawning
