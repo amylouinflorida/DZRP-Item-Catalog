@@ -90,7 +90,30 @@ def get_all_items():
             ON items.mod_id = mods.id
         ORDER BY display_name
     """)
+def get_item_by_classname(classname):
+    """Return one item by classname."""
 
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            items.*,
+            mods.name AS mod_name,
+            mods.author AS mod_author,
+            mods.type AS mod_type,
+            mods.logo AS mod_logo
+        FROM items
+        LEFT JOIN mods
+            ON items.mod_id = mods.id
+        WHERE items.classname = ?
+    """, (classname,))
+
+    item = cursor.fetchone()
+    conn.close()
+
+    return item
     items = cursor.fetchall()
     conn.close()
 
