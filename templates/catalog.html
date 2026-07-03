@@ -1,13 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DayZRP Item Catalog</title>
+</head>
+
+<body>
+
 <h1>DayZRP Item Catalog</h1>
 
 {% for item in items %}
 
-<h2>{{ item.display_name }}</h2>
+<div>
 
-<p>Classname: {{ item.classname }}</p>
+    <h2>{{ item.display_name }}</h2>
 
-<p>Source: {{ item.mod_name }}</p>
+    <p><strong>Classname:</strong> {{ item.classname }}</p>
+
+    <p><strong>Category:</strong> {{ item.category }}</p>
+
+    <p><strong>Source:</strong> {{ item.mod_name }}</p>
+
+</div>
 
 <hr>
 
 {% endfor %}
+
+</body>
+</html>

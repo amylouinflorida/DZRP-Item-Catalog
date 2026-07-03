@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+
 from database import get_all_items
 
 app = Flask(__name__)
