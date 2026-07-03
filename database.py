@@ -5,8 +5,6 @@ DB_PATH = Path("data/database/dayzrp_catalog.db")
 
 
 def initialize_database():
-    """Create the DayZRP Item Catalog database and required tables."""
-
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     conn = sqlite3.connect(DB_PATH)
@@ -38,6 +36,23 @@ def initialize_database():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS tags (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT UNIQUE NOT NULL
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS item_tags (
+            item_id INTEGER NOT NULL,
+            tag_id INTEGER NOT NULL,
+            PRIMARY KEY (item_id, tag_id),
+            FOREIGN KEY (item_id) REFERENCES items(id),
+            FOREIGN KEY (tag_id) REFERENCES tags(id)
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -45,8 +60,6 @@ def initialize_database():
 
 
 def add_mod(name, author=None, type=None, logo=None, website=None, description=None):
-    """Add a mod/source to the database if it does not already exist."""
-
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -60,8 +73,6 @@ def add_mod(name, author=None, type=None, logo=None, website=None, description=N
 
 
 def add_item(classname, display_name, description=None, category=None, subcategory=None, mod_id=None, image=None):
-    """Add an item to the database if it does not already exist."""
-
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -75,8 +86,6 @@ def add_item(classname, display_name, description=None, category=None, subcatego
 
 
 def get_all_items():
-    """Return every item in the catalog."""
-
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -90,9 +99,14 @@ def get_all_items():
             ON items.mod_id = mods.id
         ORDER BY display_name
     """)
-def get_item_by_classname(classname):
-    """Return one item by classname."""
 
+    items = cursor.fetchall()
+    conn.close()
+
+    return items
+
+
+def get_item_by_classname(classname):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -114,10 +128,6 @@ def get_item_by_classname(classname):
     conn.close()
 
     return item
-    items = cursor.fetchall()
-    conn.close()
-
-    return items
 
 
 if __name__ == "__main__":
@@ -140,21 +150,5 @@ if __name__ == "__main__":
         mod_id=1,
         image="Rag.png"
     )
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS tags (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT UNIQUE NOT NULL
-        )
-    """)
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS item_tags (
-            item_id INTEGER NOT NULL,
-            tag_id INTEGER NOT NULL,
-            PRIMARY KEY (item_id, tag_id),
-            FOREIGN KEY (item_id) REFERENCES items(id),
-            FOREIGN KEY (tag_id) REFERENCES tags(id)
-        )
-    """)
 
     print("✅ Starter data added successfully.")
