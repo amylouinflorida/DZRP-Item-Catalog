@@ -52,7 +52,53 @@ def initialize_database():
     conn.close()
 
     print("✅ Database initialized successfully.")
+def add_mod(name, author=None, type=None, logo=None, website=None, description=None):
+    """Add a mod/source to the database if it does not already exist."""
 
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO mods (name, author, type, logo, website, description)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, author, type, logo, website, description))
+
+    conn.commit()
+    conn.close()
+
+
+def add_item(classname, display_name, description=None, category=None, subcategory=None, mod_id=None, image=None):
+    """Add an item to the database if it does not already exist."""
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO items (classname, display_name, description, category, subcategory, mod_id, image)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (classname, display_name, description, category, subcategory, mod_id, image))
+
+    conn.commit()
+    conn.close()
 
 if __name__ == "__main__":
     initialize_database()
+    add_mod(
+        name="Vanilla DayZ",
+        author="Bohemia Interactive",
+        type="Vanilla",
+        logo="vanilla.png",
+        description="Base game DayZ items."
+    )
+
+    add_item(
+        classname="Rag",
+        display_name="Rag",
+        description="A basic cloth item used for bandaging wounds and basic survival crafting.",
+        category="Medical",
+        subcategory="Bandage",
+        mod_id=1,
+        image="Rag.png"
+    )
+
+    print("✅ Starter data added successfully.")
