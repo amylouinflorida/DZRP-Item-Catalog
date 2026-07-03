@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <img src="{{ url_for('static', filename='images/logo/dayzrp-logo.png') }}"
+         alt="DayZRP Item Catalog"
+         class="hero-logo">
+
+    <div class="search-row">
+        <input type="text" placeholder="Search items, classnames, traders, notes...">
+        <button>Search</button>
+    </div>
+
+    <div class="dashboard-grid">
+        <a href="/items" class="dash-card">
+            <span>📦</span>
+            <h2>Item Catalog</h2>
+            <p>Search, browse, and filter items.</p>
+        </a>
+
+        <a href="#" class="dash-card">
+            <span>🔗</span>
+            <h2>Compatibility & Relationships</h2>
+            <p>Attachments, traders, quests, crafting, and more.</p>
+        </a>
+
+        <a href="#" class="dash-card">
+            <span>🛒</span>
+            <h2>Item Shop</h2>
+            <p>Staff reference for shop availability.</p>
+        </a>
+
+        <a href="#" class="dash-card">
+            <span>📚</span>
+            <h2>Staff Knowledge</h2>
+            <p>Internal notes, warnings, and admin references.</p>
+        </a>
+
+        <a href="#" class="dash-card">
+            <span>📊</span>
+            <h2>Server Status</h2>
+            <p>Season, sync status, and future server tools.</p>
+        </a>
+
+        <a href="#" class="dash-card">
+            <span>⚙️</span>
+            <h2>Settings</h2>
+            <p>Future catalog tools and configuration.</p>
+        </a>
+    </div>
+</section>
+{% endblock %}

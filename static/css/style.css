@@ -1,14 +1,125 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    background: #111;
-    color: #f2f2f2;
+    background:
+        radial-gradient(circle at top, rgba(111, 24, 24, 0.35), transparent 35%),
+        #0d0d0d;
+    color: #f2eee8;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.page {
-    padding: 40px;
+.app-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px;
 }
 
-h1 {
-    color: #7fd8d8;
+.hero {
+    text-align: center;
+}
+
+.hero-logo {
+    width: min(900px, 100%);
+    height: auto;
+    margin: 0 auto 28px;
+    display: block;
+}
+
+.search-row {
+    display: flex;
+    gap: 12px;
+    max-width: 850px;
+    margin: 0 auto 32px;
+}
+
+.search-row input {
+    flex: 1;
+    padding: 16px 18px;
+    border-radius: 10px;
+    border: 1px solid #3a2d2d;
+    background: #171717;
+    color: #f2eee8;
+    font-size: 16px;
+}
+
+.search-row button {
+    padding: 16px 26px;
+    border: 0;
+    border-radius: 10px;
+    background: #8f2727;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.dash-card {
+    text-decoration: none;
+    color: #f2eee8;
+    background: rgba(24, 24, 24, 0.92);
+    border: 1px solid #332626;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    min-height: 175px;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.dash-card:hover {
+    transform: translateY(-3px);
+    border-color: #8f2727;
+    background: rgba(34, 25, 25, 0.96);
+}
+
+.dash-card span {
+    font-size: 30px;
+}
+
+.dash-card h2 {
+    margin: 14px 0 8px;
+    font-size: 21px;
+}
+
+.dash-card p {
+    margin: 0;
+    color: #b9b0aa;
+    line-height: 1.4;
+}
+
+.page-header {
+    background: rgba(24, 24, 24, 0.92);
+    border: 1px solid #332626;
+    border-radius: 16px;
+    padding: 28px;
+}
+
+.back-link {
+    color: #d8b66a;
+    text-decoration: none;
+}
+
+.page-header h1 {
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    color: #b9b0aa;
+}
+
+@media (max-width: 800px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-row {
+        flex-direction: column;
+    }
 }
