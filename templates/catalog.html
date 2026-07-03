@@ -1,19 +1,31 @@
-<h1>DayZRP Item Catalog</h1>
+{% extends "base.html" %}
 
-{% for item in items %}
+{% block title %}Item Catalog - DayZRP{% endblock %}
 
-<div>
-    <h2>
-        <a href="/item/{{ item.classname }}">
-            {{ item.display_name }}
-        </a>
-    </h2>
+{% block content %}
 
-    <p><strong>Classname:</strong> {{ item.classname }}</p>
-    <p><strong>Category:</strong> {{ item.category }}</p>
-    <p><strong>Source:</strong> {{ item.mod_name }}</p>
+<div class="page-wrap">
+
+    <h1>Item Catalog</h1>
+
+    {% for item in items %}
+
+    <div>
+        <h2>
+            <a href="/item/{{ item.classname }}">
+                {{ item.display_name }}
+            </a>
+        </h2>
+
+        <p><strong>Classname:</strong> {{ item.classname }}</p>
+        <p><strong>Category:</strong> {{ item.category }}</p>
+        <p><strong>Source:</strong> {{ item.mod_name }}</p>
+    </div>
+
+    <hr>
+
+    {% endfor %}
+
 </div>
 
-<hr>
-
-{% endfor %}
+{% endblock %}
