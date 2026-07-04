@@ -140,6 +140,7 @@ if __name__ == "__main__":
         logo="vanilla.png",
         description="Base game DayZ items."
     )
+    
 
     add_item(
         classname="Rag",
@@ -149,6 +150,51 @@ if __name__ == "__main__":
         subcategory="Bandage",
         mod_id=1,
         image="Rag.png"
+    )
+def search_items(query):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    search_term = f"%{query}%"
+
+    cursor.execute("""
+        SELECT
+            items.*,
+            mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods
+            ON items.mod_id = mods.id
+        WHERE
+            items.display_name LIKE ?
+            OR items.classname LIKE ?
+            OR items.description LIKE ?
+            OR items.category LIKE ?
+            OR items.subcategory LIKE ?
+            OR mods.name LIKE ?
+        ORDER BY items.display_name
+    """, (
+        search_term,
+        search_term,
+        search_term,
+        search_term,
+        search_term,
+        search_term
+    ))
+
+    results = cursor.fetchall()
+    conn.close()
+
+    return results
+if __name__ == "__main__":
+    initialize_database()
+
+    add_mod(
+        ...
+    )
+
+    add_item(
+        ...
     )
 
     print("✅ Starter data added successfully.")

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Search - DayZRP Item Catalog{% endblock %}
+
+{% block content %}
+
+<div class="app-shell">
+
+    <section class="dashboard-section">
+        <h2 class="section-title">Search Results</h2>
+
+        {% if query %}
+            <p class="muted-text">Results for: <strong>{{ query }}</strong></p>
+        {% endif %}
+
+        {% if results %}
+
+            <div class="search-results">
+
+                {% for item in results %}
+
+                    <a class="result-card" href="/item/{{ item.classname }}">
+                        <h3>{{ item.display_name }}</h3>
+                        <p><strong>Classname:</strong> {{ item.classname }}</p>
+                        <p><strong>Category:</strong> {{ item.category }}</p>
+                        <p><strong>Source:</strong> {{ item.mod_name }}</p>
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="muted-text">No results found.</p>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

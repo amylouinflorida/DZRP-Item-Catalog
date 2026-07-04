@@ -1,6 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
-from database import get_all_items, get_item_by_classname
+from database import get_all_items, get_item_by_classname, search_items
 
 app = Flask(__name__)
 
@@ -28,7 +28,20 @@ def item_detail(classname):
         "item.html",
         item=item
     )
+@app.route("/search")
+def search():
+    query = request.args.get("q", "").strip()
 
+    results = []
+
+    if query:
+        results = search_items(query)
+
+    return render_template(
+        "search.html",
+        query=query,
+        results=results
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
