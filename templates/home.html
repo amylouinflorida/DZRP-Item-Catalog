@@ -6,85 +6,246 @@
 
 <div class="app-shell">
 
+    <!-- ========================================= -->
+    <!-- Header -->
+    <!-- ========================================= -->
+
+    <section class="hero-header">
+
+        <div class="hero-left">
+
+            <img
+                class="hero-logo"
+                src="{{ url_for('static', filename='images/logo/dayzrp-item-catalog-header.png') }}"
+                alt="DayZRP Item Catalog">
+
+        </div>
+
+        <div class="hero-right">
+
+            <div class="hero-stat-row">
+
+                <div class="top-stat-card">
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                    <div>
+                        <p>Season</p>
+                        <strong>3</strong>
+                    </div>
+                </div>
+
+                <div class="top-stat-card">
+                    <i class="fa-solid fa-box-open"></i>
+
+                    <div>
+                        <p>Items</p>
+                        <strong>{{ stats["items"] }}</strong>
+                    </div>
+                </div>
+
+                <div class="top-stat-card">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+
+                    <div>
+                        <p>Mods</p>
+                        <strong>{{ stats["mods"] }}</strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="favorites-panel">
+
+                <h3>
+                    <i class="fa-solid fa-star"></i>
+                    Favorites
+                </h3>
+
+                <a href="/item/Rag">★ Rag</a>
+                <a href="#">★ Duct Tape</a>
+                <a href="#">★ Plate Carrier</a>
+                <a href="#">★ Battery Charger</a>
+                <a href="#">★ Leather Sewing Kit</a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================================= -->
+    <!-- Search -->
+    <!-- ========================================= -->
+
     <section class="hero">
+
         <form class="search-row" action="/search" method="get">
-    <input
-        type="text"
-        name="q"
-        placeholder="Search items, classnames, mods, or tags...">
 
-    <button type="submit">Search</button>
-</form>
-    </section>
-    <section class="dashboard-section">
-    <div class="stats-grid">
+            <input
+                type="text"
+                name="q"
+                placeholder="Search items, classnames, mods, or tags...">
 
-        <div class="stat-card">
-            <span>{{ stats["items"] }}</span>
-            <p>Items</p>
-        </div>
+            <button type="submit">
+                Search
+            </button>
 
-        <div class="stat-card">
-            <span>{{ stats["mods"] }}</span>
-            <p>Mods</p>
-        </div>
+        </form>
 
-        <div class="stat-card">
-            <span>{{ stats["tags"] }}</span>
-            <p>Tags</p>
-        </div>
-
-        <div class="stat-card">
-            <span>{{ stats["relationships"] }}</span>
-            <p>Relationships</p>
-        </div>
-
-    </div>
-</section>
-
-    <section class="dashboard-section">
-        <h2 class="section-title">Explore</h2>
-
-        <div class="dashboard-grid">
-
-            <a class="dash-card" href="/catalog">
-                <span><i class="fa-solid fa-box-open"></i></span>
-                <h2>Item Catalog</h2>
-                <p>Browse every searchable item in the catalog.</p>
-            </a>
-
-            <a class="dash-card" href="/mods">
-                <span><i class="fa-solid fa-puzzle-piece"></i></span>
-                <h2>Mods</h2>
-                <p>Browse items by source mod or vanilla origin.</p>
-            </a>
-
-            <a class="dash-card" href="/relationships">
-                <span><i class="fa-solid fa-link"></i></span>
-                <h2>Relationships</h2>
-                <p>View compatibility, crafting, quest, and item links.</p>
-            </a>
-
-            <a class="dash-card" href="/management">
-                <span><i class="fa-solid fa-gears"></i></span>
-                <h2>Management Tools</h2>
-                <p>Maintain catalog data, tags, sources, and updates.</p>
-            </a>
-
-        </div>
     </section>
 
-    <section class="dashboard-section">
-        <h2 class="section-title">Most Searched</h2>
+    <!-- ========================================= -->
+    <!-- Navigation -->
+    <!-- ========================================= -->
 
-        <div class="pill-row">
-            <a href="/item/Rag">Rag</a>
-            <a href="#">Duct Tape</a>
-            <a href="#">M4A1</a>
-            <a href="#">Plate Carrier</a>
-            <a href="#">Leather Sewing Kit</a>
-            <a href="#">Battery Charger</a>
+    <nav class="dashboard-nav">
+
+        <a href="/" class="active">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </a>
+
+        <a href="/catalog">
+            <i class="fa-solid fa-box-open"></i>
+            Item Catalog
+        </a>
+
+        <a href="/mods">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            Mods
+        </a>
+
+        <a href="/relationships">
+            <i class="fa-solid fa-link"></i>
+            Relationships
+        </a>
+
+        <a href="/management">
+            <i class="fa-solid fa-gears"></i>
+            Management
+        </a>
+
+    </nav>
+
+    <!-- ========================================= -->
+    <!-- Dashboard -->
+    <!-- ========================================= -->
+
+    <section class="dashboard-panels">
+
+        <!-- Quick Access -->
+
+        <div class="dashboard-panel">
+
+            <h2>
+                <i class="fa-solid fa-bolt"></i>
+                Quick Access
+            </h2>
+
+            <div class="quick-access-grid">
+
+                <a class="quick-card catalog" href="/catalog">
+                    <i class="fa-solid fa-cube"></i>
+                    <h3>Item Catalog</h3>
+                    <p>Browse every searchable item.</p>
+                </a>
+
+                <a class="quick-card mods" href="/mods">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                    <h3>Mods</h3>
+                    <p>Explore all mods and content packs.</p>
+                </a>
+
+                <a class="quick-card relationships" href="/relationships">
+                    <i class="fa-solid fa-link"></i>
+                    <h3>Relationships</h3>
+                    <p>View compatibility and relationships.</p>
+                </a>
+
+                <a class="quick-card tags" href="#">
+                    <i class="fa-solid fa-tag"></i>
+                    <h3>Tags</h3>
+                    <p>Browse by tags and keywords.</p>
+                </a>
+
+                <a class="quick-card spawn" href="#">
+                    <i class="fa-solid fa-map"></i>
+                    <h3>Spawn & Loot</h3>
+                    <p>Explore spawn and loot data.</p>
+                </a>
+
+                <a class="quick-card management" href="/management">
+                    <i class="fa-solid fa-gear"></i>
+                    <h3>Management Tools</h3>
+                    <p>Staff tools and catalog management.</p>
+                </a>
+
+            </div>
+
         </div>
+
+        <!-- Most Searched -->
+
+        <div class="dashboard-panel">
+
+            <h2>
+                <i class="fa-solid fa-fire"></i>
+                Most Searched
+            </h2>
+
+            <div class="mini-card-grid">
+
+                <a class="mini-card" href="/item/Rag">Rag</a>
+                <a class="mini-card" href="#">M4A1</a>
+                <a class="mini-card" href="#">Duct Tape</a>
+                <a class="mini-card" href="#">Plate Carrier</a>
+
+            </div>
+
+        </div>
+
+        <!-- Browse by Category -->
+
+        <div class="dashboard-panel">
+
+            <h2>
+                <i class="fa-solid fa-folder"></i>
+                Browse by Category
+            </h2>
+
+            <div class="dashboard-list">
+
+                <a href="#">Medical <span>1</span></a>
+                <a href="#">Weapons <span>0</span></a>
+                <a href="#">Clothing <span>0</span></a>
+                <a href="#">Food & Drink <span>0</span></a>
+                <a href="#">Tools <span>0</span></a>
+
+            </div>
+
+        </div>
+
+        <!-- Browse by Mod -->
+
+        <div class="dashboard-panel">
+
+            <h2>
+                <i class="fa-solid fa-puzzle-piece"></i>
+                Browse by Mod
+            </h2>
+
+            <div class="dashboard-list">
+
+                <a href="#">Vanilla DayZ <span>1</span></a>
+                <a href="#">Expansion <span>0</span></a>
+                <a href="#">Windstride <span>0</span></a>
+                <a href="#">AJW <span>0</span></a>
+                <a href="#">DayZRP Custom <span>0</span></a>
+
+            </div>
+
+        </div>
+
     </section>
 
 </div>

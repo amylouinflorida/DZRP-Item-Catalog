@@ -38,17 +38,126 @@ body {
     padding: 15px 0 10px;
 }
 
-.hero {
-    text-align: center;
+/* ===========================
+   Hero Header
+=========================== */
+
+.hero-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 40px;
+    margin-bottom: 26px;
+}
+
+.hero-left {
+    display: flex;
+    justify-content: center;
+}
+
+.hero-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:18px;
+
+}
+.hero-stat-row{
+
+    display:flex;
+
+    gap:14px;
+
 }
 
 .hero-logo {
-    display: block;
-    width: min(760px, 90vw);
+    width: min(760px, 100%);
     height: auto;
-    margin: 0 auto 24px;
 }
 
+.top-stat-card{
+
+    width:110px;
+    height:110px;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(28,28,28,.96),
+            rgba(16,16,16,.99)
+        );
+
+    border:1px solid rgba(201,162,77,.30);
+
+    box-shadow:
+        0 0 18px rgba(201,162,77,.06);
+
+    transition:.18s ease;
+}
+
+.top-stat-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:#d8b66a;
+
+    box-shadow:
+        0 0 24px rgba(201,162,77,.18);
+
+}
+
+.top-stat-card:hover{
+
+    border-color:#d8b66a;
+
+    transform:translateY(-2px);
+
+}
+
+.top-stat-card i{
+
+    color:#d8b66a;
+
+    font-size:28px;
+
+    margin-bottom:10px;
+}
+
+.top-stat-card p{
+
+    margin:0;
+
+    color:#8c8c8c;
+
+    font-size:11px;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+}
+
+.top-stat-card strong{
+
+    margin-top:6px;
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:700;
+}
 /* Search */
 
 .search-row {
@@ -677,16 +786,19 @@ body {
         );
 
     border: 1px solid rgba(201, 162, 77, 0.25);
-    border-radius: 14px;
-    padding: 18px;
+    border-radius: 12px;
+
+    padding: 12px 10px;
+
     text-align: center;
 }
 
 .stat-card span {
     display: block;
     color: #d8b66a;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 700;
+    line-height: 1;
     margin-bottom: 4px;
 }
 
@@ -694,7 +806,7 @@ body {
     margin: 0;
     color: #b9b0aa;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 1px;
 }
 
@@ -702,4 +814,321 @@ body {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+/* ===========================
+   Dashboard Navigation
+=========================== */
+
+.dashboard-nav{
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    margin:34px 0 28px;
+
+    border:1px solid rgba(201,162,77,.18);
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(22,22,22,.96),
+            rgba(14,14,14,.98)
+        );
+}
+
+.dashboard-nav a{
+
+    text-decoration:none;
+
+    color:#c8c8c8;
+
+    padding:18px;
+
+    text-align:center;
+
+    border-right:1px solid rgba(255,255,255,.06);
+
+    transition:.18s ease;
+}
+
+.dashboard-nav a:last-child{
+
+    border-right:none;
+
+}
+
+.dashboard-nav a:hover{
+
+    background:rgba(201,162,77,.08);
+
+    color:#d8b66a;
+
+}
+
+.dashboard-nav a.active{
+
+    color:#d8b66a;
+
+    background:rgba(201,162,77,.10);
+
+}
+
+.dashboard-nav i{
+
+    margin-right:8px;
+
+}
+
+
+/* ===========================
+   Dashboard Panels
+=========================== */
+
+.dashboard-panels{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+.dashboard-panel{
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(26,26,26,.95),
+            rgba(16,16,16,.98)
+        );
+
+    border:1px solid rgba(201,162,77,.22);
+
+    border-radius:16px;
+
+    padding:20px;
+
+}
+
+.dashboard-panel h2{
+
+    margin:0 0 18px;
+
+    color:#d8b66a;
+
+    font-size:20px;
+
+}
+
+.dashboard-panel h2 i{
+
+    margin-right:8px;
+
+}
+
+
+/* ===========================
+   Mini Cards
+=========================== */
+
+.mini-card-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+}
+
+.mini-card{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:78px;
+
+    text-decoration:none;
+
+    color:#f2eee8;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(36,36,36,.95),
+            rgba(18,18,18,.98)
+        );
+
+    border:1px solid rgba(255,255,255,.05);
+
+    transition:.18s ease;
+
+}
+
+.mini-card:hover{
+
+    transform:translateY(-2px);
+
+    border-color:#c9a24d;
+
+}
+
+
+/* ===========================
+   Lists
+=========================== */
+
+.dashboard-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.dashboard-list a{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    text-decoration:none;
+
+    color:#f2eee8;
+
+    padding:14px 10px;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+    transition:.18s ease;
+
+}
+
+.dashboard-list a:last-child{
+
+    border-bottom:none;
+
+}
+
+.dashboard-list a:hover{
+
+    color:#d8b66a;
+
+    padding-left:18px;
+
+}
+
+.dashboard-list span{
+
+    color:#999;
+
+}
+.top-stats {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin: -8px 0 24px;
+}
+
+.top-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 135px;
+    padding: 14px 18px;
+
+    background: rgba(12, 12, 12, 0.72);
+    border: 1px solid rgba(201, 162, 77, 0.45);
+    border-radius: 12px;
+
+    box-shadow: 0 0 18px rgba(201, 162, 77, 0.08);
+}
+
+.top-stat-card i {
+    color: #d8b66a;
+    font-size: 26px;
+}
+
+.top-stat-card p {
+    margin: 0;
+    color: #aaa;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.top-stat-card strong {
+    display: block;
+    color: #fff;
+    font-size: 24px;
+    line-height: 1.1;
+}
+.favorites-panel{
+
+    width:100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(28,28,28,.95),
+            rgba(16,16,16,.99)
+        );
+
+    border:1px solid rgba(201,162,77,.28);
+
+    border-radius:14px;
+
+    padding:18px;
+
+}
+
+.favorites-panel h3{
+
+    margin:0 0 14px;
+
+    color:#d8b66a;
+
+    font-size:18px;
+
+}
+
+.favorites-panel h3 i{
+
+    margin-right:8px;
+
+}
+
+.favorites-panel a{
+
+    display:block;
+
+    color:#ddd;
+
+    text-decoration:none;
+
+    padding:8px 0;
+
+    transition:.18s ease;
+
+}
+
+.favorites-panel a:hover{
+
+    color:#d8b66a;
+
+    padding-left:8px;
+
 }
