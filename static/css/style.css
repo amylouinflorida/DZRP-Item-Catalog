@@ -1132,3 +1132,70 @@ body {
     padding-left:8px;
 
 }
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.quick-card {
+    min-height: 150px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    text-decoration: none !important;
+    color: #f2eee8 !important;
+
+    background: linear-gradient(
+        180deg,
+        rgba(30, 34, 36, 0.95),
+        rgba(16, 18, 19, 0.98)
+    );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    transition: 0.18s ease;
+}
+
+.quick-card i {
+    font-size: 34px;
+    margin-bottom: 14px;
+}
+
+.quick-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.quick-card p {
+    margin: 0;
+    color: #b9b0aa;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.quick-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 22px rgba(201, 162, 77, 0.12);
+}
+
+.quick-card.catalog i { color: #c94141; }
+.quick-card.mods i { color: #d8b66a; }
+.quick-card.relationships i { color: #b9b9b9; }
+.quick-card.tags i { color: #78b159; }
+.quick-card.spawn i { color: #6aa7d8; }
+.quick-card.management i { color: #a66ad8; }
+
+.quick-card.catalog:hover { border-color: #c94141; }
+.quick-card.mods:hover { border-color: #d8b66a; }
+.quick-card.relationships:hover { border-color: #b9b9b9; }
+.quick-card.tags:hover { border-color: #78b159; }
+.quick-card.spawn:hover { border-color: #6aa7d8; }
+.quick-card.management:hover { border-color: #a66ad8; }
