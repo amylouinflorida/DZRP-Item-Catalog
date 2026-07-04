@@ -248,28 +248,6 @@
 
 </div>
 
-<!-- Browse by Mod -->
-
-<div class="dashboard-panel">
-
-    <h2>
-        <i class="fa-solid fa-puzzle-piece"></i>
-        Browse by Mod
-    </h2>
-
-    <div class="dashboard-list">
-
-        {% for mod in mods %}
-            <a href="/mod/{{ mod.name }}">
-                {{ mod.name }}
-                <span>{{ mod.item_count }}</span>
-            </a>
-        {% endfor %}
-
-    </div>
-    
-        </div>
-
         <!-- Browse by Mod -->
 
         <div class="dashboard-panel">
