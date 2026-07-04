@@ -72,7 +72,6 @@ def category_page(category):
     )
 @app.route("/mod/<mod_name>")
 def mod_page(mod_name):
-
     items = get_items_by_mod(mod_name)
 
     return render_template(

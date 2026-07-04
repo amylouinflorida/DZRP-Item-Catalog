@@ -7,45 +7,41 @@
 <div class="app-shell">
 
     <div class="page-actions">
-
         <a class="back-button" href="/">
             <i class="fa-solid fa-house"></i>
             Home
         </a>
 
+        <a class="back-button" href="/catalog">
+            <i class="fa-solid fa-box-open"></i>
+            Item Catalog
+        </a>
     </div>
 
     <section class="dashboard-panel">
 
         <h2>
-
             <i class="fa-solid fa-puzzle-piece"></i>
-
             {{ mod_name }}
-
         </h2>
 
-        <p>
-
-            {{ items|length }} Assets
-
+        <p class="page-subtitle">
+            {{ items|length }} assets from this content source
         </p>
 
-        <div class="mini-card-grid">
+        {% if items %}
 
-            {% for item in items %}
+            <div class="asset-card-grid">
+                {% for item in items %}
+                    {% include "components/asset_card.html" %}
+                {% endfor %}
+            </div>
 
-                <a class="mini-card" href="/item/{{ item.classname }}">
+        {% else %}
 
-                    {{ item.display_name }}
+            <p>No assets found for this content source.</p>
 
-                    <span>{{ item.category }}</span>
-
-                </a>
-
-            {% endfor %}
-
-        </div>
+        {% endif %}
 
     </section>
 
