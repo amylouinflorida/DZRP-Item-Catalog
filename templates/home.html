@@ -206,37 +206,68 @@
 
         <!-- Browse by Category -->
 
-       <div class="category-card-grid">
+       <!-- Browse by Category -->
 
-    {% for category in categories %}
+<div class="dashboard-panel">
 
-        {% set category_class = category.category|lower|replace(' ', '-') %}
+    <h2>
+        <i class="fa-solid fa-folder"></i>
+        Browse by Category
+    </h2>
 
-        <a class="category-card {{ category_class }}" href="/category/{{ category.category }}">
+    <div class="category-card-grid">
 
-            {% if category.category == "Medical" %}
-                <i class="fa-solid fa-kit-medical"></i>
-            {% elif category.category == "Weapons" %}
-                <i class="fa-solid fa-gun"></i>
-            {% elif category.category == "Food" %}
-                <i class="fa-solid fa-can-food"></i>
-            {% elif category.category == "Clothing" %}
-                <i class="fa-solid fa-shirt"></i>
-            {% elif category.category == "Tools" %}
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-            {% else %}
-                <i class="fa-solid fa-box"></i>
-            {% endif %}
+        {% for category in categories %}
 
-            <h3>{{ category.category }}</h3>
-            <p>{{ category.item_count }} items</p>
+            {% set category_class = category.category|lower|replace(' ', '-') %}
 
-        </a>
+            <a class="category-card {{ category_class }}" href="/category/{{ category.category }}">
 
-    {% endfor %}
+                {% if category.category == "Medical" %}
+                    <i class="fa-solid fa-kit-medical"></i>
+                {% elif category.category == "Weapons" %}
+                    <i class="fa-solid fa-gun"></i>
+                {% elif category.category == "Food" %}
+                    <i class="fa-solid fa-can-food"></i>
+                {% elif category.category == "Clothing" %}
+                    <i class="fa-solid fa-shirt"></i>
+                {% elif category.category == "Tools" %}
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                {% else %}
+                    <i class="fa-solid fa-box"></i>
+                {% endif %}
+
+                <h3>{{ category.category }}</h3>
+                <p>{{ category.item_count }} items</p>
+
+            </a>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 
+<!-- Browse by Mod -->
+
+<div class="dashboard-panel">
+
+    <h2>
+        <i class="fa-solid fa-puzzle-piece"></i>
+        Browse by Mod
+    </h2>
+
+    <div class="dashboard-list">
+
+        {% for mod in mods %}
+            <a href="/mod/{{ mod.name }}">
+                {{ mod.name }}
+                <span>{{ mod.item_count }}</span>
+            </a>
+        {% endfor %}
+
+    </div>
+    
         </div>
 
         <!-- Browse by Mod -->
