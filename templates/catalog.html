@@ -4,27 +4,53 @@
 
 {% block content %}
 
-<div class="page-wrap">
+<div class="app-shell">
 
-    <h1>Item Catalog</h1>
+    <a class="back-link" href="/">← Back to Home</a>
 
-    {% for item in items %}
+    <section class="dashboard-section">
+        <h2 class="section-title">Item Catalog</h2>
 
-    <div>
-        <h2>
-            <a href="/item/{{ item.classname }}">
-                {{ item.display_name }}
-            </a>
-        </h2>
+        <form class="search-row" action="/search" method="get">
+            <input
+                type="text"
+                name="q"
+                placeholder="Search items, classnames, mods, or tags...">
 
-        <p><strong>Classname:</strong> {{ item.classname }}</p>
-        <p><strong>Category:</strong> {{ item.category }}</p>
-        <p><strong>Source:</strong> {{ item.mod_name }}</p>
-    </div>
+            <button type="submit">Search</button>
+        </form>
 
-    <hr>
+        <div class="search-results">
 
-    {% endfor %}
+            {% for item in items %}
+
+                <a class="result-card" href="/item/{{ item.classname }}">
+                    <div class="result-icon">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+
+                    <div class="result-info">
+                        <h3>{{ item.display_name }}</h3>
+
+                        <p>{{ item.description }}</p>
+
+                        <div class="result-meta">
+                            <span>Classname: {{ item.classname }}</span>
+                            <span>Category: {{ item.category }}</span>
+                            <span>Source: {{ item.mod_name }}</span>
+                        </div>
+                    </div>
+
+                    <div class="result-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
 
 </div>
 
