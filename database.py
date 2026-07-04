@@ -244,5 +244,54 @@ if __name__ == "__main__":
         mod_id=1,
         image="Rag.png"
     )
+    add_item(
+        classname="M4A1",
+        display_name="M4A1",
+        description="A modular assault rifle used for high-end military encounters.",
+        category="Weapons",
+        subcategory="Rifle",
+        mod_id=1,
+        image="M4A1.png"
+    )
+
+    add_item(
+        classname="TacticalShirt_Black",
+        display_name="Black Tactical Shirt",
+        description="A durable tactical shirt with storage space and basic protection.",
+        category="Clothing",
+        subcategory="Shirt",
+        mod_id=1,
+        image="TacticalShirt_Black.png"
+    )
+
+    add_item(
+        classname="BakedBeansCan",
+        display_name="Baked Beans",
+        description="A canned food item useful for basic survival.",
+        category="Food",
+        subcategory="Canned Food",
+        mod_id=1,
+        image="BakedBeansCan.png"
+    )
+
+    add_item(
+        classname="Screwdriver",
+        display_name="Screwdriver",
+        description="A basic tool used for repairs, crafting, and utility tasks.",
+        category="Tools",
+        subcategory="Hand Tool",
+        mod_id=1,
+        image="Screwdriver.png"
+    )
+
+    add_item(
+        classname="HuntingKnife",
+        display_name="Hunting Knife",
+        description="A survival knife used for skinning, cutting, and general wilderness tasks.",
+        category="Survival",
+        subcategory="Knife",
+        mod_id=1,
+        image="HuntingKnife.png"
+    )
 
     print("✅ Starter data added successfully.")
