@@ -10,12 +10,22 @@
 
     <div class="item-detail-card">
 
-        <div class="item-image-panel">
-            <img
-    class="item-detail-image"
-    src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
-    data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
-    alt="{{ item.display_name }}">
+        <div class="item-visual-panel">
+
+            <div class="item-image-panel">
+                <img
+                    class="item-detail-image"
+                    src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
+                    data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
+                    alt="{{ item.display_name }}">
+            </div>
+
+            <div class="item-visual-footer">
+                <span>{{ item.mod_name }}</span>
+                <span>{{ item.category }}</span>
+                <span>{{ item.subcategory }}</span>
+            </div>
+
         </div>
 
         <div class="item-info-panel">
@@ -23,7 +33,7 @@
             <h1>{{ item.display_name }}</h1>
 
             <div class="item-chips">
-                <span class="chip"><i class="fa-solid fa-kit-medical"></i>{{ item.category }}</span>
+                <span class="chip"><i class="fa-solid fa-box"></i>{{ item.category }}</span>
                 <span class="chip"><i class="fa-solid fa-puzzle-piece"></i>{{ item.mod_name }}</span>
                 <span class="chip"><i class="fa-solid fa-layer-group"></i>{{ item.subcategory }}</span>
             </div>
@@ -51,16 +61,6 @@
                 </div>
 
                 <div class="identity-row">
-                    <span>Category</span>
-                    <strong>{{ item.category }}</strong>
-                </div>
-
-                <div class="identity-row">
-                    <span>Subcategory</span>
-                    <strong>{{ item.subcategory }}</strong>
-                </div>
-
-                <div class="identity-row">
                     <span>Source</span>
                     <strong>{{ item.mod_name }}</strong>
                 </div>
@@ -83,46 +83,26 @@
 </div>
 
 <script>
-
 function copyClassname() {
-
     const text = document.getElementById("classname").innerText;
-
     navigator.clipboard.writeText(text);
 
     const button = document.querySelector(".copy-btn");
-
-    button.innerHTML =
-        '<i class="fa-solid fa-check"></i>';
-
-    button.style.background = "#2d6a4f";
-    button.style.borderColor = "#52b788";
-    button.style.color = "white";
+    button.innerHTML = '<i class="fa-solid fa-check"></i>';
+    button.classList.add("copied");
 
     setTimeout(() => {
-
-        button.innerHTML =
-            '<i class="fa-regular fa-copy"></i>';
-
-        button.style.background = "";
-        button.style.borderColor = "";
-        button.style.color = "";
-
+        button.innerHTML = '<i class="fa-regular fa-copy"></i>';
+        button.classList.remove("copied");
     }, 1500);
-
 }
 
 document.querySelectorAll(".item-detail-image").forEach(img => {
-
     img.onerror = function () {
-
         this.onerror = null;
-
         this.src = this.dataset.placeholder;
-
     };
-
 });
-
 </script>
+
 {% endblock %}

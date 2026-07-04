@@ -437,6 +437,38 @@ body {
     color: #ddd;
     margin-bottom: 28px;
 }
+.item-visual-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.item-visual-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    background: rgba(18, 18, 18, 0.88);
+    border: 1px solid rgba(201, 162, 77, 0.22);
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.item-visual-footer span {
+    font-size: 13px;
+    color: #d8b66a;
+
+    background: rgba(201, 162, 77, 0.10);
+    border: 1px solid rgba(201, 162, 77, 0.22);
+    border-radius: 999px;
+    padding: 6px 10px;
+}
+
+.copy-btn.copied {
+    background: #2d6a4f;
+    border-color: #52b788;
+    color: #fff;
+}
 
 /* Item chips */
 
