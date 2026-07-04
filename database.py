@@ -182,24 +182,56 @@ def search_items(query):
         search_term
     ))
 
-    results = cursor.fetchall()
+       results = cursor.fetchall()
     conn.close()
 
     return results
-    results = cursor.fetchall()
+
+
+def get_dashboard_stats():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM items")
+    item_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM mods")
+    mod_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM tags")
+    tag_count = cursor.fetchone()[0]
+
+    relationship_count = 0
+
     conn.close()
 
-    return results
+    return {
+        "items": item_count,
+        "mods": mod_count,
+        "tags": tag_count,
+        "relationships": relationship_count
+    }
+
 
 if __name__ == "__main__":
     initialize_database()
 
     add_mod(
-        ...
+        name="Vanilla DayZ",
+        author="Bohemia Interactive",
+        type="Vanilla",
+        logo="vanilla.png",
+        description="Base game DayZ items."
     )
 
     add_item(
-        ...
+        classname="Rag",
+        display_name="Rag",
+        description="A basic cloth item used for bandaging wounds and basic survival crafting.",
+        category="Medical",
+        subcategory="Bandage",
+        mod_id=1,
+        image="Rag.png"
     )
 
     print("✅ Starter data added successfully.")
