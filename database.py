@@ -239,7 +239,31 @@ def get_items_by_category(category):
     conn.close()
 
     return items
+def get_items_by_mod(mod_name):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        SELECT
+            items.*,
+            mods.name AS mod_name,
+            mods.author,
+            mods.description,
+            mods.logo,
+            mods.website
+        FROM items
+        LEFT JOIN mods
+            ON items.mod_id = mods.id
+        WHERE mods.name = ?
+        ORDER BY items.display_name
+    """, (mod_name,))
+
+    items = cursor.fetchall()
+
+    conn.close()
+
+    return items
 
 if __name__ == "__main__":
     initialize_database()

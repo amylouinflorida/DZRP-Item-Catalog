@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ mod_name }}{% endblock %}
+
+{% block content %}
+
+<div class="app-shell">
+
+    <div class="page-actions">
+
+        <a class="back-button" href="/">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </a>
+
+    </div>
+
+    <section class="dashboard-panel">
+
+        <h2>
+
+            <i class="fa-solid fa-puzzle-piece"></i>
+
+            {{ mod_name }}
+
+        </h2>
+
+        <p>
+
+            {{ items|length }} Assets
+
+        </p>
+
+        <div class="mini-card-grid">
+
+            {% for item in items %}
+
+                <a class="mini-card" href="/item/{{ item.classname }}">
+
+                    {{ item.display_name }}
+
+                    <span>{{ item.category }}</span>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

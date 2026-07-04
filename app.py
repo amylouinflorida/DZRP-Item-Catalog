@@ -1,6 +1,15 @@
 from flask import Flask, render_template, request
 
-from database import get_all_items, get_item_by_classname, search_items, get_dashboard_stats, get_category_counts, get_mod_counts, get_items_by_category
+from database import (
+    get_all_items,
+    get_item_by_classname,
+    search_items,
+    get_dashboard_stats,
+    get_category_counts,
+    get_mod_counts,
+    get_items_by_category,
+    get_items_by_mod
+)
 
 app = Flask(__name__)
 
@@ -59,6 +68,16 @@ def category_page(category):
     return render_template(
         "category.html",
         category=category,
+        items=items
+    )
+@app.route("/mod/<mod_name>")
+def mod_page(mod_name):
+
+    items = get_items_by_mod(mod_name)
+
+    return render_template(
+        "mod.html",
+        mod_name=mod_name,
         items=items
     )
 
