@@ -11,9 +11,11 @@
     <div class="item-detail-card">
 
         <div class="item-image-panel">
-            <img class="item-detail-image"
-                 src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
-                 alt="{{ item.display_name }}">
+            <img
+    class="item-detail-image"
+    src="{{ url_for('static', filename='images/items/' ~ (item.image or 'no-image.png')) }}"
+    alt="{{ item.display_name }}"
+    onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/items/no-image.png') }}';">
         </div>
 
         <div class="item-info-panel">
