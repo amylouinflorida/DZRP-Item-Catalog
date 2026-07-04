@@ -3,66 +3,48 @@
 {% block title %}Search - DayZRP Item Catalog{% endblock %}
 
 {% block content %}
-     {% include "components/page_header.html" %}
 
-    <!-- PAGE CONTENT GOES HERE -->
-    <!-- asset cards, lists, etc -->
+    {% set banner_title = "Search Results" %}
+    {% set banner_subtitle = "Search the DayZRP staff catalog by item name, classname, category, or mod." %}
+    {% set banner_icon = "fa-solid fa-magnifying-glass" %}
+    {% set banner_class = "category-default" %}
+    {% set banner_context_title = "Top Searches" %}
+    {% set banner_context_items = results[:2] if results else [] %}
+    {% include "components/application_banner.html" %}
 
-<div class="app-shell">
+    <form class="search-row" action="/search" method="get">
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search items, classnames, mods, or tags...">
 
-    <a class="back-link" href="/">← Back to Home</a>
+        <button type="submit">Search</button>
+    </form>
 
-    <section class="dashboard-section">
-        <h2 class="section-title">Search Results</h2>
+    {% if query %}
+        <p class="search-summary">
+            {{ results|length }} result{% if results|length != 1 %}s{% endif %} for:
+            <strong>{{ query }}</strong>
+        </p>
+    {% endif %}
 
-        {% if query %}
-            <p class="muted-text">Results for: <strong>{{ query }}</strong></p>
-        {% endif %}
+    {% if results %}
 
-        {% if results %}
+        <div class="asset-card-grid">
+            {% for item in results %}
+                {% include "components/asset_card.html" %}
+            {% endfor %}
+        </div>
 
-            <div class="search-results">
+    {% else %}
 
-                {% for item in results %}
+        <div class="empty-state">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h3>No results found.</h3>
+            <p>Try searching by item name, classname, category, mod, or classname.</p>
+        </div>
 
-                    <a class="result-card" href="/item/{{ item.classname }}">
-                        <div class="result-icon">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
-
-                        <div class="result-info">
-                            <h3>{{ item.display_name }}</h3>
-
-                            <p>{{ item.description }}</p>
-
-                            <div class="result-meta">
-                                <span>Classname: {{ item.classname }}</span>
-                                <span>Category: {{ item.category }}</span>
-                                <span>Source: {{ item.mod_name }}</span>
-                            </div>
-                        </div>
-
-                        <div class="result-arrow">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </a>
-
-                {% endfor %}
-
-            </div>
-
-        {% else %}
-
-            <div class="empty-state">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <h3>No results found.</h3>
-                <p>Try searching by item name, classname, category, or mod source.</p>
-            </div>
-
-        {% endif %}
-
-    </section>
-
-</div>
+    {% endif %}
 
 {% endblock %}

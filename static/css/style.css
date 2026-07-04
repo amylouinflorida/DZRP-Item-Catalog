@@ -186,6 +186,16 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
+.search-summary {
+    max-width: 640px;
+    margin: 10px auto 22px;
+    color: #b8b8b8;
+    text-align: center;
+}
+
+.search-summary strong {
+    color: #e7c46a;
+}
 
 /* Dashboard sections */
 
