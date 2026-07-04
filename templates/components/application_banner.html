@@ -13,11 +13,13 @@
 
     <div class="banner-side-panel">
 
-        <div class="banner-mini-section">
-            <h3><i class="fa-solid fa-star"></i> Favorites</h3>
-            <a href="/item/Rag">Rag</a>
-            <a href="#">Duct Tape</a>
-        </div>
+        <div class="banner-title-block {{ banner_class }}">
+    <h1>
+        <i class="{{ banner_icon }}"></i>
+        {{ banner_title }}
+    </h1>
+    <p>{{ banner_subtitle }}</p>
+</div>
 
         <div class="banner-mini-section">
             <h3><i class="fa-solid fa-fire"></i> {{ banner_context_title }}</h3>

@@ -4,9 +4,12 @@
 
 {% block content %}
 {% set banner_title = category %}
-{% set banner_subtitle = "DayZRP category reference" %}
+{% set banner_subtitle = category_style.subtitle %}
+{% set banner_icon = category_style.icon %}
+{% set banner_class = category_style.class %}
 {% set banner_context_title = "Popular " ~ category %}
-{% set banner_context_items = items[:3] %}
+{% set banner_context_items = items[:2] %}
+{% include "components/application_banner.html" %}
 
 
 {% include "components/application_banner.html" %}
