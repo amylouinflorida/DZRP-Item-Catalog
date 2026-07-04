@@ -34,7 +34,6 @@ def item_detail(classname):
         item=item
     )
 
-
 @app.route("/search")
 def search():
     query = request.args.get("q", "").strip()
@@ -49,6 +48,7 @@ def search():
         query=query,
         results=results
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
