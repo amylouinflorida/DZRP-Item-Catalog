@@ -182,7 +182,7 @@ def search_items(query):
         search_term
     ))
 
-       results = cursor.fetchall()
+    results = cursor.fetchall()
     conn.close()
 
     return results
