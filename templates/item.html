@@ -15,7 +15,7 @@
             <div class="item-image-panel">
                 <img
                     class="item-detail-image"
-                    src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
+                    src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
                     data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
                     alt="{{ item.display_name }}">
             </div>
