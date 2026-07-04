@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 
-from database import get_all_items, get_item_by_classname, search_items, get_dashboard_stats
+from database import get_all_items, get_item_by_classname, search_items, get_dashboard_stats, get_category_counts, get_mod_counts
 
 app = Flask(__name__)
 

@@ -186,7 +186,43 @@ def search_items(query):
     conn.close()
 
     return results
+def get_category_counts():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        SELECT category, COUNT(*) AS item_count
+        FROM items
+        WHERE category IS NOT NULL AND category != ''
+        GROUP BY category
+        ORDER BY category
+    """)
+
+    categories = cursor.fetchall()
+    conn.close()
+
+    return categories
+
+
+def get_mod_counts():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT mods.name, COUNT(items.id) AS item_count
+        FROM mods
+        LEFT JOIN items
+            ON items.mod_id = mods.id
+        GROUP BY mods.id
+        ORDER BY mods.name
+    """)
+
+    mods = cursor.fetchall()
+    conn.close()
+
+    return mods
 
 def get_dashboard_stats():
     conn = sqlite3.connect(DB_PATH)

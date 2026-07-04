@@ -215,11 +215,12 @@
 
             <div class="dashboard-list">
 
-                <a href="#">Medical <span>1</span></a>
-                <a href="#">Weapons <span>0</span></a>
-                <a href="#">Clothing <span>0</span></a>
-                <a href="#">Food & Drink <span>0</span></a>
-                <a href="#">Tools <span>0</span></a>
+              {% for category in categories %}
+    <a href="#">
+        {{ category.category }}
+        <span>{{ category.item_count }}</span>
+    </a>
+{% endfor %}
 
             </div>
 
@@ -236,11 +237,12 @@
 
             <div class="dashboard-list">
 
-                <a href="#">Vanilla DayZ <span>1</span></a>
-                <a href="#">Expansion <span>0</span></a>
-                <a href="#">Windstride <span>0</span></a>
-                <a href="#">AJW <span>0</span></a>
-                <a href="#">DayZRP Custom <span>0</span></a>
+               {% for mod in mods %}
+          <a href="#">
+          {{ mod.name }}
+          <span>{{ mod.item_count }}</span>
+    </a>
+{% endfor %}
 
             </div>
 
