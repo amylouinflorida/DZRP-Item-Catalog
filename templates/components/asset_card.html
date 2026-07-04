@@ -1,19 +1,11 @@
 <a class="asset-card" href="/item/{{ item.classname }}">
 
     <div class="asset-image-wrap">
-        {% if item.image %}
-            <img
-                src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
-                alt="{{ item.display_name }}"
-                class="asset-image">
-        {% else %}
-            <div class="asset-image">
-    <img
-    src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
-    alt="{{ item.display_name }}"
-    onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
-</div>
-        {% endif %}
+        <img
+            src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
+            alt="{{ item.display_name }}"
+            class="asset-image"
+            onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
     </div>
 
     <div class="asset-card-body">
@@ -46,13 +38,11 @@
             </p>
         {% endif %}
 
-      <div class="asset-card-footer">
+        <div class="asset-card-footer">
+            <span>View Details</span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </div>
 
-    <span>View Details</span>
-
-    <i class="fa-solid fa-arrow-right"></i>
-
-</div>
     </div>
 
 </a>

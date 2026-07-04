@@ -30,22 +30,19 @@
         </a>
     </div>
 
-    <section class="dashboard-panel">
+  <h2 class="category-heading">
+    <i class="fa-solid fa-folder"></i>
+    {{ category }}
+</h2>
 
-        <h2>
-            <i class="fa-solid fa-folder"></i>
-            {{ category }}
-        </h2>
-
-      <div class="asset-card-grid">
+<div class="asset-card-grid">
 
     {% for item in items %}
         {% include "components/asset_card.html" %}
     {% endfor %}
 
 </div>
-
-    </section>
+    
 
 </div>
 

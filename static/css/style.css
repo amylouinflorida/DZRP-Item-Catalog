@@ -1248,6 +1248,14 @@ body {
 .category-card.tools {
     background: linear-gradient(135deg, #4b3a25, #8b6b42);
 }
+.category-heading{
+    max-width:1100px;
+    margin:30px auto 20px;
+
+    color:#e7c46a;
+
+    font-size:28px;
+}
 .page-actions {
     display: flex;
     gap: 12px;
@@ -1280,7 +1288,8 @@ body {
 .asset-card {
     display: flex;
     flex-direction: column;
-    min-height: 360px;
+    min-height: 250px;
+    width: 100%;
     background: linear-gradient(180deg, #17191d, #101114);
     border: 1px solid rgba(231, 196, 106, 0.18);
     border-radius: 16px;
