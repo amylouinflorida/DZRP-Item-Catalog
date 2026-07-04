@@ -10,6 +10,7 @@ from database import (
     get_items_by_category,
     get_items_by_mod
 )
+from category_styles import get_category_style
 
 app = Flask(__name__)
 
@@ -64,11 +65,14 @@ def search():
 @app.route("/category/<category>")
 def category_page(category):
     items = get_items_by_category(category)
+    category_style = get_category_style(category)
 
     return render_template(
         "category.html",
         category=category,
-        items=items
+        items=items,
+        category_style=category_style,
+        active_page="catalog"
     )
 @app.route("/mod/<mod_name>")
 def mod_page(mod_name):
