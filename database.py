@@ -192,10 +192,11 @@ def get_category_counts():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT category, COUNT(*) AS item_count
+        SELECT
+            COALESCE(NULLIF(category, ''), 'Uncategorized') AS category,
+            COUNT(*) AS item_count
         FROM items
-        WHERE category IS NOT NULL AND category != ''
-        GROUP BY category
+        GROUP BY COALESCE(NULLIF(category, ''), 'Uncategorized')
         ORDER BY category
     """)
 
