@@ -1419,18 +1419,26 @@ body {
 
 }
 .application-banner {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 24px;
-    align-items: stretch;
+  .application-banner {
 
-    margin: 26px 0;
-    padding: 24px;
+    max-width: 900px;
+
+    margin: 24px auto 36px;
+
+    padding: 18px 24px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    background: #0b0b0b;
+
+    border: 1px solid rgba(231,196,106,.25);
 
     border-radius: 18px;
-    background: linear-gradient(135deg, #17191d, #101114);
-    border: 1px solid rgba(231, 196, 106, 0.22);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+
+    box-shadow: 0 12px 28px rgba(0,0,0,.45);
+}
 }
 
 .banner-brand {
@@ -1464,10 +1472,17 @@ body {
 }
 
 .banner-mini-section {
-    padding: 16px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+  .banner-mini-section{
+
+    background:#151515;
+
+    border:1px solid rgba(231,196,106,.12);
+
+    border-radius:14px;
+
+    padding:14px;
+
+}
 }
 
 .banner-mini-section h3 {
