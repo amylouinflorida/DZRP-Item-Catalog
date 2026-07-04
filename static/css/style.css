@@ -267,3 +267,41 @@ body {
     border-color: #c9a24d;
     background: rgba(40, 32, 20, 0.96);
 }
+.dash-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(201, 162, 77, 0.14),
+        transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.dash-card:hover::before {
+    opacity: 1;
+}
+
+.dash-card span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(201, 162, 77, 0.12);
+    border: 1px solid rgba(201, 162, 77, 0.35);
+    color: #c9a24d;
+    font-size: 24px;
+}
+
+.dash-card:hover {
+    box-shadow: 0 0 28px rgba(201, 162, 77, 0.12);
+}
