@@ -1248,3 +1248,25 @@ body {
 .category-card.tools {
     background: linear-gradient(135deg, #4b3a25, #8b6b42);
 }
+.page-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #17191d;
+    color: #e7c46a;
+    text-decoration: none;
+    border: 1px solid rgba(231, 196, 106, 0.35);
+    font-weight: 700;
+}
+
+.back-button:hover {
+    background: rgba(231, 196, 106, 0.12);
+}
