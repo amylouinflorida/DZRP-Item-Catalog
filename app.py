@@ -22,11 +22,12 @@ def home():
     mods = get_mod_counts()
 
     return render_template(
-        "home.html",
-        stats=stats,
-        categories=categories,
-        mods=mods
-    )
+    "home.html",
+    stats=stats,
+    categories=categories,
+    mods=mods,
+    active_page="dashboard"
+)
 
 
 @app.route("/catalog")
@@ -34,9 +35,10 @@ def catalog():
     items = get_all_items()
 
     return render_template(
-        "catalog.html",
-        items=items
-    )
+    "catalog.html",
+    items=items,
+    active_page="catalog"
+)
 
 
 @app.route("/item/<classname>")
@@ -68,12 +70,12 @@ def category_page(category):
     category_style = get_category_style(category)
 
     return render_template(
-        "category.html",
-        category=category,
-        items=items,
-        category_style=category_style,
-        active_page="catalog"
-    )
+    "category.html",
+    category=category,
+    items=items,
+    category_style=category_style,
+    active_page="catalog"
+)
 @app.route("/mod/<mod_name>")
 def mod_page(mod_name):
     items = get_items_by_mod(mod_name)
