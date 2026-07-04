@@ -56,8 +56,6 @@ def initialize_database():
     conn.commit()
     conn.close()
 
-    print("✅ Database initialized successfully.")
-
 
 def add_mod(name, author=None, type=None, logo=None, website=None, description=None):
     conn = sqlite3.connect(DB_PATH)
@@ -91,12 +89,9 @@ def get_all_items():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT
-            items.*,
-            mods.name AS mod_name
+        SELECT items.*, mods.name AS mod_name
         FROM items
-        LEFT JOIN mods
-            ON items.mod_id = mods.id
+        LEFT JOIN mods ON items.mod_id = mods.id
         ORDER BY display_name
     """)
 
@@ -119,8 +114,7 @@ def get_item_by_classname(classname):
             mods.type AS mod_type,
             mods.logo AS mod_logo
         FROM items
-        LEFT JOIN mods
-            ON items.mod_id = mods.id
+        LEFT JOIN mods ON items.mod_id = mods.id
         WHERE items.classname = ?
     """, (classname,))
 
@@ -130,27 +124,6 @@ def get_item_by_classname(classname):
     return item
 
 
-if __name__ == "__main__":
-    initialize_database()
-
-    add_mod(
-        name="Vanilla DayZ",
-        author="Bohemia Interactive",
-        type="Vanilla",
-        logo="vanilla.png",
-        description="Base game DayZ items."
-    )
-    
-
-    add_item(
-        classname="Rag",
-        display_name="Rag",
-        description="A basic cloth item used for bandaging wounds and basic survival crafting.",
-        category="Medical",
-        subcategory="Bandage",
-        mod_id=1,
-        image="Rag.png"
-    )
 def search_items(query):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -159,12 +132,9 @@ def search_items(query):
     search_term = f"%{query}%"
 
     cursor.execute("""
-        SELECT
-            items.*,
-            mods.name AS mod_name
+        SELECT items.*, mods.name AS mod_name
         FROM items
-        LEFT JOIN mods
-            ON items.mod_id = mods.id
+        LEFT JOIN mods ON items.mod_id = mods.id
         WHERE
             items.display_name LIKE ?
             OR items.classname LIKE ?
@@ -186,6 +156,8 @@ def search_items(query):
     conn.close()
 
     return results
+
+
 def get_category_counts():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -212,10 +184,11 @@ def get_mod_counts():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT mods.name, COUNT(items.id) AS item_count
+        SELECT
+            mods.name,
+            COUNT(items.id) AS item_count
         FROM mods
-        LEFT JOIN items
-            ON items.mod_id = mods.id
+        LEFT JOIN items ON items.mod_id = mods.id
         GROUP BY mods.id
         ORDER BY mods.name
     """)
@@ -224,6 +197,7 @@ def get_mod_counts():
     conn.close()
 
     return mods
+
 
 def get_dashboard_stats():
     conn = sqlite3.connect(DB_PATH)
@@ -271,40 +245,4 @@ if __name__ == "__main__":
         image="Rag.png"
     )
 
-def get_category_counts():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT category, COUNT(*) AS item_count
-        FROM items
-        WHERE category IS NOT NULL AND category != ''
-        GROUP BY category
-        ORDER BY category
-    """)
-
-    categories = cursor.fetchall()
-    conn.close()
-
-    return categories
-
-def get_mod_counts():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT mods.name, COUNT(items.id) AS item_count
-        FROM mods
-        LEFT JOIN items
-            ON items.mod_id = mods.id
-        GROUP BY mods.id
-        ORDER BY mods.name
-    """)
-
-    mods = cursor.fetchall()
-    conn.close()
-
-    return mods
     print("✅ Starter data added successfully.")
