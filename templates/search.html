@@ -5,9 +5,10 @@
 {% block content %}
 
 <div class="app-shell">
+
     <a class="back-link" href="/">← Back to Home</a>
+
     <section class="dashboard-section">
-        
         <h2 class="section-title">Search Results</h2>
 
         {% if query %}
@@ -21,10 +22,25 @@
                 {% for item in results %}
 
                     <a class="result-card" href="/item/{{ item.classname }}">
-                        <h3>{{ item.display_name }}</h3>
-                        <p><strong>Classname:</strong> {{ item.classname }}</p>
-                        <p><strong>Category:</strong> {{ item.category }}</p>
-                        <p><strong>Source:</strong> {{ item.mod_name }}</p>
+                        <div class="result-icon">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+
+                        <div class="result-info">
+                            <h3>{{ item.display_name }}</h3>
+
+                            <p>{{ item.description }}</p>
+
+                            <div class="result-meta">
+                                <span>Classname: {{ item.classname }}</span>
+                                <span>Category: {{ item.category }}</span>
+                                <span>Source: {{ item.mod_name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="result-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
                     </a>
 
                 {% endfor %}
@@ -33,7 +49,11 @@
 
         {% else %}
 
-            <p class="muted-text">No results found.</p>
+            <div class="empty-state">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>No results found.</h3>
+                <p>Try searching by item name, classname, category, or mod source.</p>
+            </div>
 
         {% endif %}
 

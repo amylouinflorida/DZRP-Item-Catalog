@@ -328,3 +328,119 @@ linear-gradient(
 
     color: #f3d58a;
 }
+.muted-text {
+    color: #b9b0aa;
+    margin-bottom: 20px;
+}
+
+.search-results {
+    display: grid;
+    gap: 16px;
+}
+
+.result-card {
+    display: grid;
+    grid-template-columns: 70px 1fr 34px;
+    gap: 18px;
+    align-items: center;
+
+    text-decoration: none;
+    color: #f2eee8;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(34, 34, 34, 0.95),
+            rgba(18, 18, 18, 0.97)
+        );
+
+    border: 1px solid rgba(201, 162, 77, 0.28);
+    border-radius: 16px;
+    padding: 18px;
+
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-3px);
+    border-color: #c9a24d;
+    box-shadow: 0 0 28px rgba(201, 162, 77, 0.12);
+}
+
+.result-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+    background: rgba(201, 162, 77, 0.12);
+    border: 1px solid rgba(201, 162, 77, 0.35);
+
+    color: #d8b66a;
+    font-size: 24px;
+}
+
+.result-info h3 {
+    margin: 0 0 8px;
+    font-size: 22px;
+}
+
+.result-info p {
+    margin: 0 0 12px;
+    color: #b9b0aa;
+    line-height: 1.4;
+}
+
+.result-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.result-meta span {
+    font-size: 13px;
+    color: #f2eee8;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 6px 10px;
+}
+
+.result-arrow {
+    color: #c9a24d;
+    font-size: 18px;
+}
+
+.empty-state {
+    text-align: center;
+    background: rgba(24, 24, 24, 0.92);
+    border: 1px solid rgba(201, 162, 77, 0.28);
+    border-radius: 16px;
+    padding: 36px 24px;
+    color: #b9b0aa;
+}
+
+.empty-state i {
+    color: #c9a24d;
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.empty-state h3 {
+    color: #f2eee8;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 700px) {
+    .result-card {
+        grid-template-columns: 1fr;
+    }
+
+    .result-arrow {
+        display: none;
+    }
+}
