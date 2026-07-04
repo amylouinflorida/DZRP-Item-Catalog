@@ -11,11 +11,11 @@
     <div class="item-detail-card">
 
         <div class="item-image-panel">
-            <img
+            <<img
     class="item-detail-image"
     src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
-    alt="{{ item.display_name }}"
-    onerror="this.src='{{ url_for('static', filename='images/items/no-image.png') }}'; this.onerror=null;">
+    data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
+    alt="{{ item.display_name }}">
         </div>
 
         <div class="item-info-panel">
