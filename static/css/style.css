@@ -1530,3 +1530,31 @@ body {
         grid-template-columns: 1fr;
     }
 }
+.coming-soon{
+    max-width:700px;
+    margin:40px auto;
+    text-align:center;
+
+    padding:50px;
+
+    background:#171717;
+
+    border:1px solid rgba(231,196,106,.18);
+
+    border-radius:18px;
+}
+
+.coming-soon i{
+    font-size:48px;
+    color:#e7c46a;
+    margin-bottom:20px;
+}
+
+.coming-soon h2{
+    margin-bottom:12px;
+}
+
+.coming-soon p{
+    color:#b8b8b8;
+    line-height:1.6;
+}

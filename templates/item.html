@@ -4,96 +4,109 @@
 
 {% block content %}
 
-    {% include "components/page_header.html" %}
+    {% set banner_title = item.display_name %}
+    {% set banner_subtitle = item.category ~ " asset from " ~ item.mod_name %}
+    {% set banner_icon = "fa-solid fa-box-open" %}
+    {% set banner_class = "category-default" %}
+    {% set banner_context_title = "Related Items" %}
+    {% set banner_context_items = [] %}
+    {% include "components/application_banner.html" %}
 
-    <!-- PAGE CONTENT GOES HERE -->
-    <!-- asset cards, lists, etc -->
+    <div class="page-wrap">
 
-<div class="page-wrap">
+        <div class="item-detail-card">
 
-    <a class="back-link" href="/catalog">← Back to Catalog</a>
+            <div class="item-visual-panel">
 
-    <div class="item-detail-card">
-
-        <div class="item-visual-panel">
-
-            <div class="item-image-panel">
-                <img
-                    class="item-detail-image"
-                    src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
-                    data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
-                    alt="{{ item.display_name }}">
-            </div>
-
-            <div class="item-visual-footer">
-                <span>{{ item.mod_name }}</span>
-                <span>{{ item.category }}</span>
-                <span>{{ item.subcategory }}</span>
-            </div>
-
-        </div>
-
-        <div class="item-info-panel">
-
-            <div class="item-title-row">
-
-    <h1>{{ item.display_name }}</h1>
-
-    <button class="favorite-btn" type="button">
-        <i class="fa-regular fa-star"></i>
-    </button>
-
-</div>
-
-            <div class="item-chips">
-                <span class="chip"><i class="fa-solid fa-box"></i>{{ item.category }}</span>
-                <span class="chip"><i class="fa-solid fa-puzzle-piece"></i>{{ item.mod_name }}</span>
-                <span class="chip"><i class="fa-solid fa-layer-group"></i>{{ item.subcategory }}</span>
-            </div>
-
-            <p class="item-description">{{ item.description }}</p>
-
-            <div class="identity-box">
-                <h2>Identity</h2>
-
-                <div class="identity-row">
-                    <span>Display Name</span>
-                    <strong>{{ item.display_name }}</strong>
+                <div class="item-image-panel">
+                    <img
+                        class="item-detail-image"
+                        src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
+                        data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
+                        alt="{{ item.display_name }}">
                 </div>
 
-                <div class="identity-row">
-                    <span>Classname</span>
+                <div class="item-visual-footer">
+                    {% if item.mod_name %}<span>{{ item.mod_name }}</span>{% endif %}
+                    {% if item.category %}<span>{{ item.category }}</span>{% endif %}
+                    {% if item.subcategory %}<span>{{ item.subcategory }}</span>{% endif %}
+                </div>
 
-                    <div class="copy-box">
-                        <strong id="classname">{{ item.classname }}</strong>
+            </div>
 
-                        <button class="copy-btn" type="button" onclick="copyClassname()">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
+            <div class="item-info-panel">
+
+                <div class="item-title-row">
+                    <h1>{{ item.display_name }}</h1>
+
+                    <button class="favorite-btn" type="button">
+                        <i class="fa-regular fa-star"></i>
+                    </button>
+                </div>
+
+                <p class="asset-classname">{{ item.classname }}</p>
+
+                <div class="item-chips">
+                    {% if item.category %}
+                        <span class="chip"><i class="fa-solid fa-folder"></i>{{ item.category }}</span>
+                    {% endif %}
+
+                    {% if item.mod_name %}
+                        <span class="chip"><i class="fa-solid fa-puzzle-piece"></i>{{ item.mod_name }}</span>
+                    {% endif %}
+
+                    {% if item.subcategory %}
+                        <span class="chip"><i class="fa-solid fa-layer-group"></i>{{ item.subcategory }}</span>
+                    {% endif %}
+                </div>
+
+                {% if item.description %}
+                    <p class="item-description">{{ item.description }}</p>
+                {% else %}
+                    <p class="item-description muted">No description available yet.</p>
+                {% endif %}
+
+                <div class="identity-box">
+                    <h2>Identity</h2>
+
+                    <div class="identity-row">
+                        <span>Display Name</span>
+                        <strong>{{ item.display_name }}</strong>
+                    </div>
+
+                    <div class="identity-row">
+                        <span>Classname</span>
+
+                        <div class="copy-box">
+                            <strong id="classname">{{ item.classname }}</strong>
+
+                            <button class="copy-btn" type="button" onclick="copyClassname()">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="identity-row">
+                        <span>Source</span>
+                        <strong>{{ item.mod_name or "Unknown" }}</strong>
+                    </div>
+
+                    <div class="identity-row">
+                        <span>Author</span>
+                        <strong>{{ item.mod_author or "Unknown" }}</strong>
                     </div>
                 </div>
 
-                <div class="identity-row">
-                    <span>Source</span>
-                    <strong>{{ item.mod_name }}</strong>
+                <div class="info-panel">
+                    <h2>Relationships</h2>
+                    <p>No known relationships yet.</p>
                 </div>
 
-                <div class="identity-row">
-                    <span>Author</span>
-                    <strong>{{ item.mod_author }}</strong>
-                </div>
-            </div>
-
-            <div class="info-panel">
-                <h2>Relationships</h2>
-                <p>No known relationships yet.</p>
             </div>
 
         </div>
 
     </div>
-
-</div>
 
 <script>
 function copyClassname() {
