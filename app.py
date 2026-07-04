@@ -28,6 +28,8 @@ def item_detail(classname):
         "item.html",
         item=item
     )
+
+
 @app.route("/search")
 def search():
     query = request.args.get("q", "").strip()
