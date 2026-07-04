@@ -18,6 +18,24 @@
 
         <div class="item-info-panel">
             <h1>{{ item.display_name }}</h1>
+            <div class="item-chips">
+
+    <span class="chip">
+        <i class="fa-solid fa-kit-medical"></i>
+        {{ item.category }}
+    </span>
+
+    <span class="chip">
+        <i class="fa-solid fa-puzzle-piece"></i>
+        {{ item.mod_name }}
+    </span>
+
+    <span class="chip">
+        <i class="fa-solid fa-layer-group"></i>
+        {{ item.subcategory }}
+    </span>
+
+</div>
 
             <p class="item-description">{{ item.description }}</p>
 
