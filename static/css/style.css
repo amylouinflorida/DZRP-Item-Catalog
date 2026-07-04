@@ -1270,3 +1270,110 @@ body {
 .back-button:hover {
     background: rgba(231, 196, 106, 0.12);
 }
+.asset-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.asset-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 360px;
+    background: linear-gradient(180deg, #17191d, #101114);
+    border: 1px solid rgba(231, 196, 106, 0.18);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #ffffff;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.asset-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(231, 196, 106, 0.55);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.38);
+}
+
+.asset-image-wrap {
+    height: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, rgba(231, 196, 106, 0.12), rgba(255, 255, 255, 0.03));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.asset-image {
+    max-width: 90%;
+    max-height: 110px;
+    object-fit: contain;
+}
+
+.asset-image-placeholder {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(231, 196, 106, 0.12);
+    color: #e7c46a;
+    font-size: 34px;
+}
+
+.asset-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+}
+
+.asset-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.asset-classname {
+    margin: 5px 0 12px;
+    font-size: 12px;
+    color: #9da3ad;
+    font-family: monospace;
+}
+
+.asset-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.asset-meta span {
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: rgba(231, 196, 106, 0.12);
+    color: #e7c46a;
+}
+
+.asset-description {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #c9ced6;
+    margin: 0;
+}
+
+.asset-card-footer {
+    margin-top: auto;
+    padding-top: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #e7c46a;
+    font-weight: 700;
+    font-size: 13px;
+}

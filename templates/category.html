@@ -25,16 +25,13 @@
             {{ category }}
         </h2>
 
-        <div class="mini-card-grid">
+      <div class="asset-card-grid">
 
-            {% for item in items %}
-                <a class="mini-card" href="/item/{{ item.classname }}">
-                    {{ item.display_name }}
-                    <span>{{ item.classname }}</span>
-                </a>
-            {% endfor %}
+    {% for item in items %}
+        {% include "components/asset_card.html" %}
+    {% endfor %}
 
-        </div>
+</div>
 
     </section>
 

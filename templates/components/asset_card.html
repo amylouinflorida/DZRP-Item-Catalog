@@ -1,0 +1,55 @@
+<a class="asset-card" href="/item/{{ item.classname }}">
+
+    <div class="asset-image-wrap">
+        {% if item.image %}
+            <img
+                src="{{ url_for('static', filename='images/items/' ~ item.image) }}"
+                alt="{{ item.display_name }}"
+                class="asset-image">
+        {% else %}
+            <div class="asset-image-placeholder">
+                <i class="fa-solid fa-cube"></i>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="asset-card-body">
+
+        <h3>{{ item.display_name }}</h3>
+
+        <p class="asset-classname">
+            {{ item.classname }}
+        </p>
+
+        <div class="asset-meta">
+            {% if item.category %}
+                <span>
+                    <i class="fa-solid fa-folder"></i>
+                    {{ item.category }}
+                </span>
+            {% endif %}
+
+            {% if item.mod_name %}
+                <span>
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                    {{ item.mod_name }}
+                </span>
+            {% endif %}
+        </div>
+
+        {% if item.description %}
+            <p class="asset-description">
+                {{ item.description }}
+            </p>
+        {% endif %}
+
+      <div class="asset-card-footer">
+
+    <span>View Details</span>
+
+    <i class="fa-solid fa-arrow-right"></i>
+
+</div>
+    </div>
+
+</a>
