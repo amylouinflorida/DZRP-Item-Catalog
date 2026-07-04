@@ -85,7 +85,7 @@ body {
     border-radius: 16px;
     padding: 24px;
     text-align: left;
-    min-height: 175px;
+    min-height:220px;
     transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
@@ -255,7 +255,12 @@ body {
 .pill-row a {
     color: #f2eee8;
     text-decoration: none;
-    background: rgba(24, 24, 24, 0.92);
+   background:
+linear-gradient(
+    180deg,
+    rgba(34,34,34,.95),
+    rgba(20,20,20,.96)
+);
     border: 1px solid rgba(201, 162, 77, 0.35);
     border-radius: 999px;
     padding: 10px 16px;
@@ -285,23 +290,41 @@ body {
     transition: opacity 0.18s ease;
 }
 
-.dash-card:hover::before {
-    opacity: 1;
-}
-
 .dash-card span {
+    width: 62px;
+    height: 62px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    background: rgba(201, 162, 77, 0.12);
-    border: 1px solid rgba(201, 162, 77, 0.35);
-    color: #c9a24d;
-    font-size: 24px;
+
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(201,162,77,.18),
+        rgba(201,162,77,.05)
+    );
+
+    border: 1px solid rgba(201,162,77,.30);
+
+    color: #d8b66a;
+
+    font-size: 28px;
+
+    margin-bottom: 18px;
+
+    transition: .18s ease;
 }
 
-.dash-card:hover {
-    box-shadow: 0 0 28px rgba(201, 162, 77, 0.12);
+.dash-card:hover span {
+    transform: scale(1.08);
+
+    background: linear-gradient(
+        135deg,
+        rgba(201,162,77,.30),
+        rgba(201,162,77,.10)
+    );
+
+    color: #f3d58a;
 }
