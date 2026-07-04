@@ -85,6 +85,28 @@ def mod_page(mod_name):
         mod_name=mod_name,
         items=items
     )
+@app.route("/mods")
+def mods():
+    return render_template(
+        "mods.html",
+        active_page="mods"
+    )
+
+
+@app.route("/relationships")
+def relationships():
+    return render_template(
+        "relationships.html",
+        active_page="relationships"
+    )
+
+
+@app.route("/management")
+def management():
+    return render_template(
+        "management.html",
+        active_page="management"
+    )
 
 
 if __name__ == "__main__":
