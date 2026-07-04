@@ -1,13 +1,18 @@
 from flask import Flask, render_template, request
 
-from database import get_all_items, get_item_by_classname, search_items
+from database import get_all_items, get_item_by_classname, search_items, get_dashboard_stats
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    stats = get_dashboard_stats()
+
+    return render_template(
+        "home.html",
+        stats=stats
+    )
 
 
 @app.route("/catalog")

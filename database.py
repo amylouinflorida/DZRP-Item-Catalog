@@ -186,6 +186,11 @@ def search_items(query):
     conn.close()
 
     return results
+    results = cursor.fetchall()
+    conn.close()
+
+    return results
+
 if __name__ == "__main__":
     initialize_database()
 
