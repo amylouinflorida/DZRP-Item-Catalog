@@ -83,17 +83,46 @@
 </div>
 
 <script>
+
 function copyClassname() {
+
     const text = document.getElementById("classname").innerText;
+
     navigator.clipboard.writeText(text);
+
+    const button = document.querySelector(".copy-btn");
+
+    button.innerHTML =
+        '<i class="fa-solid fa-check"></i>';
+
+    button.style.background = "#2d6a4f";
+    button.style.borderColor = "#52b788";
+    button.style.color = "white";
+
+    setTimeout(() => {
+
+        button.innerHTML =
+            '<i class="fa-regular fa-copy"></i>';
+
+        button.style.background = "";
+        button.style.borderColor = "";
+        button.style.color = "";
+
+    }, 1500);
+
 }
 
 document.querySelectorAll(".item-detail-image").forEach(img => {
-    img.onerror = function () {
-        this.onerror = null;
-        this.src = this.dataset.placeholder;
-    };
-});
-</script>
 
+    img.onerror = function () {
+
+        this.onerror = null;
+
+        this.src = this.dataset.placeholder;
+
+    };
+
+});
+
+</script>
 {% endblock %}
