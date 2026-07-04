@@ -1199,3 +1199,52 @@ body {
 .quick-card.tags:hover { border-color: #78b159; }
 .quick-card.spawn:hover { border-color: #6aa7d8; }
 .quick-card.management:hover { border-color: #a66ad8; }
+
+.category-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.category-card {
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background: #2b2f36;
+}
+
+.category-card i {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.category-card h3 {
+    margin: 8px 0 4px;
+}
+
+.category-card p {
+    margin: 0;
+    opacity: 0.85;
+}
+
+.category-card.medical {
+    background: linear-gradient(135deg, #7b1e1e, #c0392b);
+}
+
+.category-card.weapons {
+    background: linear-gradient(135deg, #252a31, #5f6874);
+}
+
+.category-card.food {
+    background: linear-gradient(135deg, #6b4a1e, #bd7f25);
+}
+
+.category-card.clothing {
+    background: linear-gradient(135deg, #243447, #3f6178);
+}
+
+.category-card.tools {
+    background: linear-gradient(135deg, #4b3a25, #8b6b42);
+}

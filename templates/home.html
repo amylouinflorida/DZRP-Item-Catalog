@@ -206,23 +206,36 @@
 
         <!-- Browse by Category -->
 
-        <div class="dashboard-panel">
+       <div class="category-card-grid">
 
-            <h2>
-                <i class="fa-solid fa-folder"></i>
-                Browse by Category
-            </h2>
+    {% for category in categories %}
 
-            <div class="dashboard-list">
+        {% set category_class = category.category|lower|replace(' ', '-') %}
 
-              {% for category in categories %}
-    <a href="#">
-        {{ category.category }}
-        <span>{{ category.item_count }}</span>
-    </a>
-{% endfor %}
+        <a class="category-card {{ category_class }}" href="/category/{{ category.category }}">
 
-            </div>
+            {% if category.category == "Medical" %}
+                <i class="fa-solid fa-kit-medical"></i>
+            {% elif category.category == "Weapons" %}
+                <i class="fa-solid fa-gun"></i>
+            {% elif category.category == "Food" %}
+                <i class="fa-solid fa-can-food"></i>
+            {% elif category.category == "Clothing" %}
+                <i class="fa-solid fa-shirt"></i>
+            {% elif category.category == "Tools" %}
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            {% else %}
+                <i class="fa-solid fa-box"></i>
+            {% endif %}
+
+            <h3>{{ category.category }}</h3>
+            <p>{{ category.item_count }} items</p>
+
+        </a>
+
+    {% endfor %}
+
+</div>
 
         </div>
 

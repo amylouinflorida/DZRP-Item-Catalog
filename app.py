@@ -8,10 +8,14 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     stats = get_dashboard_stats()
+    categories = get_category_counts()
+    mods = get_mod_counts()
 
     return render_template(
         "home.html",
-        stats=stats
+        stats=stats,
+        categories=categories,
+        mods=mods
     )
 
 
