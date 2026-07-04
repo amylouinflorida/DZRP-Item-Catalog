@@ -17,42 +17,74 @@
         </div>
 
         <div class="item-info-panel">
+
             <h1>{{ item.display_name }}</h1>
+
             <div class="item-chips">
-
-    <span class="chip">
-        <i class="fa-solid fa-kit-medical"></i>
-        {{ item.category }}
-    </span>
-
-    <span class="chip">
-        <i class="fa-solid fa-puzzle-piece"></i>
-        {{ item.mod_name }}
-    </span>
-
-    <span class="chip">
-        <i class="fa-solid fa-layer-group"></i>
-        {{ item.subcategory }}
-    </span>
-
-</div>
+                <span class="chip"><i class="fa-solid fa-kit-medical"></i>{{ item.category }}</span>
+                <span class="chip"><i class="fa-solid fa-puzzle-piece"></i>{{ item.mod_name }}</span>
+                <span class="chip"><i class="fa-solid fa-layer-group"></i>{{ item.subcategory }}</span>
+            </div>
 
             <p class="item-description">{{ item.description }}</p>
 
             <div class="identity-box">
                 <h2>Identity</h2>
 
-                <div class="identity-row"><span>Display Name</span><strong>{{ item.display_name }}</strong></div>
-                <div class="identity-row"><span>Classname</span><strong>{{ item.classname }}</strong></div>
-                <div class="identity-row"><span>Category</span><strong>{{ item.category }}</strong></div>
-                <div class="identity-row"><span>Subcategory</span><strong>{{ item.subcategory }}</strong></div>
-                <div class="identity-row"><span>Source</span><strong>{{ item.mod_name }}</strong></div>
-                <div class="identity-row"><span>Author</span><strong>{{ item.mod_author }}</strong></div>
+                <div class="identity-row">
+                    <span>Display Name</span>
+                    <strong>{{ item.display_name }}</strong>
+                </div>
+
+                <div class="identity-row">
+                    <span>Classname</span>
+
+                    <div class="copy-box">
+                        <strong id="classname">{{ item.classname }}</strong>
+
+                        <button class="copy-btn" type="button" onclick="copyClassname()">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="identity-row">
+                    <span>Category</span>
+                    <strong>{{ item.category }}</strong>
+                </div>
+
+                <div class="identity-row">
+                    <span>Subcategory</span>
+                    <strong>{{ item.subcategory }}</strong>
+                </div>
+
+                <div class="identity-row">
+                    <span>Source</span>
+                    <strong>{{ item.mod_name }}</strong>
+                </div>
+
+                <div class="identity-row">
+                    <span>Author</span>
+                    <strong>{{ item.mod_author }}</strong>
+                </div>
             </div>
+
+            <div class="info-panel">
+                <h2>Relationships</h2>
+                <p>No known relationships yet.</p>
+            </div>
+
         </div>
 
     </div>
 
 </div>
+
+<script>
+function copyClassname() {
+    const text = document.getElementById("classname").innerText;
+    navigator.clipboard.writeText(text);
+}
+</script>
 
 {% endblock %}
