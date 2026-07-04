@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category }} Items{% endblock %}
+
+{% block content %}
+
+<div class="app-shell">
+
+    <section class="dashboard-panel">
+
+        <h2>
+            <i class="fa-solid fa-folder"></i>
+            {{ category }}
+        </h2>
+
+        <div class="mini-card-grid">
+
+            {% for item in items %}
+                <a class="mini-card" href="/item/{{ item.classname }}">
+                    {{ item.display_name }}
+                    <span>{{ item.classname }}</span>
+                </a>
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

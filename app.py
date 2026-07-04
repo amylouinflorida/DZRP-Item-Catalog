@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 
-from database import get_all_items, get_item_by_classname, search_items, get_dashboard_stats, get_category_counts, get_mod_counts
+from database import get_all_items, get_item_by_classname, search_items, get_dashboard_stats, get_category_counts, get_mod_counts, get_items_by_category
 
 app = Flask(__name__)
 
@@ -51,6 +51,15 @@ def search():
         "search.html",
         query=query,
         results=results
+    )
+@app.route("/category/<category>")
+def category_page(category):
+    items = get_items_by_category(category)
+
+    return render_template(
+        "category.html",
+        category=category,
+        items=items
     )
 
 

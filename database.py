@@ -222,6 +222,23 @@ def get_dashboard_stats():
         "tags": tag_count,
         "relationships": relationship_count
     }
+def get_items_by_category(category):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.*, mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE COALESCE(NULLIF(items.category, ''), 'Uncategorized') = ?
+        ORDER BY items.display_name
+    """, (category,))
+
+    items = cursor.fetchall()
+    conn.close()
+
+    return items
 
 
 if __name__ == "__main__":
@@ -293,5 +310,7 @@ if __name__ == "__main__":
         mod_id=1,
         image="HuntingKnife.png"
     )
+
+
 
     print("✅ Starter data added successfully.")
