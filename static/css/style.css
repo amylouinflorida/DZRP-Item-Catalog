@@ -616,3 +616,49 @@ body {
         display: none;
     }
 }
+.item-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.favorite-btn{
+
+    width:54px;
+    height:54px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(201,162,77,.28);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(32,32,32,.95),
+            rgba(18,18,18,.98)
+        );
+
+    color:#d8b66a;
+
+    cursor:pointer;
+
+    transition:.18s ease;
+}
+
+.favorite-btn:hover{
+
+    transform:translateY(-2px);
+
+    border-color:#c9a24d;
+
+    box-shadow:0 0 20px rgba(201,162,77,.15);
+
+    color:#ffe08a;
+}
+
+.favorite-btn i{
+
+    font-size:22px;
+
+}

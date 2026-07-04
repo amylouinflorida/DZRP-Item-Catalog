@@ -30,7 +30,15 @@
 
         <div class="item-info-panel">
 
-            <h1>{{ item.display_name }}</h1>
+            <div class="item-title-row">
+
+    <h1>{{ item.display_name }}</h1>
+
+    <button class="favorite-btn" type="button">
+        <i class="fa-regular fa-star"></i>
+    </button>
+
+</div>
 
             <div class="item-chips">
                 <span class="chip"><i class="fa-solid fa-box"></i>{{ item.category }}</span>
