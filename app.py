@@ -75,7 +75,7 @@ def mod_page(mod_name):
     items = get_items_by_mod(mod_name)
 
     return render_template(
-        "mod.html",
+        "mods.html",
         mod_name=mod_name,
         items=items
     )

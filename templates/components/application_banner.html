@@ -1,0 +1,44 @@
+<section class="application-banner">
+
+    <a class="banner-brand" href="/">
+        <img
+            src="{{ url_for('static', filename='images/logo/dayzrp-logo.png') }}"
+            alt="DayZRP Item Catalog">
+
+        <div>
+            <h1>{{ banner_title }}</h1>
+            <p>{{ banner_subtitle }}</p>
+        </div>
+    </a>
+
+    <div class="banner-side-panel">
+
+        <div class="banner-mini-section">
+            <h3>
+                <i class="fa-solid fa-star"></i>
+                Favorites
+            </h3>
+
+            <a href="/item/Rag">Rag</a>
+            <a href="#">Duct Tape</a>
+            <a href="#">Plate Carrier</a>
+        </div>
+
+        <div class="banner-mini-section">
+            <h3>
+                <i class="fa-solid fa-fire"></i>
+                {{ banner_context_title }}
+            </h3>
+
+            {% if banner_context_items %}
+                {% for item in banner_context_items %}
+                    <a href="/item/{{ item.classname }}">{{ item.display_name }}</a>
+                {% endfor %}
+            {% else %}
+                <span class="muted">No data yet</span>
+            {% endif %}
+        </div>
+
+    </div>
+
+</section>

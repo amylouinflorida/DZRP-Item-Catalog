@@ -3,6 +3,13 @@
 {% block title %}{{ category }} Items{% endblock %}
 
 {% block content %}
+{% set banner_title = category %}
+{% set banner_subtitle = "DayZRP category reference" %}
+{% set banner_context_title = "Popular " ~ category %}
+{% set banner_context_items = items[:3] %}
+
+
+{% include "components/application_banner.html" %}
       {% include "components/page_header.html" %}
 
     <!-- PAGE CONTENT GOES HERE -->
