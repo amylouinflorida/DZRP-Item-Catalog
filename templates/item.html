@@ -87,6 +87,13 @@ function copyClassname() {
     const text = document.getElementById("classname").innerText;
     navigator.clipboard.writeText(text);
 }
+
+document.querySelectorAll(".item-detail-image").forEach(img => {
+    img.onerror = function () {
+        this.onerror = null;
+        this.src = this.dataset.placeholder;
+    };
+});
 </script>
 
 {% endblock %}
