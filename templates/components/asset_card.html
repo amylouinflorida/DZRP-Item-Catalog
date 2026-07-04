@@ -7,9 +7,12 @@
                 alt="{{ item.display_name }}"
                 class="asset-image">
         {% else %}
-            <div class="asset-image-placeholder">
-                <i class="fa-solid fa-cube"></i>
-            </div>
+            <div class="asset-image">
+    <img
+    src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
+    alt="{{ item.display_name }}"
+    onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
+</div>
         {% endif %}
     </div>
 
