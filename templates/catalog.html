@@ -3,61 +3,27 @@
 {% block title %}Item Catalog - DayZRP{% endblock %}
 
 {% block content %}
-  {% include "components/main_navigation.html" %}
 
+        {% set title = "Item Catalog" %}
+    {% set subtitle = items|length ~ " Assets" %}
+    {% set icon = "fa-solid fa-box-open" %}
     {% include "components/page_header.html" %}
 
-    <!-- PAGE CONTENT GOES HERE -->
-    <!-- asset cards, lists, etc -->
+    <form class="search-row" action="/search" method="get">
+        <input
+            type="text"
+            name="q"
+            placeholder="Search items, classnames, mods, or tags...">
 
-<div class="app-shell">
+        <button type="submit">Search</button>
+    </form>
 
-    <a class="back-link" href="/">← Back to Home</a>
+    <div class="asset-card-grid">
 
-    <section class="dashboard-section">
-        <h2 class="section-title">Item Catalog</h2>
+        {% for item in items %}
+            {% include "components/asset_card.html" %}
+        {% endfor %}
 
-        <form class="search-row" action="/search" method="get">
-            <input
-                type="text"
-                name="q"
-                placeholder="Search items, classnames, mods, or tags...">
-
-            <button type="submit">Search</button>
-        </form>
-
-        <div class="search-results">
-
-            {% for item in items %}
-
-                <a class="result-card" href="/item/{{ item.classname }}">
-                    <div class="result-icon">
-                        <i class="fa-solid fa-box-open"></i>
-                    </div>
-
-                    <div class="result-info">
-                        <h3>{{ item.display_name }}</h3>
-
-                        <p>{{ item.description }}</p>
-
-                        <div class="result-meta">
-                            <span>Classname: {{ item.classname }}</span>
-                            <span>Category: {{ item.category }}</span>
-                            <span>Source: {{ item.mod_name }}</span>
-                        </div>
-                    </div>
-
-                    <div class="result-arrow">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </a>
-
-            {% endfor %}
-
-        </div>
-
-    </section>
-
-</div>
+    </div>
 
 {% endblock %}
