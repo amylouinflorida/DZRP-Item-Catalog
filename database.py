@@ -52,6 +52,14 @@ def initialize_database():
             FOREIGN KEY (tag_id) REFERENCES tags(id)
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS favorites (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            item_id INTEGER UNIQUE NOT NULL,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (item_id) REFERENCES items(id)
+        )
+    """)
 
     conn.commit()
     conn.close()
@@ -265,6 +273,63 @@ def get_items_by_mod(mod_name):
     conn.close()
 
     return items
+def get_favorites():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.*, mods.name AS mod_name
+        FROM favorites
+        JOIN items ON favorites.item_id = items.id
+        LEFT JOIN mods ON items.mod_id = mods.id
+        ORDER BY favorites.created_at DESC
+    """)
+
+    favorites = cursor.fetchall()
+    conn.close()
+    return favorites
+
+
+def is_favorite(classname):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT favorites.id
+        FROM favorites
+        JOIN items ON favorites.item_id = items.id
+        WHERE items.classname = ?
+    """, (classname,))
+
+    result = cursor.fetchone()
+    conn.close()
+    return result is not None
+
+
+def toggle_favorite(classname):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
+    item = cursor.fetchone()
+
+    if not item:
+        conn.close()
+        return
+
+    item_id = item[0]
+
+    cursor.execute("SELECT id FROM favorites WHERE item_id = ?", (item_id,))
+    favorite = cursor.fetchone()
+
+    if favorite:
+        cursor.execute("DELETE FROM favorites WHERE item_id = ?", (item_id,))
+    else:
+        cursor.execute("INSERT INTO favorites (item_id) VALUES (?)", (item_id,))
+
+    conn.commit()
+    conn.close()
 
 if __name__ == "__main__":
     initialize_database()

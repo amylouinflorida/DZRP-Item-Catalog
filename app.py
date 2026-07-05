@@ -8,7 +8,10 @@ from database import (
     get_category_counts,
     get_mod_counts,
     get_items_by_category,
-    get_items_by_mod
+    get_items_by_mod,
+    get_favorites,
+    is_favorite,
+    toggle_favorite
 )
 from category_styles import get_category_style
 
@@ -40,14 +43,16 @@ def catalog():
     active_page="catalog"
 )
 
-
 @app.route("/item/<classname>")
 def item_detail(classname):
     item = get_item_by_classname(classname)
+    favorite = is_favorite(classname)
 
     return render_template(
         "item.html",
-        item=item
+        item=item,
+        favorite=favorite,
+        active_page="catalog"
     )
 
 @app.route("/search")
@@ -109,6 +114,10 @@ def management():
         "management.html",
         active_page="management"
     )
+@app.route("/favorite/<classname>", methods=["POST"])
+def favorite_item(classname):
+    toggle_favorite(classname)
+    return redirect(request.referrer or "/catalog")
 
 
 if __name__ == "__main__":
