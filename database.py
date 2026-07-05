@@ -64,7 +64,7 @@ def initialize_database():
     """)
 
     try:
-        cursor.execute("ALTER TABLE favorites ADD COLUMN use_count INTEGER DEFAULT 0")
+        cursor.execute("ALTER TABLE favorites ADD COLUMN last_used TEXT")
     except sqlite3.OperationalError:
         pass
 
@@ -289,7 +289,9 @@ def get_favorites():
         FROM favorites
         JOIN items ON favorites.item_id = items.id
         LEFT JOIN mods ON items.mod_id = mods.id
-        ORDER BY favorites.created_at DESC
+        ORDER BY CASE WHEN favorites.last_used IS NULL THEN 1 ELSE 0 END,
+        favorites.last_used DESC,
+        favorites.created_at DESC
     """)
 
     favorites = cursor.fetchall()
@@ -312,6 +314,20 @@ def is_favorite(classname):
     conn.close()
     return result is not None
 
+def mark_favorite_used(classname):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE favorites
+        SET last_used = CURRENT_TIMESTAMP
+        WHERE item_id = (
+            SELECT id FROM items WHERE classname = ?
+        )
+    """, (classname,))
+
+    conn.commit()
+    conn.close()
 
 def toggle_favorite(classname):
     conn = sqlite3.connect(DB_PATH)

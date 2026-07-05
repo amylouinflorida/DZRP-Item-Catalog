@@ -65,11 +65,11 @@
 
         <div class="pinned-icon-grid">
 
-            {% for item in favorites[:6] %}
+            {% for item in favorites[:10] %}
 
                 <a
                     class="pinned-icon"
-                    href="/item/{{ item.classname }}"
+                    href="/pin-open/{{ item.classname }}"
                     title="{{ item.display_name }}&#10;{{ item.classname }}">
 
                     <img

@@ -16,7 +16,8 @@ from database import (
     get_items_by_mod,
     get_favorites,
     is_favorite,
-    toggle_favorite
+    toggle_favorite,
+    mark_favorite_used
 )
 from category_styles import get_category_style
 
@@ -135,5 +136,10 @@ def pins():
         favorites=favorites,
         active_page="dashboard"
     )
+@app.route("/pin-open/<classname>")
+def pin_open(classname):
+    mark_favorite_used(classname)
+    return redirect(f"/item/{classname}")
+
 if __name__ == "__main__":
     app.run(debug=True)
