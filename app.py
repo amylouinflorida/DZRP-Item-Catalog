@@ -83,19 +83,18 @@ def mod_page(mod_name):
     return render_template(
         "mod.html",
         mod_name=mod_name,
-        items=items
+        items=items,
+        active_page="mods"
     )
 @app.route("/mods")
 def mods():
     mods = get_mod_counts()
 
     return render_template(
-        "mod.html",
+        "mods.html",
         mods=mods,
         active_page="mods"
     )
-
-
 @app.route("/relationships")
 def relationships():
     return render_template(
