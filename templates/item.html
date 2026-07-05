@@ -40,14 +40,17 @@
                     <h1>{{ item.display_name }}</h1>
 
                  <form action="/favorite/{{ item.classname }}" method="post">
-                <button class="favorite-btn {% if favorite %}favorited{% endif %}" type="submit">
-                 {% if favorite %}
-               <i class="fa-solid fa-thumbtack"></i>
-               {% else %}
-                 <i class="fa-solid fa-thumbtack"></i>
-               {% endif %}
-           </button>
-        </form>
+
+                <button
+                    class="favorite-btn {% if favorite %}favorited{% endif %}"
+                    type="submit"
+                    title="{% if favorite %}Unpin Item{% else %}Pin Item{% endif %}">
+
+                    <i class="fa-solid fa-thumbtack"></i>
+
+                </button>
+
+            </form>
                 </div>
 
                 <p class="asset-classname">{{ item.classname }}</p>
