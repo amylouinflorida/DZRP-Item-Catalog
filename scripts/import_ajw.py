@@ -212,6 +212,8 @@ def import_types_file(conn, path):
 
     for type_node in root.findall("type"):
         classname = type_node.attrib["name"]
+        print("FOUND:", classname)
+        classname = type_node.attrib["name"]
         item_id = get_or_create_item(conn, classname)
 
         def text_int(tag, default=None):
@@ -360,9 +362,17 @@ def main():
 
     for path in TYPES_FILES:
         path_obj = Path(path)
-        if path_obj.exists():
-            print(f"Importing types: {path_obj}")
-            import_types_file(conn, path_obj)
+
+    print("--------------------------------")
+    print("Checking:", path_obj)
+    print("Full Path:", path_obj.resolve())
+    print("Exists:", path_obj.exists())
+
+    if path_obj.exists():
+        print(f"Importing types: {path_obj}")
+        import_types_file(conn, path_obj)
+    else:
+        print("File not found!")
 
     if CONFIG_DIR.exists():
         for config_path in CONFIG_DIR.rglob("*.cpp"):
