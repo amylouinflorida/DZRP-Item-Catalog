@@ -12,9 +12,49 @@ MOD_WEBSITE = "https://steamcommunity.com/sharedfiles/filedetails/?id=3571685323
 MOD_DESCRIPTION = "AJW Weapons imported from DayZRP server economy files."
 
 TYPE_FILES = [
-    Path("data/imports/ajw/types.xml"),
-    Path("data/imports/ajw/types/AJ_Weapon_types.xml"),
+    Path("data/imports/ajw/types/types.xml")
 ]
+
+def classify_category(classname):
+    if classname.startswith("AJW_"):
+        return "Weapons"
+    return "Uncategorized"
+
+
+def classify_subcategory(classname):
+    if classname.startswith("AJW_Mag_") or "_Mag_" in classname:
+        return "Magazine"
+    if classname.startswith("AJW_AmmoBox_"):
+        return "Ammo Box"
+    if classname.startswith("AJW_Ammo_"):
+        return "Ammo"
+    if classname.startswith("AJW_Optic_"):
+        return "Attachment"
+    if classname.startswith("AJW_Magnifier_"):
+        return "Attachment"
+    if "Suppressor" in classname:
+        return "Attachment"
+    if "_HG" in classname or "Hndgrd" in classname:
+        return "Attachment"
+    if "_PG_" in classname or "_PGrip" in classname:
+        return "Attachment"
+    if "_FG_" in classname:
+        return "Attachment"
+    if classname.startswith("AJW_BS_") or "Bttstck" in classname or "_Stock_" in classname:
+        return "Attachment"
+    if "_CH_" in classname:
+        return "Attachment"
+    if "_DC" in classname:
+        return "Attachment"
+    if "_MD_" in classname or "MuzzleBreak" in classname or "Comp" in classname:
+        return "Attachment"
+    if "Bipod" in classname:
+        return "Attachment"
+    if "Laser" in classname or "PEQ" in classname or "DBAL" in classname or "NGAL" in classname or "MAWL" in classname:
+        return "Attachment"
+    if "Gunlight" in classname or "Flashlight" in classname:
+        return "Attachment"
+    return "Weapon"
 
 
 def classify_item(classname):
@@ -158,7 +198,9 @@ def get_or_create_item(conn, classname, mod_id):
     cur.execute("SELECT id FROM items WHERE classname = ?", (classname,))
     row = cur.fetchone()
 
-    item_type = classify_item(classname)
+    item_type = classify_item(classname)              # detailed: Optic, Handguard, Ammo
+    category = classify_category(classname)           # broad: Weapons
+    subcategory = classify_subcategory(classname)     # middle: Weapon, Attachment, Ammo, Magazine
     display_name = clean_display_name(classname)
 
     if row:
@@ -168,13 +210,15 @@ def get_or_create_item(conn, classname, mod_id):
             UPDATE items
             SET item_type = ?,
                 display_name = COALESCE(NULLIF(display_name, ''), ?),
-                category = COALESCE(NULLIF(category, ''), ?),
+                category = ?,
+                subcategory = ?,
                 mod_id = COALESCE(mod_id, ?)
             WHERE id = ?
         """, (
             item_type,
             display_name,
-            item_type,
+            category,
+            subcategory,
             mod_id,
             item_id,
         ))
@@ -182,12 +226,13 @@ def get_or_create_item(conn, classname, mod_id):
         return item_id
 
     cur.execute("""
-        INSERT INTO items (classname, display_name, category, item_type, mod_id)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO items (classname, display_name, category, subcategory, item_type, mod_id)
+        VALUES (?, ?, ?, ?, ?, ?)
     """, (
         classname,
         display_name,
-        item_type,
+        category,
+        subcategory,
         item_type,
         mod_id,
     ))
