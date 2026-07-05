@@ -55,34 +55,49 @@
             </div>
 
             <div class="favorites-panel">
-        <h3>Pins</h3>
 
-        {% if favorites %}
+    <h3>
+        <i class="fa-solid fa-thumbtack"></i>
+        Pins
+    </h3>
 
-        <ul class="favorite-list">
+    {% if favorites %}
 
-        {% for item in favorites %}
+        <div class="pinned-mini-list">
 
-        <li>
-        <a href="/item/{{ item.classname }}">
-            {{ item.display_name }}
-        </a>
-        </li>
+            {% for item in favorites[:5] %}
 
-        {% endfor %}
+                <a class="pinned-mini-card" href="/item/{{ item.classname }}">
 
-        </ul>
+            <img
+                src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
+                alt="{{ item.display_name }}"
+                onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
 
-        {% else %}
-
-        <p class="muted-text">
-         No pins yet.
-        </p>
-
-            {% endif %}
+            <div class="pinned-mini-info">
+                <strong>{{ item.display_name }}</strong>
+                <span>{{ item.classname }}</span>
             </div>
 
+        </a>
+
+            {% endfor %}
+
         </div>
+
+        <a class="view-all-pins" href="/pins">
+            View all pins →
+        </a>
+
+    {% else %}
+
+        <p class="muted-text">
+            No pins yet.
+        </p>
+
+    {% endif %}
+
+</div>
 
     </section>
 

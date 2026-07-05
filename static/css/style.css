@@ -1663,3 +1663,60 @@ body {
     border-color: rgba(231, 196, 106, 0.6);
     background: rgba(231, 196, 106, 0.12);
 }
+.pinned-mini-list {
+    display: grid;
+    gap: 8px;
+}
+
+.pinned-mini-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pinned-mini-card {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+    border: 1px solid rgba(231,196,106,.15);
+    background: rgba(255,255,255,.04);
+
+    text-decoration: none;
+    color: white;
+}
+
+.pinned-mini-card:hover {
+    border-color: rgba(231,196,106,.45);
+}
+
+.pinned-mini-card img {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    object-fit: contain;
+}
+
+.pinned-mini-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pinned-mini-info strong {
+    font-size: 15px;
+    line-height: 1.2;
+    color: #fff;
+}
+
+.pinned-mini-info span {
+    margin-top: 3px;
+    font-size: 12px;
+    color: #9da3ad;
+}
