@@ -52,19 +52,25 @@ def initialize_database():
             FOREIGN KEY (tag_id) REFERENCES tags(id)
         )
     """)
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS favorites (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             item_id INTEGER UNIQUE NOT NULL,
+            use_count INTEGER DEFAULT 0,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (item_id) REFERENCES items(id)
         )
     """)
 
+    try:
+        cursor.execute("ALTER TABLE favorites ADD COLUMN use_count INTEGER DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass
+
     conn.commit()
     conn.close()
-
-
+   
 def add_mod(name, author=None, type=None, logo=None, website=None, description=None):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()

@@ -54,7 +54,7 @@
 
             </div>
 
-            <div class="favorites-panel">
+           <div class="favorites-panel">
 
     <h3>
         <i class="fa-solid fa-thumbtack"></i>
@@ -63,31 +63,25 @@
 
     {% if favorites %}
 
-        <div class="pinned-mini-list">
+        <div class="pinned-icon-grid">
 
-            {% for item in favorites[:5] %}
+            {% for item in favorites[:6] %}
 
-                <a class="pinned-mini-card" href="/item/{{ item.classname }}">
+                <a
+                    class="pinned-icon"
+                    href="/item/{{ item.classname }}"
+                    title="{{ item.display_name }}&#10;{{ item.classname }}">
 
-            <img
-                src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
-                alt="{{ item.display_name }}"
-                onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
+                    <img
+                        src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
+                        alt="{{ item.display_name }}"
+                        onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
 
-            <div class="pinned-mini-info">
-                <strong>{{ item.display_name }}</strong>
-                <span>{{ item.classname }}</span>
-            </div>
-
-        </a>
+                </a>
 
             {% endfor %}
 
         </div>
-
-        <a class="view-all-pins" href="/pins">
-            View all pins →
-        </a>
 
     {% else %}
 

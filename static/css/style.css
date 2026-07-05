@@ -1121,7 +1121,7 @@ body {
 
 }
 
-.favorites-panel a{
+.favorites-panel a:not(.pinned-mini-card) {
 
     display:block;
 
@@ -1135,7 +1135,7 @@ body {
 
 }
 
-.favorites-panel a:hover{
+.favorites-panel a:not(.pinned-mini-card):hover {
 
     color:#d8b66a;
 
@@ -1663,43 +1663,37 @@ body {
     border-color: rgba(231, 196, 106, 0.6);
     background: rgba(231, 196, 106, 0.12);
 }
-.pinned-mini-list {
-    display: grid;
-    gap: 8px;
-}
 
 .pinned-mini-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
 }
 
 .pinned-mini-card {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    gap: 10px;
 
-    gap: 14px;
+    width: fit-content;
+    max-width: 260px;
 
-    padding: 10px 12px;
+    color: #f2eee8;
 
-    border-radius: 10px;
-    border: 1px solid rgba(231,196,106,.15);
-    background: rgba(255,255,255,.04);
-
-    text-decoration: none;
-    color: white;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
 }
-
+.pinned-mini-card:visited {
+    color: #f2eee8;
+}
 .pinned-mini-card:hover {
-    border-color: rgba(231,196,106,.45);
+    color: #ffffff;
 }
 
 .pinned-mini-card img {
-    width: 48px;
-    height: 48px;
-
-    flex: 0 0 48px;
-
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
     object-fit: contain;
 }
 
@@ -1710,13 +1704,50 @@ body {
 }
 
 .pinned-mini-info strong {
-    font-size: 15px;
-    line-height: 1.2;
-    color: #fff;
+    font-size: 13px;
+    line-height: 1.1;
 }
 
 .pinned-mini-info span {
-    margin-top: 3px;
-    font-size: 12px;
-    color: #9da3ad;
+    font-size: 10px;
+    margin-top: 1px;
+}
+.pinned-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 72px);
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.pinned-icon {
+    width: 72px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(231,196,106,.15);
+
+    transition: .18s ease;
+    text-decoration: none;
+}
+
+.pinned-icon:hover {
+    transform: translateY(-2px) scale(1.05);
+    border-color: rgba(231,196,106,.5);
+    background: rgba(231,196,106,.08);
+}
+
+.pinned-icon img {
+    display: block;
+    margin: auto;
+
+    width: 44px;
+    height: 44px;
+
+    object-fit: contain;
 }
