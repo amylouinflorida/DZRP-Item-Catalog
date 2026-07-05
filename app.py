@@ -107,18 +107,20 @@ def search():
 from collections import defaultdict
 
 @app.route("/category/<category>")
-def category(category):
+def category_page(category):
     items = get_items_by_category(category)
 
     grouped_items = defaultdict(list)
-
     for item in items:
         subcategory = item["subcategory"] or "Other"
         grouped_items[subcategory].append(item)
 
+    category_style = get_category_style(category)
+
     return render_template(
         "category.html",
         category=category,
+        category_style=category_style,
         grouped_items=grouped_items,
         active_page="catalog"
     )
