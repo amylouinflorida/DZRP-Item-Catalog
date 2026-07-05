@@ -3,11 +3,15 @@
 {% block title %}Item Catalog - DayZRP{% endblock %}
 
 {% block content %}
+  {% set banner_title = category %}
+{% set banner_subtitle = category_style.subtitle %}
+{% set banner_icon = category_style.icon %}
+{% set banner_class = category_style.class %}
+{% set banner_context_title = "Popular " ~ category %}
+{% set banner_context_items = items[:2] %}
+{% include "components/application_banner.html" %}
 
-        {% set title = "Item Catalog" %}
-    {% set subtitle = items|length ~ " Assets" %}
-    {% set icon = "fa-solid fa-box-open" %}
-    {% include "components/page_header.html" %}
+  
 
     <form class="search-row" action="/search" method="get">
         <input
