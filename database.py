@@ -138,16 +138,8 @@ def search_items(query):
         WHERE
             items.display_name LIKE ?
             OR items.classname LIKE ?
-            OR items.description LIKE ?
-            OR items.category LIKE ?
-            OR items.subcategory LIKE ?
-            OR mods.name LIKE ?
         ORDER BY items.display_name
     """, (
-        search_term,
-        search_term,
-        search_term,
-        search_term,
         search_term,
         search_term
     ))

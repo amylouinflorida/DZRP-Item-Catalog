@@ -31,11 +31,13 @@
 
     {% if results %}
 
-        <div class="asset-card-grid">
-            {% for item in results %}
-                {% include "components/asset_card.html" %}
-            {% endfor %}
-        </div>
+     <div class="results-container">
+    <div class="asset-card-grid">
+        {% for item in results %}
+            {% include "components/asset_card.html" %}
+        {% endfor %}
+    </div>
+</div>
 
     {% else %}
 
