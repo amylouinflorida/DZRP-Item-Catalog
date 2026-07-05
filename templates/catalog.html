@@ -3,11 +3,11 @@
 {% block title %}Item Catalog - DayZRP{% endblock %}
 
 {% block content %}
-  {% set banner_title = category %}
-{% set banner_subtitle = category_style.subtitle %}
-{% set banner_icon = category_style.icon %}
-{% set banner_class = category_style.class %}
-{% set banner_context_title = "Popular " ~ category %}
+{% set banner_title = "Item Catalog" %}
+{% set banner_subtitle = "Browse every cataloged DayZRP asset." %}
+{% set banner_icon = "fa-solid fa-box-open" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Top Catalog Items" %}
 {% set banner_context_items = items[:2] %}
 {% include "components/application_banner.html" %}
 
@@ -17,7 +17,7 @@
         <input
             type="text"
             name="q"
-            placeholder="Search items, classnames, mods, or tags...">
+            placeholder="Search by item name, classname, or tag..."
 
         <button type="submit">Search</button>
     </form>

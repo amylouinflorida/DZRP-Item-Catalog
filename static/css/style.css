@@ -1290,14 +1290,12 @@ body {
 }
 .asset-card-grid {
     display: grid;
-
-    grid-template-columns: repeat(auto-fill, 280px);
-
+    grid-template-columns: repeat(auto-fit, 280px);
     justify-content: center;
-
     gap: 24px;
-
-    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto 0;
 }
 
 .asset-card {
