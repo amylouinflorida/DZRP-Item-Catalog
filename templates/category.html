@@ -42,6 +42,17 @@
     {% endfor %}
 
 </div>
+{% for subcategory, items in grouped_items.items() %}
+    <section class="subcategory-section">
+        <h2>{{ subcategory }}</h2>
+
+        <div class="item-grid">
+            {% for item in items %}
+                {% include "components/item_card.html" %}
+            {% endfor %}
+        </div>
+    </section>
+{% endfor %}
     
 
 </div>

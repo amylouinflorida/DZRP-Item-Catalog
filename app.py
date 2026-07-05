@@ -60,6 +60,9 @@ def catalog():
 @app.route("/item/<classname>")
 def item_detail(classname):
     item = get_item_by_classname(classname)
+    favorite = is_favorite(classname)
+    notes = get_notes_for_item(classname)
+    tags = get_tags_for_item(classname)
 
     if not item: abort(404)
 
@@ -68,7 +71,7 @@ def item_detail(classname):
 
     # ---------- DayZRP Presentation Layer ----------
 
-    item["spawn_status"] = get_spawn_status(item.get("nominal"))
+    # item["spawn_status"] = get_spawn_status(item.get("nominal"))
 
     # Future
     # item["em_policy"] = get_spawn_policy(item)
@@ -83,6 +86,7 @@ def item_detail(classname):
         item=item,
         favorite=favorite,
         notes=notes,
+        tags=tags,
         active_page="catalog"
     )
 
@@ -100,18 +104,25 @@ def search():
         query=query,
         results=results
     )
+from collections import defaultdict
+
 @app.route("/category/<category>")
-def category_page(category):
+def category(category):
     items = get_items_by_category(category)
-    category_style = get_category_style(category)
+
+    grouped_items = defaultdict(list)
+
+    for item in items:
+        subcategory = item["subcategory"] or "Other"
+        grouped_items[subcategory].append(item)
 
     return render_template(
-    "category.html",
-    category=category,
-    items=items,
-    category_style=category_style,
-    active_page="catalog"
-)
+        "category.html",
+        category=category,
+        grouped_items=grouped_items,
+        active_page="catalog"
+    )
+
 @app.route("/mod/<mod_name>")
 def mod_page(mod_name):
     items = get_items_by_mod(mod_name)
