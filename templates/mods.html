@@ -1,30 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Mods - DayZRP{% endblock %}
+{% block title %}Mods - DayZRP Item Catalog{% endblock %}
 
 {% block content %}
 
     {% set banner_title = "Mods" %}
-    {% set banner_subtitle = "Browse every supported mod and content source." %}
+    {% set banner_subtitle = "Browse cataloged mods and the assets they contribute." %}
     {% set banner_icon = "fa-solid fa-puzzle-piece" %}
     {% set banner_class = "category-default" %}
     {% set banner_context_title = "Popular Mods" %}
     {% set banner_context_items = [] %}
-
     {% include "components/application_banner.html" %}
 
-    <div class="coming-soon">
+    <div class="mod-card-grid">
 
-        <i class="fa-solid fa-person-digging"></i>
+        {% for mod in mods %}
+            <a class="mod-card" href="/mod/{{ mod.name }}">
+                <div class="mod-card-icon">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                </div>
 
-        <h2>Under Construction</h2>
+                <h3>{{ mod.name }}</h3>
 
-        <p>
-            The Mods section is currently being built.
-            Soon you'll be able to browse every supported mod,
-            view authors, documentation, dependencies, and every
-            item contributed by each mod.
-        </p>
+                <p>
+                    {{ mod.item_count }} asset{% if mod.item_count != 1 %}s{% endif %}
+                </p>
+
+                <span class="mod-card-footer">
+                    View Mod
+                    <i class="fa-solid fa-arrow-right"></i>
+                </span>
+            </a>
+        {% endfor %}
 
     </div>
 

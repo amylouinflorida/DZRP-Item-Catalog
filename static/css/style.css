@@ -1578,3 +1578,71 @@ body {
     justify-content: center;
     width: 100%;
 }
+.mod-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 260px);
+    justify-content: center;
+    gap: 22px;
+    margin: 26px auto 0;
+    max-width: 1100px;
+}
+
+.mod-card {
+    min-height: 210px;
+    padding: 22px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(180deg, #17191d, #101114);
+    border: 1px solid rgba(231, 196, 106, 0.18);
+    border-radius: 16px;
+
+    color: #ffffff;
+    text-decoration: none;
+
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.mod-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(231, 196, 106, 0.55);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.38);
+}
+
+.mod-card-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+    background: rgba(231, 196, 106, 0.12);
+    color: #e7c46a;
+    font-size: 22px;
+}
+
+.mod-card h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+}
+
+.mod-card p {
+    margin: 0;
+    color: #b8b8b8;
+}
+
+.mod-card-footer {
+    margin-top: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #e7c46a;
+    font-weight: 700;
+    font-size: 13px;
+}

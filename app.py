@@ -87,8 +87,11 @@ def mod_page(mod_name):
     )
 @app.route("/mods")
 def mods():
+    mods = get_mod_counts()
+
     return render_template(
         "mods.html",
+        mods=mods,
         active_page="mods"
     )
 
