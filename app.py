@@ -121,6 +121,7 @@ def category_page(category):
         "category.html",
         category=category,
         category_style=category_style,
+        items=items,
         grouped_items=grouped_items,
         active_page="catalog"
     )
