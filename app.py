@@ -1,4 +1,9 @@
-from flask import Flask, render_template, request
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect
+)
 
 from database import (
     get_all_items,

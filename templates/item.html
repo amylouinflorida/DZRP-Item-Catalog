@@ -19,11 +19,11 @@
             <div class="item-visual-panel">
 
                 <div class="item-image-panel">
-                    <img
-                        class="item-detail-image"
-                        src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
-                        data-placeholder="{{ url_for('static', filename='images/items/no-image.png') }}"
-                        alt="{{ item.display_name }}">
+                   <img
+            class="item-detail-image"
+            src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
+            alt="{{ item.display_name }}"
+            onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
                 </div>
 
                 <div class="item-visual-footer">
@@ -39,9 +39,15 @@
                 <div class="item-title-row">
                     <h1>{{ item.display_name }}</h1>
 
-                    <button class="favorite-btn" type="button">
-                        <i class="fa-regular fa-star"></i>
-                    </button>
+                  <form action="/favorite/{{ item.classname }}" method="post">
+                  <button class="favorite-btn {% if favorite %}favorited{% endif %}" type="submit">
+                {% if favorite %}
+                <i class="fa-solid fa-star"></i>
+                {% else %}
+                <i class="fa-regular fa-star"></i>
+                {% endif %}
+            </button>
+        </form>
                 </div>
 
                 <p class="asset-classname">{{ item.classname }}</p>
@@ -123,12 +129,6 @@ function copyClassname() {
     }, 1500);
 }
 
-document.querySelectorAll(".item-detail-image").forEach(img => {
-    img.onerror = function () {
-        this.onerror = null;
-        this.src = this.dataset.placeholder;
-    };
-});
 </script>
 
 {% endblock %}
