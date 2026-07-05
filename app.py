@@ -81,7 +81,7 @@ def mod_page(mod_name):
     items = get_items_by_mod(mod_name)
 
     return render_template(
-        "mods.html",
+        "mod.html",
         mod_name=mod_name,
         items=items
     )
@@ -90,7 +90,7 @@ def mods():
     mods = get_mod_counts()
 
     return render_template(
-        "mods.html",
+        "mod.html",
         mods=mods,
         active_page="mods"
     )

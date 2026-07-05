@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ mod_name }} - DayZRP Item Catalog{% endblock %}
+
+{% block content %}
+
+    {% set banner_title = mod_name %}
+    {% set banner_subtitle = items|length ~ " cataloged assets from this mod." %}
+    {% set banner_icon = "fa-solid fa-puzzle-piece" %}
+    {% set banner_class = "category-default" %}
+    {% set banner_context_title = "Popular " ~ mod_name %}
+    {% set banner_context_items = [] %}
+    {% include "components/application_banner.html" %}
+
+    <div class="results-container">
+        <div class="asset-card-grid">
+            {% for item in items %}
+                {% include "components/asset_card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
