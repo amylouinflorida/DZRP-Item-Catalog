@@ -2,7 +2,8 @@ from flask import (
     Flask,
     render_template,
     request,
-    redirect
+    redirect,
+    abort
 )
 
 from database import (
@@ -60,8 +61,7 @@ def catalog():
 def item_detail(classname):
     item = get_item_by_classname(classname)
 
-    if not item:
-        abort(404)
+    if not item: abort(404)
 
     favorite = is_favorite(classname)
     notes = get_notes_for_item(classname)
