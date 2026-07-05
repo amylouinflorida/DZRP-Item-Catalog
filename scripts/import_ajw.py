@@ -188,8 +188,27 @@ def get_or_create_item(conn, classname):
 
 
 def import_types_file(conn, path):
-    tree = ET.parse(path)
-    root = tree.getroot()
+    path = Path(path)
+
+    if not path.exists():
+        print(f"Skipping missing types file: {path}")
+        return
+
+    if path.stat().st_size == 0:
+        print(f"Skipping empty types file: {path}")
+        return
+
+    text = path.read_text(encoding="utf-8", errors="ignore").strip()
+
+    if not text.startswith("<"):
+        print(f"Skipping non-XML file: {path}")
+        return
+
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError as e:
+        print(f"Skipping invalid XML file: {path} — {e}")
+        return
 
     for type_node in root.findall("type"):
         classname = type_node.attrib["name"]
@@ -230,7 +249,6 @@ def import_types_file(conn, path):
             )
 
     conn.commit()
-
 
 def extract_array(block, key):
     pattern = rf"{key}\[\]\s*=\s*\{{(.*?)\}};"
