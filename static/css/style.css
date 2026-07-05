@@ -1655,6 +1655,9 @@ body {
     font-weight: 700;
     font-size: 13px;
 }
+.favorite-btn {
+    color: #9da3ad;
+}
 .favorite-btn.favorited {
     color: #e7c46a;
     border-color: rgba(231, 196, 106, 0.6);
