@@ -440,6 +440,58 @@ def add_tag_to_item(classname, tag_name):
 
     conn.commit()
     conn.close()
+def get_tags_for_item(classname):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT tags.*
+        FROM tags
+        JOIN item_tags ON tags.id = item_tags.tag_id
+        JOIN items ON items.id = item_tags.item_id
+        WHERE items.classname = ?
+        ORDER BY tags.name
+    """, (classname,))
+
+    tags = cursor.fetchall()
+    conn.close()
+    return tags
+
+def add_tag_to_item(classname, tag_name):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    tag_name = tag_name.strip().lower()
+
+    if not tag_name:
+        conn.close()
+        return
+
+    cursor.execute(
+        "INSERT OR IGNORE INTO tags(name) VALUES (?)",
+        (tag_name,)
+    )
+
+    cursor.execute(
+        "SELECT id FROM tags WHERE name=?",
+        (tag_name,)
+    )
+    tag_id = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT id FROM items WHERE classname=?",
+        (classname,)
+    )
+    item_id = cursor.fetchone()[0]
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO item_tags(item_id, tag_id)
+        VALUES (?, ?)
+    """, (item_id, tag_id))
+
+    conn.commit()
+    conn.close()
 
 
 def add_note_to_item(classname, note, author="Staff"):

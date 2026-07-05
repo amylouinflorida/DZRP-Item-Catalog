@@ -1833,42 +1833,64 @@ body {
 
 .note-delete-btn:hover {
     color: #d9534f;
+.item-tags-panel {
+    margin-top: 18px;
+    padding: 16px;
+
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(231,196,106,.14);
+    border-radius: 12px;
 }
-.item-tags-panel{
-    margin-top:20px;
 }
 
-.item-tag-list{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin:12px 0;
+.item-tags-panel h3 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    color: #e7c46a;
 }
 
-.item-tags-panel input{
-    width:100%;
-    margin-bottom:8px;
-}
-
-.item-tags-panel button{
-    width:100%;
-}
-.hidden {
-    display: none;
+.item-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .add-tag-toggle {
-    margin-top: 8px;
     background: transparent;
     border: 1px solid rgba(231,196,106,.25);
     color: #e7c46a;
     border-radius: 10px;
     padding: 8px 10px;
     cursor: pointer;
+    width: 100%;
+}
+
+.add-tag-toggle:hover {
+    background: rgba(231,196,106,.08);
+    border-color: rgba(231,196,106,.45);
 }
 
 .add-tag-form {
     margin-top: 10px;
     display: grid;
     gap: 8px;
+}
+
+.add-tag-form input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(231,196,106,.18);
+    background: #101114;
+    color: #f2eee8;
+}
+
+.add-tag-form button {
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: #8f2727;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
 }
