@@ -1751,3 +1751,124 @@ body {
 
     object-fit: contain;
 }
+.staff-note-list {
+    display: grid;
+    gap: 12px;
+}
+
+.staff-note {
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(231,196,106,.14);
+}
+
+.staff-note-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    color: #e7c46a;
+    font-size: 13px;
+}
+
+.staff-note-meta span {
+    color: #9da3ad;
+    font-size: 11px;
+}
+
+.staff-note p {
+    margin: 0;
+    color: #f2eee8;
+    line-height: 1.45;
+}
+
+.staff-note-actions {
+    margin-top: 10px;
+    color: #9da3ad;
+    font-size: 12px;
+}
+
+.staff-note-form {
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+}
+
+.staff-note-form textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(231,196,106,.18);
+    background: #101114;
+    color: #f2eee8;
+}
+
+.staff-note-form button {
+    justify-self: end;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 10px;
+    background: #8f2727;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+.staff-note-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #9da3ad;
+    font-size: 12px;
+}
+
+.note-delete-btn {
+    border: 0;
+    background: transparent;
+    color: #9da3ad;
+    cursor: pointer;
+}
+
+.note-delete-btn:hover {
+    color: #d9534f;
+}
+.item-tags-panel{
+    margin-top:20px;
+}
+
+.item-tag-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:12px 0;
+}
+
+.item-tags-panel input{
+    width:100%;
+    margin-bottom:8px;
+}
+
+.item-tags-panel button{
+    width:100%;
+}
+.hidden {
+    display: none;
+}
+
+.add-tag-toggle {
+    margin-top: 8px;
+    background: transparent;
+    border: 1px solid rgba(231,196,106,.25);
+    color: #e7c46a;
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.add-tag-form {
+    margin-top: 10px;
+    display: grid;
+    gap: 8px;
+}

@@ -17,7 +17,12 @@ from database import (
     get_favorites,
     is_favorite,
     toggle_favorite,
-    mark_favorite_used
+    mark_favorite_used,
+    get_notes_for_item,
+    add_note_to_item,
+    delete_note,
+    get_tags_for_item,
+    add_tag_to_item
 )
 from category_styles import get_category_style
 
@@ -55,11 +60,13 @@ def catalog():
 def item_detail(classname):
     item = get_item_by_classname(classname)
     favorite = is_favorite(classname)
+    notes = get_notes_for_item(classname)
 
     return render_template(
         "item.html",
         item=item,
         favorite=favorite,
+        notes=notes,
         active_page="catalog"
     )
 
@@ -139,6 +146,29 @@ def pins():
 @app.route("/pin-open/<classname>")
 def pin_open(classname):
     mark_favorite_used(classname)
+    return redirect(f"/item/{classname}")
+
+@app.route("/notes/<int:note_id>/delete/<classname>", methods=["POST"])
+def delete_item_note(note_id, classname):
+    delete_note(note_id)
+    return redirect(f"/item/{classname}")
+
+@app.route("/item/<classname>/tags", methods=["POST"])
+def add_item_tag(classname):
+    tag = request.form.get("tag", "").strip()
+
+    if tag:
+        add_tag_to_item(classname, tag)
+
+    return redirect(f"/item/{classname}")
+
+@app.route("/item/<classname>/notes", methods=["POST"])
+def add_item_note(classname):
+    note = request.form.get("note", "").strip()
+
+    if note:
+        add_note_to_item(classname, note)
+
     return redirect(f"/item/{classname}")
 
 if __name__ == "__main__":

@@ -62,6 +62,17 @@ def initialize_database():
             FOREIGN KEY (item_id) REFERENCES items(id)
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS item_notes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            item_id INTEGER NOT NULL,
+            author TEXT DEFAULT 'Staff',
+            note TEXT NOT NULL,
+            helpful_count INTEGER DEFAULT 0,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (item_id) REFERENCES items(id)
+        )
+    """)
 
     try:
         cursor.execute("ALTER TABLE favorites ADD COLUMN last_used TEXT")
@@ -349,6 +360,100 @@ def toggle_favorite(classname):
         cursor.execute("DELETE FROM favorites WHERE item_id = ?", (item_id,))
     else:
         cursor.execute("INSERT INTO favorites (item_id) VALUES (?)", (item_id,))
+
+    conn.commit()
+    conn.close()
+
+def get_notes_for_item(classname):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT item_notes.*
+        FROM item_notes
+        JOIN items ON item_notes.item_id = items.id
+        WHERE items.classname = ?
+        ORDER BY item_notes.helpful_count DESC, item_notes.created_at DESC
+    """, (classname,))
+
+    notes = cursor.fetchall()
+    conn.close()
+    return notes
+
+def delete_note(note_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM item_notes WHERE id = ?", (note_id,))
+
+    conn.commit()
+    conn.close()
+def get_tags_for_item(classname):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT tags.*
+        FROM tags
+        JOIN item_tags ON tags.id = item_tags.tag_id
+        JOIN items ON items.id = item_tags.item_id
+        WHERE items.classname = ?
+        ORDER BY tags.name
+    """, (classname,))
+
+    tags = cursor.fetchall()
+    conn.close()
+    return tags
+def add_tag_to_item(classname, tag_name):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    tag_name = tag_name.strip().lower()
+
+    if not tag_name:
+        conn.close()
+        return
+
+    cursor.execute(
+        "INSERT OR IGNORE INTO tags(name) VALUES (?)",
+        (tag_name,)
+    )
+
+    cursor.execute(
+        "SELECT id FROM tags WHERE name=?",
+        (tag_name,)
+    )
+    tag_id = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT id FROM items WHERE classname=?",
+        (classname,)
+    )
+    item_id = cursor.fetchone()[0]
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO item_tags(item_id, tag_id)
+        VALUES (?, ?)
+    """, (item_id, tag_id))
+
+    conn.commit()
+    conn.close()
+
+
+def add_note_to_item(classname, note, author="Staff"):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
+    item = cursor.fetchone()
+
+    if item:
+        cursor.execute("""
+            INSERT INTO item_notes (item_id, author, note)
+            VALUES (?, ?, ?)
+        """, (item[0], author, note))
 
     conn.commit()
     conn.close()
