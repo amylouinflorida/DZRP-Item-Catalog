@@ -28,14 +28,16 @@ def home():
     stats = get_dashboard_stats()
     categories = get_category_counts()
     mods = get_mod_counts()
+    favorites = get_favorites()
 
     return render_template(
-    "home.html",
-    stats=stats,
-    categories=categories,
-    mods=mods,
-    active_page="dashboard"
-)
+        "home.html",
+        stats=stats,
+        categories=categories,
+        mods=mods,
+        favorites=favorites,
+        active_page="dashboard"
+    )
 
 
 @app.route("/catalog")
@@ -123,6 +125,16 @@ def management():
 def favorite_item(classname):
     toggle_favorite(classname)
     return redirect(request.referrer or "/catalog")
+@app.route("/pins")
+def pins():
+
+    favorites = get_favorites()
+
+    return render_template(
+        "pins.html",
+        favorites=favorites,
+        active_page="dashboard"
+    )
 
 
 if __name__ == "__main__":

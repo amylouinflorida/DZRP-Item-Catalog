@@ -15,9 +15,9 @@ CATEGORY_STYLES = {
         "subtitle": "Firearms, melee weapons, and combat gear."
     },
     "Food": {
-        "icon": "fa-solid fa-drumstick-bite",
-        "class": "category-food",
-        "subtitle": "Food, canned goods, and survival nutrition."
+    "icon": "fa-solid fa-utensils",
+    "class": "category-food",
+    "subtitle": "Food, drinks, cooking supplies and consumables."
     },
     "Tools": {
         "icon": "fa-solid fa-screwdriver-wrench",

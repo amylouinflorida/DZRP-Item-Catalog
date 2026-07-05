@@ -55,18 +55,31 @@
             </div>
 
             <div class="favorites-panel">
+        <h3>Favorites</h3>
 
-                <h3>
-                    <i class="fa-solid fa-star"></i>
-                    Favorites
-                </h3>
+        {% if favorites %}
 
-                <a href="/item/Rag">★ Rag</a>
-                <a href="#">★ Duct Tape</a>
-                <a href="#">★ Plate Carrier</a>
-                <a href="#">★ Battery Charger</a>
-                <a href="#">★ Leather Sewing Kit</a>
+        <ul class="favorite-list">
 
+        {% for item in favorites %}
+
+        <li>
+        <a href="/item/{{ item.classname }}">
+            {{ item.display_name }}
+        </a>
+        </li>
+
+        {% endfor %}
+
+        </ul>
+
+        {% else %}
+
+        <p class="muted-text">
+         No favorites yet.
+        </p>
+
+            {% endif %}
             </div>
 
         </div>
@@ -123,10 +136,10 @@
                     <p>Explore all mods and content packs.</p>
                 </a>
 
-                <a class="quick-card relationships" href="/relationships">
-                    <i class="fa-solid fa-link"></i>
-                    <h3>Relationships</h3>
-                    <p>View compatibility and relationships.</p>
+                <a class="quick-card pins" href="/pins">
+                <i class="fa-solid fa-thumbtack"></i>
+                <h3>Pins</h3>
+                <p>View your pinned items.</p>
                 </a>
 
                 <a class="quick-card tags" href="#">
@@ -173,8 +186,6 @@
 
         <!-- Browse by Category -->
 
-       <!-- Browse by Category -->
-
 <div class="dashboard-panel">
 
     <h2>
@@ -195,7 +206,7 @@
                 {% elif category.category == "Weapons" %}
                     <i class="fa-solid fa-gun"></i>
                 {% elif category.category == "Food" %}
-                    <i class="fa-solid fa-can-food"></i>
+                <i class="fa-solid fa-utensils"></i>
                 {% elif category.category == "Clothing" %}
                     <i class="fa-solid fa-shirt"></i>
                 {% elif category.category == "Tools" %}

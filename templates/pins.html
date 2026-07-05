@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Pinned Items - DayZRP Staff Toolkit{% endblock %}
+
+{% block content %}
+
+    {% set banner_title = "Pinned Items" %}
+    {% set banner_subtitle = "Your personal collection of frequently used staff references." %}
+    {% set banner_icon = "fa-solid fa-thumbtack" %}
+    {% set banner_class = "category-default" %}
+    {% set banner_context_title = "Quick Reference" %}
+    {% set banner_context_items = favorites[:2] %}
+    {% include "components/application_banner.html" %}
+
+    {% if favorites %}
+
+        <div class="results-container">
+            <div class="asset-card-grid">
+
+                {% for item in favorites %}
+                    {% include "components/asset_card.html" %}
+                {% endfor %}
+
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <i class="fa-solid fa-thumbtack"></i>
+
+            <h3>No pinned items yet.</h3>
+
+            <p>
+                Click the star on any item to pin it here for quick access.
+            </p>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
