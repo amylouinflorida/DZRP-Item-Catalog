@@ -212,6 +212,10 @@ def main():
     ensure_columns(conn)
     ensure_support_tables(conn)
 
+    print("\nTYPE FILES BEING CHECKED:")
+    for file in TYPE_FILES:
+        print(file.resolve(), "exists:", file.exists(), "size:", file.stat().st_size if file.exists() else "missing")
+
     total = 0
     for path in TYPE_FILES:
         total += import_type_file(conn, path)

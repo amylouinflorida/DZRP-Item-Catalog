@@ -1,0 +1,1042 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<spawnabletypes>
+    <!-- CDAJ-->
+    <type name="AJW_Beretta92FS_Black">
+        <attachments chance="0.90">
+            <item name="AJW_Mag_Beretta92FS_15Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_HK416_14_Black">
+        <attachments chance="1.00">
+            <item name="AJW_HK_HG_STD_Quad_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_Black" chance="0.50" />
+            <item name="AJW_Bttstock_Crane" chance="0.50" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_HK416_14_FDE">
+        <attachments chance="1.00">
+            <item name="AJW_HK_HG_STD_Quad_FDE" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_FDE" chance="0.50" />
+            <item name="AJW_Bttstock_Crane_FDE" chance="0.50" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_TwoTone" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_HK416_10_Black">
+        <attachments chance="1.00">
+            <item name="AJW_HK_HG_STD_Quad_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_Black" chance="0.50" />
+            <item name="AJW_Bttstock_Crane" chance="0.50" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_HK416_10_FDE">
+        <attachments chance="1.00">
+            <item name="AJW_HK_HG_STD_Quad_FDE" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_FDE" chance="0.50" />
+            <item name="AJW_Bttstock_Crane_FDE" chance="0.50" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_TwoTone" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_HKG28_FDE">
+        <attachments chance="1.00">
+            <item name="AJW_Optic_LRHS_FDE" chance="0.25" />
+            <item name="AJW_Optic_LRHS" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_HKG28_Stock_FDE" chance="0.50" />
+            <item name="AJW_HKG28_Stock_Black" chance="0.50" />
+        </attachments>
+        <attachments chance="0.95">
+            <item name="AJW_Mag_HKG28_20rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_PPSH_Classic">
+        <attachments chance="0.95">
+            <item name="AJW_Mag_PPSH_35rnd" chance="0.70" />
+            <item name="AJW_Mag_PPSH_71rnd" chance="0.30" />
+        </attachments>
+    </type>
+    <type name="AJW_MK14_EBR_SASS_FDE">
+        <attachments chance="1.00">
+            <item name="AJW_Optic_LRHS_FDE" chance="0.25" />
+            <item name="AJW_Optic_LRHS" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_PRS2_FDE" chance="0.50" />
+            <item name="AJW_PRS2_Black" chance="0.50" />
+        </attachments>
+        <attachments chance="0.95">
+            <item name="Mag_M14_10rnd" chance="0.50" />
+            <item name="Mag_M14_20rnd" chance="0.30" />
+        </attachments>
+    </type>
+    <type name="AJW_SCARL_TAN">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SCARL_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SCARH_TAN">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_SCARH_20rnd_FDE" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SCARH_MCT">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_SCARH_20rnd_FDE" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SCARH_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_SCARH_20rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SCARH_White">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.70" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_SCARH_20rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_MK12_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.60" />
+            <item name="AJW_Optic_LRHS" chance="0.10" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="Mag_CMAG_20Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_MK12_FDE">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="ReflexOptic" chance="0.60" />
+            <item name="AJW_Optic_LRHS" chance="0.10" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="Mag_CMAG_20Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SV98">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_Accupower" chance="0.30" />
+            <item name="AJW_Optic_Leupold_M3A" chance="0.30" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Mag_SV98_10Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SVD">
+        <attachments chance="0.30">
+			<item name="KashtanOptic" chance="0.50" />
+			<item name="PSO11Optic" chance="0.30" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Mag_SVD_10Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_SVD_Rattle">
+        <attachments chance="0.30">
+			<item name="KashtanOptic" chance="0.50" />
+			<item name="PSO11Optic" chance="0.30" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Mag_SVD_10Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M1897Trench">
+        <attachments chance="0.20">
+            <item name="AJW_M1897_Bayonet" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_DMK12_Black">
+        <attachments chance="0.70">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_EoTechVudu" chance="0.30" />
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_DMK12_5rnd" chance="0.50" />
+            <item name="AJW_Mag_DMK12_10rnd" chance="0.50" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_BCM_Bttstock_Black" chance="0.50" />
+            <item name="AJW_FAB_GLC_Bttstock_Black" chance="0.50" />
+        </attachments>
+    </type>
+    <type name="AJW_DMK12_FDE">
+        <attachments chance="0.70"> 
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_EoTechVudu" chance="0.30" />
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_DMK12_5rnd" chance="0.50" />
+            <item name="AJW_Mag_DMK12_10rnd" chance="0.50" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_B5_Bttstock_FDE" chance="0.50" />
+            <item name="AJW_DD_Bttstock_FDE" chance="0.50" />
+        </attachments>
+    </type>
+    <type name="AJW_Car15_BD">
+        <attachments chance="0.70"> 
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.30" />
+            <item name="AJW_BD_Car15_Optic" chance="0.30" />
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+        </attachments>
+        <attachments chance="0.70"> 
+            <item name="AJW_Surefire_Gunlight_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="Mag_STANAG_30Rnd" chance="0.85" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_BD_Car15_Bttstck" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M1897Trench">
+        <attachments chance="0.20">
+            <item name="AJW_M1897_Bayonet" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_R700">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_Accupower" chance="0.30" />
+            <item name="AJW_Optic_Leupold_M3A" chance="0.30" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Mag_R700_10Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_ACR_Tan">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.25" />
+            <item name="AJW_Optic_HAMR" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.25" />
+            <item name="AJW_Optic_MicroT2_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="Mag_STANAG_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_ACR_RG">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.25" />
+            <item name="AJW_Optic_HAMR" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.25" />
+            <item name="AJW_Optic_MicroT2_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="Mag_STANAG_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_ACR_Black">
+        <attachments chance="1.00"> 
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.25" />
+            <item name="AJW_Optic_HAMR" chance="0.25" />
+            <item name="AJW_Optic_EoTechVudu" chance="0.25" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.25" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="Mag_STANAG_30Rnd" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_Skele_PGrip" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_AK5C_Green">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_MOE_FG_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Surefire_Gunlight_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="Mag_STANAG_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_AK5C_KHK">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_MOE_FG_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Surefire_Gunlight_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="Mag_STANAG_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_AK5C_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_MOE_FG_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Surefire_Gunlight_Black" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="Mag_STANAG_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_FDE">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_BlockII_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_URX4_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_LVOA_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_URGI_10_Hndgrd_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_Rattle">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_BlockII_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_URX4_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_LVOA_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_URGI_10_Hndgrd_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_AOR2">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_BlockII_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_URX4_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_LVOA_Hndgrd_FDE" chance="0.25" />
+            <item name="AJW_M4_URGI_10_Hndgrd_FDE" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_10">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_RISHndgrd" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="Mag_STANAG_30Rnd" chance="0.80" />
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_10_FDE">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_RISHndgrd" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="Mag_STANAG_30Rnd" chance="0.80" />
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_10_Rattle">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_RISHndgrd" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="Mag_STANAG_30Rnd" chance="0.80" />
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_M4A1_10_AOR2">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_M4_RISHndgrd" chance="1.00" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Bttstock_Crane" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="Mag_STANAG_30Rnd" chance="0.80" />
+            <item name="AJW_Mag_PMAG_30Rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_MCX_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_STD_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LVAW_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LT_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LCH_Hndgrd_Black" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_Stock_STD" chance="0.25" />
+            <item name="AJW_MCX_Stock_Collapsible_Open" chance="0.25" />
+            <item name="AJW_MCX_Stock_Skele" chance="0.25" />
+            <item name="AJW_MCX_Stock_Visor" chance="0.25" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_MCX_Rattlecan">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_STD_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LVAW_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LT_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LCH_Hndgrd_Black" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_Stock_STD" chance="0.25" />
+            <item name="AJW_MCX_Stock_Collapsible_Open" chance="0.25" />
+            <item name="AJW_MCX_Stock_Skele" chance="0.25" />
+            <item name="AJW_MCX_Stock_Visor" chance="0.25" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_MCX_FDE">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_STD_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LVAW_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LT_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LCH_Hndgrd_Black" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_Stock_STD" chance="0.25" />
+            <item name="AJW_MCX_Stock_Collapsible_Open" chance="0.25" />
+            <item name="AJW_MCX_Stock_Skele" chance="0.25" />
+            <item name="AJW_MCX_Stock_Visor" chance="0.25" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_MCX_Grey">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.30" />
+            <item name="AJW_Optic_StrikeFire_FDE" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_FDE" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_STD_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LVAW_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LT_Hndgrd_Black" chance="0.25" />
+            <item name="AJW_MCX_LCH_Hndgrd_Black" chance="0.25" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_MCX_Stock_STD" chance="0.25" />
+            <item name="AJW_MCX_Stock_Collapsible_Open" chance="0.25" />
+            <item name="AJW_MCX_Stock_Skele" chance="0.25" />
+            <item name="AJW_MCX_Stock_Visor" chance="0.25" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Mag_HKGen2PM_30Rnd_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_PKM">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_PKM_200Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_PKM_Worn">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_PKM_200Rnd_Worn" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_PKM_WL_Painted">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_PKM_200Rnd_WLPainted" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_Vityaz_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.33" />
+            <item name="KobraOptic" chance="0.33" />
+            <item name="KashtanOptic" chance="0.33" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_Shark_Wood" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK12_Bttstock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.80" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_AK12_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="AJW_Mag_Vityaz_30Rnd_Black" chance="0.60" />
+            <item name="AJW_Mag_Vityaz_PMAG_30Rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_AK74M_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.33" />
+            <item name="KobraOptic" chance="0.33" />
+            <item name="KashtanOptic" chance="0.33" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_MagpulS_Black" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK12_Bttstock_Black" chance="0.20" />
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_AK12_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AK74_30Rnd" chance="0.70" />
+            <item name="AJW_Mag_545_PMAG_30rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_AKS74U_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.33" />
+            <item name="KobraOptic" chance="0.33" />
+            <item name="KashtanOptic" chance="0.33" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK74U_HNG_STD" chance="0.60" />
+            <item name="AJW_AK74U_HNG_B11" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.40" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_AK12_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK74M_Comp" chance="0.80" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AK74_30Rnd" chance="0.70" />
+            <item name="AJW_Mag_545_PMAG_30rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_AK105_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_MagpulS_Black" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK12_Bttstock_Black" chance="0.20" />
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_AK12_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK74M_Comp" chance="0.80" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AK74_30Rnd" chance="0.70" />
+            <item name="AJW_Mag_545_PMAG_30rnd_Black" chance="0.20" />
+        </attachments>
+    </type>
+    <type name="AJW_AK104_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_MagpulS_Black" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK12_Bttstock_Black" chance="0.20" />
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_AK12_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK74M_Comp" chance="0.80" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AKM_30Rnd" chance="0.60" />
+            <item name="AJW_Mag_762_bklt_30rnd" chance="0.15" />
+            <item name="AJW_Mag_762_PMAG_30rnd_Black" chance="0.15" />
+        </attachments>
+    </type>
+    <type name="AJW_AK103_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_MagpulS_Black" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AK12_Bttstock_Black" chance="0.20" />
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_AK12_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK74M_Comp" chance="0.80" />
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AKM_30Rnd" chance="0.60" />
+            <item name="AJW_Mag_762_bklt_30rnd" chance="0.15" />
+            <item name="AJW_Mag_762_PMAG_30rnd_Black" chance="0.15" />
+        </attachments>
+    </type>
+    <type name="AJW_AK102_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_MagpulS_Black" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_Black" chance="0.20" />
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_MOE_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.10">
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AK101_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_AK101_Black">
+        <attachments chance="0.30">
+            <item name="AJW_Optic_OKP7" chance="0.20" />
+            <item name="KobraOptic" chance="0.20" />
+            <item name="KashtanOptic" chance="0.20" />
+            <item name="KazuarOptic" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AKHNG_AK100" chance="0.60" />
+            <item name="AJW_AKHNG_B10_Plastic" chance="0.20" />
+            <item name="AJW_AKHNG_MagpulS_Black" chance="0.20" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Magpul_MOE_Black" chance="0.20" />
+            <item name="AJW_AK74M_PT1_Stock_Black" chance="0.20" />
+            <item name="AJW_AK74M_Plastic_Stock" chance="0.60" />
+        </attachments>
+        <attachments chance="0.20">
+            <item name="AJW_AK_PG_TD_Black" chance="0.20" />
+            <item name="AJW_AK_PG_MOE_Black" chance="0.80" />
+        </attachments>
+        <attachments chance="0.10">
+        </attachments>
+        <attachments chance="0.70">
+            <item name="Mag_AK101_30Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_CM_TaranTactical_FDE">
+        <attachments chance="1.00">
+            <item name="AJW_Mag_CM_TaranTactical_9Rnd" chance="1.00" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="FNP45_MRDSOptic" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="TLRLight" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_CM_TaranTactical_Black">
+        <attachments chance="1.00">
+            <item name="AJW_Mag_CM_TaranTactical_9Rnd" chance="1.00" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="FNP45_MRDSOptic" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="TLRLight" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_CZP09_OD">
+        <attachments chance="1.00">
+            <item name="AJW_Mag_CZP09_20Rnd" chance="1.00" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="FNP45_MRDSOptic" chance="1.00" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="TLRLight" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_DWX">
+        <attachments chance="1.00">
+            <item name="AJW_Mag_DWX_20Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_Kimber1911">
+        <attachments chance="1.00">
+            <item name="AJW_Mag_Kimber1911_9Rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_Deagle_MARPAT">
+        <attachments chance="0.80">
+            <item name="Mag_Deagle_9rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_Deagle_AOR2">
+        <attachments chance="0.80">
+            <item name="Mag_Deagle_9rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_Deagle_Black">
+        <attachments chance="0.80">
+            <item name="Mag_Deagle_9rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_Deagle_FDE">
+        <attachments chance="0.80">
+            <item name="Mag_Deagle_9rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_EVO3_Black">
+        <attachments chance="1.00">
+            <item name="AJW_EVO3_Stock_Standard_Black" chance="1.00" />
+            <item name="AJW_EVO3_Stock_Standard_Grey" chance="1.00" />
+            <item name="AJW_EVO3_Stock_Mini" chance="1.00" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_EVO3_35rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_EVO3_Grey">
+        <attachments chance="1.00">
+            <item name="AJW_EVO3_Stock_Standard_Black" chance="1.00" />
+            <item name="AJW_EVO3_Stock_Standard_Grey" chance="1.00" />
+            <item name="AJW_EVO3_Stock_Mini" chance="1.00" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.30" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_CZEVO3_Barrel_Long" chance="0.80" />
+            <item name="AJW_CZEVO3_Barrel_Micro" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_EVO3_35rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_EVO3_FDE">
+        <attachments chance="1.00">
+            <item name="AJW_EVO3_Stock_Standard_Black" chance="1.00" />
+            <item name="AJW_EVO3_Stock_Standard_Grey" chance="1.00" />
+            <item name="AJW_EVO3_Stock_Mini" chance="1.00" />
+        </attachments>
+        <attachments chance="0.80">
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.30" />
+        </attachments>
+        <attachments chance="0.30">
+            <item name="AJW_CZEVO3_Barrel_Long" chance="0.80" />
+            <item name="AJW_CZEVO3_Barrel_Micro" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_Mag_EVO3_35rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_MarlinTactical_Black">
+        <attachments chance="0.80">
+            <item name="AJW_Optic_MicroT2_Black" chance="0.30" />
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.30" />
+        </attachments>
+    </type>
+    <type name="AJW__AWM_FDE">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.30" />
+            <item name="HuntingOptic" chance="0.30" />
+            <item name="AJW_Optic_LRHS" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AWM_Magazine_5rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW__AWM_AOR2">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.30" />
+            <item name="HuntingOptic" chance="0.30" />
+            <item name="AJW_Optic_LRHS" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AWM_Magazine_5rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW__AWM_Green">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.30" />
+            <item name="HuntingOptic" chance="0.30" />
+            <item name="AJW_Optic_LRHS" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AWM_Magazine_5rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW__AWM_Gold">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.30" />
+            <item name="HuntingOptic" chance="0.30" />
+            <item name="AJW_Optic_LRHS" chance="0.30" />
+        </attachments>
+        <attachments chance="1.00">
+            <item name="AJW_AWM_Magazine_5rnd" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M40A3_Green">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.50" />
+        </attachments>
+    </type>
+    <type name="AJW_GOL_Magnum_Green">
+        <attachments chance="1.00">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.50" />
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.50" />
+        </attachments>
+    </type>
+    <type name="AJW_K98_Standard">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_K98" chance="0.50" />
+            <item name="AJW_Optic_ACOG_Chevron" chance="0.50" />
+        </attachments>
+    </type>
+    <type name="AJW_K98_BlackTie">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_K98" chance="0.50" />
+            <item name="AJW_Optic_LRHS" chance="0.50" />
+        </attachments>
+    </type>
+    <type name="AJW_K98_Tac_Wood">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.50" />
+            <item name="AJW_Optic_EoTechVudu" chance="0.50" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_HK_FG_Black" chance="0.50" />
+            <item name="AJW_Cobra_FG_Black" chance="0.50" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Surefire_Gunlight_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_K98_Tac_Poly">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_EOTech_EXPS3_Black" chance="0.50" />
+            <item name="AJW_Optic_EoTechVudu" chance="0.50" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_HK_FG_Black" chance="0.50" />
+            <item name="AJW_Cobra_FG_Black" chance="0.50" />
+        </attachments>
+        <attachments chance="0.50">
+            <item name="AJW_Surefire_Gunlight_Black" chance="1.00" />
+        </attachments>
+    </type>
+    <type name="AJW_M40A3_Camo">
+        <attachments chance="0.50">
+            <item name="AJW_Optic_Leupold_M3A" chance="0.50" />
+        </attachments>
+    </type>
+</spawnabletypes>
