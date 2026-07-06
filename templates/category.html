@@ -11,44 +11,21 @@
 {% set banner_context_items = items[:2] %}
 {% include "components/application_banner.html" %}
 
-{% include "components/page_header.html" %}
-
 <div class="app-shell">
-
-    <div class="page-actions">
-        <a class="back-button" href="/">
-            <i class="fa-solid fa-arrow-left"></i>
-            Home
-        </a>
-
-        <a class="back-button" href="/catalog">
-            <i class="fa-solid fa-box-open"></i>
-            Item Catalog
-        </a>
-    </div>
 
     <h2 class="category-heading">
         <i class="fa-solid fa-folder"></i>
         {{ category }}
     </h2>
 
-    {% for subcategory, sub_items in grouped_items.items() %}
-        <section class="subcategory-section">
-            <h2>{{ subcategory }}</h2>
+    <div class="subcategory-card-grid">
+        {% for subcategory, sub_items in grouped_items.items() %}
+            <a class="subcategory-card" href="/category/{{ category }}/{{ subcategory }}">
+                <h3>{{ subcategory }}</h3>
+                <p>{{ sub_items|length }} items</p>
+            </a>
+        {% endfor %}
+    </div>
 
-            <div class="asset-card-grid">
-                {% for item in sub_items %}
-                    {% include "components/asset_card.html" %}
-                {% endfor %}
-            </div>
-        </section>
-        <div class="subcategory-card-grid">
-    {% for subcategory, sub_items in grouped_items.items() %}
-        <a class="subcategory-card" href="/category/{{ category }}/{{ subcategory }}">
-            <h3>{{ subcategory }}</h3>
-            <p>{{ sub_items|length }} items</p>
-        </a>
-    {% endfor %}
 </div>
-   
 {% endblock %}
