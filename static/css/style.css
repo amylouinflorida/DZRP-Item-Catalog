@@ -500,6 +500,8 @@
     display: grid;
     grid-template-columns: 340px 1fr;
     gap: 30px;
+    align-items: start;
+
 
     background: rgba(18, 18, 18, 0.92);
     border: 1px solid rgba(201, 162, 77, 0.35);
@@ -551,6 +553,14 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    
+}
+.item-tags-panel {
+    margin-bottom: 0;
+}
+
+.relationships-panel {
+    margin-top: 0;
 }
 
 .item-visual-footer {
@@ -706,10 +716,6 @@
 
     .search-row {
         flex-direction: column;
-    }
-
-    .item-detail-card {
-        grid-template-columns: 1fr;
     }
 
     .hero-logo {
@@ -2080,4 +2086,41 @@
     margin: 5px 0 0;
     color: #9fcb74;
     font-weight: 700;
+}
+.item-detail-card {
+    align-items: start;
+}
+
+.item-visual-panel {
+    align-self: start;
+}
+
+.relationships-panel {
+    margin-top: 0;
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.relationship-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.relationship-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(201, 162, 77, 0.28);
+    background: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.relationship-chip:hover {
+    border-color: rgba(201, 162, 77, 0.65);
+    background: rgba(201, 162, 77, 0.10);
 }

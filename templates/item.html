@@ -52,8 +52,48 @@
                         <button type="submit">Add</button>
                     </form>
                 </div>
+<div class="page-wrap">
+        <div class="info-panel relationships-panel">
+            <h2>
+                <i class="fa-solid fa-link"></i>
+                Relationships
+            </h2>
+            {% if relationships %}
+                <h3>Spawns With</h3>
+                <div class="relationship-list">
+                    {% for rel in relationships %}
+                        <a class="relationship-chip" href="/item/{{ rel.classname }}">
+                            {{ rel.display_name }}
+                            {% if rel.chance %}
+                                <span>{{ (rel.chance * 100)|round|int }}%</span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if reverse_relationships %}
+                <h3>Commonly Spawns On</h3>
+                <div class="relationship-list">
+                    {% for rel in reverse_relationships %}
+                        <a class="relationship-chip" href="/item/{{ rel.classname }}">
+                            {{ rel.display_name }}
+                            {% if rel.chance %}
+                                <span>{{ (rel.chance * 100)|round|int }}%</span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if not relationships and not reverse_relationships %}
+                <p class="muted">No relationships imported yet.</p>
+            {% endif %}
+        </div>
+    </div>
 
             </div>
+            
              <div class="item-info-panel">
 
                 <div class="item-title-row">
@@ -175,44 +215,7 @@
 
         </div>
     </div>
-<div class="info-panel relationships-panel">
-    <h2>
-        <i class="fa-solid fa-link"></i>
-        Relationships
-    </h2>
 
-    {% if relationships %}
-        <h3>Spawns With</h3>
-        <div class="relationship-list">
-            {% for rel in relationships %}
-                <a class="relationship-chip" href="/item/{{ rel.classname }}">
-                    {{ rel.display_name }}
-                    {% if rel.chance %}
-                        <span>{{ (rel.chance * 100)|round|int }}%</span>
-                    {% endif %}
-                </a>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if reverse_relationships %}
-        <h3>Commonly Spawns On</h3>
-        <div class="relationship-list">
-            {% for rel in reverse_relationships %}
-                <a class="relationship-chip" href="/item/{{ rel.classname }}">
-                    {{ rel.display_name }}
-                    {% if rel.chance %}
-                        <span>{{ (rel.chance * 100)|round|int }}%</span>
-                    {% endif %}
-                </a>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if not relationships and not reverse_relationships %}
-        <p class="muted">No relationships imported yet.</p>
-    {% endif %}
-</div>
 <script>
 function copyClassname() {
     const text = document.getElementById("classname").innerText;
