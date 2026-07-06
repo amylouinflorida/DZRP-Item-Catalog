@@ -23,7 +23,9 @@ from database import (
     add_note_to_item,
     delete_note,
     get_tags_for_item,
-    add_tag_to_item
+    add_tag_to_item,
+    get_relationships_for_item,
+    get_reverse_relationships_for_item
 )
 from category_styles import get_category_style
 from services.classification_service import classify_item

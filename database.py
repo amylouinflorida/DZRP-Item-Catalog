@@ -218,6 +218,56 @@ def get_mod_counts():
     conn.close()
 
     return mods
+def get_relationships_for_item(classname):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            target.classname,
+            target.display_name,
+            target.category,
+            target.subcategory,
+            target.item_type,
+            item_relationships.relationship_type,
+            item_relationships.chance
+        FROM item_relationships
+        JOIN items source ON source.id = item_relationships.source_item_id
+        JOIN items target ON target.id = item_relationships.target_item_id
+        WHERE source.classname = ?
+        ORDER BY item_relationships.relationship_type, target.display_name
+    """, (classname,))
+
+    relationships = cursor.fetchall()
+    conn.close()
+    return relationships
+
+
+def get_reverse_relationships_for_item(classname):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            source.classname,
+            source.display_name,
+            source.category,
+            source.subcategory,
+            source.item_type,
+            item_relationships.relationship_type,
+            item_relationships.chance
+        FROM item_relationships
+        JOIN items source ON source.id = item_relationships.source_item_id
+        JOIN items target ON target.id = item_relationships.target_item_id
+        WHERE target.classname = ?
+        ORDER BY item_relationships.relationship_type, source.display_name
+    """, (classname,))
+
+    relationships = cursor.fetchall()
+    conn.close()
+    return relationships
 
 
 def get_dashboard_stats():
