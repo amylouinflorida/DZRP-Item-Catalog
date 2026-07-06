@@ -3,6 +3,7 @@ from flask import (
     render_template,
     request,
     redirect,
+    url_for,
     abort
 )
 
@@ -25,7 +26,10 @@ from database import (
     get_tags_for_item,
     add_tag_to_item,
     get_relationships_for_item,
-    get_reverse_relationships_for_item
+    get_reverse_relationships_for_item,
+    add_item_flag,
+    get_open_item_flags,
+    resolve_item_flag
 )
 from category_styles import get_category_style
 from services.classification_service import classify_item
@@ -209,6 +213,41 @@ def add_item_note(classname):
         add_note_to_item(classname, note)
 
     return redirect(f"/item/{classname}")
+@app.route("/item/<classname>/flag", methods=["POST"])
+
+@app.route("/item/<classname>/flag", methods=["POST"])
+def flag_item(classname):
+    issue_type = request.form.get("issue_type")
+    note = request.form.get("note")
+
+    suggested_category = request.form.get("suggested_category")
+    suggested_subcategory = request.form.get("suggested_subcategory")
+
+    add_item_flag(
+        classname=classname,
+        issue_type=issue_type,
+        note=note,
+        created_by="Staff",
+        suggested_category=suggested_category,
+        suggested_subcategory=suggested_subcategory
+    )
+
+    return redirect(url_for("item_detail", classname=classname))
+
+@app.route("/management/flags")
+def management_flags():
+    flags = get_open_item_flags()
+
+    return render_template(
+        "management_flags.html",
+        flags=flags,
+        active_page="management"
+    )
+
+@app.route("/management/flags/<int:flag_id>/resolve", methods=["POST"])
+def resolve_flag(flag_id):
+    resolve_item_flag(flag_id)
+    return redirect(url_for("management_flags"))
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -18,12 +18,21 @@
 
         <div class="banner-mini-section">
             <h3>
-                <i class="fa-solid fa-star"></i>
-                Favorites
+                <i class="fa-solid fa-bolt"></i>
+                Quick Actions
             </h3>
 
-            <a href="/item/Rag">Rag</a>
-            <a href="#">Duct Tape</a>
+            {% if item is defined %}
+                <button class="banner-action-link" type="button" onclick="copyClassname()">
+                    Copy Classname
+                </button>
+
+                <button class="banner-action-link" type="button" onclick="toggleReportForm()">
+                    Report Issue
+                </button>
+            {% else %}
+                <a href="/">Browse Catalog</a>
+            {% endif %}
         </div>
 
         <div class="banner-mini-section">

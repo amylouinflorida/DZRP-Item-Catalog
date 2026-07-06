@@ -94,6 +94,16 @@ def initialize_database():
 
     conn.commit()
     conn.close()
+
+    try:
+        cursor.execute("ALTER TABLE item_flags ADD COLUMN suggested_category TEXT")
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        cursor.execute("ALTER TABLE item_flags ADD COLUMN suggested_subcategory TEXT")
+    except sqlite3.OperationalError:
+        pass
     
 def classify_item(classname, display_name="", mod_name=""):
     text = f"{classname} {display_name}".lower()
@@ -173,7 +183,7 @@ def reclassify_ajw_by_classname():
 
     print(f"✅ Reclassified {updated} AJW-like items by classname.")
 
-def add_item_flag(classname, issue_type, note=None, created_by="Staff"):
+def add_item_flag(classname, issue_type, note=None, created_by="Staff", suggested_category=None, suggested_subcategory=None):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -185,9 +195,23 @@ def add_item_flag(classname, issue_type, note=None, created_by="Staff"):
         return False
 
     cursor.execute("""
-        INSERT INTO item_flags (item_id, issue_type, note, created_by)
-        VALUES (?, ?, ?, ?)
-    """, (item[0], issue_type, note, created_by))
+        INSERT INTO item_flags (
+            item_id,
+            issue_type,
+            note,
+            created_by,
+            suggested_category,
+            suggested_subcategory
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (
+        item[0],
+        issue_type,
+        note,
+        created_by,
+        suggested_category,
+        suggested_subcategory
+    ))
 
     conn.commit()
     conn.close()
