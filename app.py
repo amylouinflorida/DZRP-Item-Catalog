@@ -26,6 +26,7 @@ from database import (
     add_tag_to_item
 )
 from category_styles import get_category_style
+from services.classification_service import classify_item
 
 app = Flask(__name__)
 
