@@ -73,11 +73,162 @@ def initialize_database():
             FOREIGN KEY (item_id) REFERENCES items(id)
         )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS item_flags (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        item_id INTEGER NOT NULL,
+        issue_type TEXT NOT NULL,
+        note TEXT,
+        status TEXT DEFAULT 'open',
+        created_by TEXT DEFAULT 'Staff',
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        resolved_at TEXT,
+        FOREIGN KEY (item_id) REFERENCES items(id)
+    )
+""")
 
     try:
         cursor.execute("ALTER TABLE favorites ADD COLUMN last_used TEXT")
     except sqlite3.OperationalError:
         pass
+
+    conn.commit()
+    conn.close()
+    
+def classify_item(classname, display_name="", mod_name=""):
+    text = f"{classname} {display_name}".lower()
+    mod = (mod_name or "").lower()
+    cls = classname.lower()
+
+    # AJW Weapons-specific rules
+    if "ajw" in mod or cls.startswith("ajw"):
+        if any(x in cls for x in ["bttstock", "buttstock", "stock", "magpul"]):
+            return "Attachments", "Stocks"
+
+        if any(x in cls for x in ["hndgrd", "handguard", "hng"]):
+            return "Attachments", "Handguards"
+
+        if any(x in cls for x in ["optic", "kobra", "acog", "elcan", "scope", "sight"]):
+            return "Attachments", "Optics"
+
+        if any(x in cls for x in ["tlr", "tlrlight", "x300", "weaponlight"]):
+            return "Attachments", "Lights"
+
+        if any(x in cls for x in ["suppressor", "silencer", "muzzle", "brake", "compensator"]):
+            return "Attachments", "Muzzles"
+
+        if any(x in cls for x in ["_mag", " mag", "magazine", "cmag", "stanag"]):
+            return "Magazines", "Weapon Magazines"
+
+        return "Weapons", "Firearms"
+
+    # General fallback rules
+    if any(x in cls for x in ["optic", "scope", "sight"]):
+        return "Attachments", "Optics"
+
+    if any(x in cls for x in ["suppressor", "silencer"]):
+        return "Attachments", "Muzzles"
+
+    if any(x in cls for x in ["_mag", " mag", "magazine"]):
+        return "Magazines", "Weapon Magazines"
+
+    return "Miscellaneous", "Unclassified"
+
+def reclassify_ajw_by_classname():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, classname, display_name
+        FROM items
+        WHERE LOWER(classname) LIKE '%ajw%'
+           OR LOWER(classname) LIKE 'mag_%'
+           OR LOWER(classname) LIKE '%optic%'
+           OR LOWER(classname) LIKE '%pso%'
+           OR LOWER(classname) LIKE '%kashtan%'
+           OR LOWER(classname) LIKE '%reflex%'
+    """)
+
+    items = cursor.fetchall()
+    updated = 0
+
+    for item in items:
+        category, subcategory = classify_item(
+            item["classname"],
+            item["display_name"],
+            "AJW Weapons"
+        )
+
+        cursor.execute("""
+            UPDATE items
+            SET category = ?, subcategory = ?
+            WHERE id = ?
+        """, (category, subcategory, item["id"]))
+
+        updated += 1
+
+    conn.commit()
+    conn.close()
+
+    print(f"✅ Reclassified {updated} AJW-like items by classname.")
+
+def add_item_flag(classname, issue_type, note=None, created_by="Staff"):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
+    item = cursor.fetchone()
+
+    if not item:
+        conn.close()
+        return False
+
+    cursor.execute("""
+        INSERT INTO item_flags (item_id, issue_type, note, created_by)
+        VALUES (?, ?, ?, ?)
+    """, (item[0], issue_type, note, created_by))
+
+    conn.commit()
+    conn.close()
+    return True
+
+
+def get_open_item_flags():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            item_flags.*,
+            items.classname,
+            items.display_name,
+            items.category,
+            items.subcategory,
+            mods.name AS mod_name
+        FROM item_flags
+        JOIN items ON item_flags.item_id = items.id
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE item_flags.status = 'open'
+        ORDER BY item_flags.created_at DESC
+    """)
+
+    flags = cursor.fetchall()
+    conn.close()
+    return flags
+
+
+def resolve_item_flag(flag_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE item_flags
+        SET status = 'resolved',
+            resolved_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    """, (flag_id,))
 
     conn.commit()
     conn.close()
@@ -99,6 +250,21 @@ def add_item(classname, display_name, description=None, category=None, subcatego
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
+    mod_name = ""
+
+    if mod_id:
+        cursor.execute("SELECT name FROM mods WHERE id = ?", (mod_id,))
+        mod = cursor.fetchone()
+        if mod:
+            mod_name = mod[0]
+
+    if not category or not subcategory:
+        category, subcategory = classify_item(
+            classname,
+            display_name,
+            mod_name
+        )
+
     cursor.execute("""
         INSERT OR IGNORE INTO items (classname, display_name, description, category, subcategory, mod_id, image)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -106,6 +272,41 @@ def add_item(classname, display_name, description=None, category=None, subcatego
 
     conn.commit()
     conn.close()
+
+def reclassify_mod_items(mod_name):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.id, items.classname, items.display_name, items.category, items.subcategory
+        FROM items
+        JOIN mods ON items.mod_id = mods.id
+        WHERE mods.name = ?
+    """, (mod_name,))
+
+    items = cursor.fetchall()
+    updated = 0
+
+    for item in items:
+        category, subcategory = classify_item(
+            item["classname"],
+            item["display_name"],
+            mod_name
+        )
+
+        cursor.execute("""
+            UPDATE items
+            SET category = ?, subcategory = ?
+            WHERE id = ?
+        """, (category, subcategory, item["id"]))
+
+        updated += 1
+
+    conn.commit()
+    conn.close()
+
+    print(f"✅ Reclassified {updated} items from {mod_name}.")
 
 
 def get_all_items():
@@ -363,6 +564,53 @@ def get_favorites():
     conn.close()
     return favorites
 
+def get_relationships_for_item(classname):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            target.classname,
+            target.display_name,
+            target.category,
+            target.subcategory,
+            target.image,
+            r.relationship_type,
+            r.chance,
+            r.notes
+        FROM item_relationships r
+        JOIN items source ON source.id = r.source_item_id
+        JOIN items target ON target.id = r.target_item_id
+        WHERE source.classname = ?
+        ORDER BY target.display_name
+    """, (classname,))
+    spawns_with = cursor.fetchall()
+
+    cursor.execute("""
+        SELECT
+            source.classname,
+            source.display_name,
+            source.category,
+            source.subcategory,
+            source.image,
+            r.relationship_type,
+            r.chance,
+            r.notes
+        FROM item_relationships r
+        JOIN items source ON source.id = r.source_item_id
+        JOIN items target ON target.id = r.target_item_id
+        WHERE target.classname = ?
+        ORDER BY source.display_name
+    """, (classname,))
+    spawned_in = cursor.fetchall()
+
+    conn.close()
+
+    return {
+        "spawns_with": spawns_with,
+        "spawned_in": spawned_in
+    }
 
 def is_favorite(classname):
     conn = sqlite3.connect(DB_PATH)
@@ -494,6 +742,7 @@ def add_tag_to_item(classname, tag_name):
 
     conn.commit()
     conn.close()
+
 def get_tags_for_item(classname):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -546,8 +795,7 @@ def add_tag_to_item(classname, tag_name):
 
     conn.commit()
     conn.close()
-
-
+    
 def add_note_to_item(classname, note, author="Staff"):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -565,7 +813,7 @@ def add_note_to_item(classname, note, author="Staff"):
     conn.close()
 
 if __name__ == "__main__":
-    initialize_database()
+    reclassify_ajw_by_classname()
 
     add_mod(
         name="Vanilla DayZ",

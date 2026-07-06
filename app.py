@@ -63,26 +63,14 @@ def catalog():
 @app.route("/item/<classname>")
 def item_detail(classname):
     item = get_item_by_classname(classname)
+
+    if not item:
+        abort(404)
+
     favorite = is_favorite(classname)
     notes = get_notes_for_item(classname)
     tags = get_tags_for_item(classname)
-
-    if not item: abort(404)
-
-    favorite = is_favorite(classname)
-    notes = get_notes_for_item(classname)
-
-    # ---------- DayZRP Presentation Layer ----------
-
-    # item["spawn_status"] = get_spawn_status(item.get("nominal"))
-
-    # Future
-    # item["em_policy"] = get_spawn_policy(item)
-    # item["rarity"] = get_rarity(item)
-    # item["steam_url"] = ...
-    # item["mod_logo"] = ...
-
-    # ----------------------------------------------
+    relationships = get_relationships_for_item(classname)
 
     return render_template(
         "item.html",
@@ -90,6 +78,7 @@ def item_detail(classname):
         favorite=favorite,
         notes=notes,
         tags=tags,
+        relationships=relationships,
         active_page="catalog"
     )
 
