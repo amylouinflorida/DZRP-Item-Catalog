@@ -197,38 +197,24 @@
 
 <div class="dashboard-panel">
 
-    <h2>
-        <i class="fa-solid fa-folder"></i>
-        Browse by Category
-    </h2>
+    <div class="section-nameplate">
+        <h2>Browse the Catalog</h2>
+        <p>Explore DayZRP assets by major category.</p>
+    </div>
 
-    <div class="category-card-grid">
+    <div class="category-art-grid">
 
         {% for category in categories %}
+            <a class="category-art-card" href="/category/{{ category.category }}">
+                <img
+                    src="{{ url_for('static', filename='images/categories/' ~ category.category|lower|replace(' ', '_') ~ '.png') }}"
+                    alt="{{ category.category }}">
 
-            {% set category_class = category.category|lower|replace(' ', '-') %}
-
-            <a class="category-card {{ category_class }}" href="/category/{{ category.category }}">
-
-                {% if category.category == "Medical" %}
-                    <i class="fa-solid fa-kit-medical"></i>
-                {% elif category.category == "Weapons" %}
-                    <i class="fa-solid fa-gun"></i>
-                {% elif category.category == "Food" %}
-                <i class="fa-solid fa-utensils"></i>
-                {% elif category.category == "Clothing" %}
-                    <i class="fa-solid fa-shirt"></i>
-                {% elif category.category == "Tools" %}
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                {% else %}
-                    <i class="fa-solid fa-box"></i>
-                {% endif %}
-
-                <h3>{{ category.category }}</h3>
-                <p>{{ category.item_count }} items</p>
-
+                <div class="category-art-overlay">
+                    <h3>{{ category.category }}</h3>
+                    <p>{{ category.item_count }} Assets</p>
+                </div>
             </a>
-
         {% endfor %}
 
     </div>
