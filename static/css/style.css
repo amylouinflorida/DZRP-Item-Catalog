@@ -2034,3 +2034,50 @@
     margin: 4px 0 0;
     color: #9fcb74;
 }
+.mod-art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+    justify-content: center;
+    gap: 22px;
+}
+
+.mod-art-card {
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(180,145,82,.45);
+    background: rgba(10,10,10,.72);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 12px 24px rgba(0,0,0,.35);
+    transition: .25s;
+}
+
+.mod-art-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(214,179,107,.75);
+}
+
+.mod-logo-wrap {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.mod-logo-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.mod-art-info h3 {
+    margin: 0;
+    color: #d6b36b;
+}
+
+.mod-art-info p {
+    margin: 5px 0 0;
+    color: #9fcb74;
+    font-weight: 700;
+}

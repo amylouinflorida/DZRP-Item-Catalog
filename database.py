@@ -203,9 +203,13 @@ def get_mod_counts():
     cursor.execute("""
         SELECT
             mods.name,
+            mods.logo,
+            mods.author,
+            mods.website,
             COUNT(items.id) AS item_count
         FROM mods
-        LEFT JOIN items ON items.mod_id = mods.id
+        LEFT JOIN items
+            ON items.mod_id = mods.id
         GROUP BY mods.id
         ORDER BY mods.name
     """)

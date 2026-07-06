@@ -1,13 +1,14 @@
 import sqlite3
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from services.classification_service import classify_item
 
 DB_PATH = Path("data/database/dayzrp_catalog.db")
 
 MOD_NAME = "AJW Weapons"
 MOD_AUTHOR = "AJ45"
 MOD_TYPE = "Weapons"
-MOD_LOGO = "mods/ajw-weapons.png"
+MOD_LOGO = "ajw-weapons.png"
 MOD_WEBSITE = "https://steamcommunity.com/sharedfiles/filedetails/?id=3571685323"
 MOD_DESCRIPTION = "AJW Weapons imported from DayZRP server economy files."
 
@@ -198,9 +199,7 @@ def get_or_create_item(conn, classname, mod_id):
     cur.execute("SELECT id FROM items WHERE classname = ?", (classname,))
     row = cur.fetchone()
 
-    item_type = classify_item(classname)              # detailed: Optic, Handguard, Ammo
-    category = classify_category(classname)           # broad: Weapons
-    subcategory = classify_subcategory(classname)     # middle: Weapon, Attachment, Ammo, Magazine
+    category, subcategory, item_type = classify_item(classname)
     display_name = clean_display_name(classname)
 
     if row:

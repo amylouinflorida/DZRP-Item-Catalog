@@ -225,25 +225,33 @@
 
         <div class="dashboard-panel">
 
-            <h2>
-                <i class="fa-solid fa-puzzle-piece"></i>
-                Browse by Mod
-            </h2>
+    <div class="section-nameplate">
+        <h2>Supported Mods</h2>
+        <p>Browse assets by source mod and creator.</p>
+    </div>
 
-            <div class="dashboard-list">
+    <div class="mod-art-grid">
+        {% for mod in mods %}
+            <a class="mod-art-card" href="/mod/{{ mod.name }}">
+                <div class="mod-logo-wrap">
+                    {% if mod.logo %}
+                        <img
+                            src="{{ url_for('static', filename='images/mods/' ~ mod.logo) }}"
+                            alt="{{ mod.name }}">
+                    {% else %}
+                        <img
+                            src="{{ url_for('static', filename='images/items/no-image.png') }}"
+                            alt="{{ mod.name }}">
+                    {% endif %}
+                </div>
 
-               {% for mod in mods %}
-          <a href="/mod/{{ mod.name }}">
-          {{ mod.name }}
-          <span>{{ mod.item_count }}</span>
-    </a>
-{% endfor %}
-
-            </div>
-
-        </div>
-
-    </section>
+                <div class="mod-art-info">
+                    <h3>{{ mod.name }}</h3>
+                    <p>{{ mod.item_count }} Assets</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 
 </div>
 

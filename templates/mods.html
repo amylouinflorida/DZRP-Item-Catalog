@@ -4,29 +4,46 @@
 
 {% block content %}
 
-    {% set banner_title = "Mods" %}
-    {% set banner_subtitle = "Browse cataloged mods and the assets they contribute." %}
-    {% set banner_icon = "fa-solid fa-puzzle-piece" %}
-    {% set banner_class = "category-default" %}
-    {% set banner_context_title = "Popular Mods" %}
-    {% set banner_context_items = [] %}
-    {% include "components/application_banner.html" %}
+{% set banner_title = "Mods" %}
+{% set banner_subtitle = "Browse cataloged mods and the assets they contribute." %}
+{% set banner_icon = "fa-solid fa-puzzle-piece" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Popular Mods" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
 
-    <div class="mod-card-grid">
+<div class="app-shell">
 
+    <div class="section-nameplate">
+        <h2>Supported Mods</h2>
+        <p>Browse assets by source mod and creator.</p>
+    </div>
+
+    <div class="mod-art-grid">
         {% for mod in mods %}
+            <a class="mod-art-card" href="/mod/{{ mod.name }}">
 
-            <a class="mod-card" href="/mod/{{ mod.name }}">
-
-                <div class="mod-card-icon">
-                    <i class="fa-solid fa-puzzle-piece"></i>
+                <div class="mod-logo-wrap">
+                    {% if mod.logo %}
+                        <img
+                            src="{{ url_for('static', filename='images/mods/' ~ mod.logo) }}"
+                            alt="{{ mod.name }}">
+                    {% else %}
+                        <img
+                            src="{{ url_for('static', filename='images/items/no-image.png') }}"
+                            alt="{{ mod.name }}">
+                    {% endif %}
                 </div>
 
-                <h3>{{ mod.name }}</h3>
+                <div class="mod-art-info">
+                    <h3>{{ mod.name }}</h3>
 
-                <p>
-                    {{ mod.item_count }} asset{% if mod.item_count != 1 %}s{% endif %}
-                </p>
+                    {% if mod.author %}
+                        <p class="mod-author">by {{ mod.author }}</p>
+                    {% endif %}
+
+                    <p>{{ mod.item_count }} asset{% if mod.item_count != 1 %}s{% endif %}</p>
+                </div>
 
                 <span class="mod-card-footer">
                     View Mod
@@ -34,9 +51,9 @@
                 </span>
 
             </a>
-
         {% endfor %}
-
     </div>
+
+</div>
 
 {% endblock %}
