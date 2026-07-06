@@ -16,24 +16,38 @@
 
     <div class="banner-side-panel">
 
-        <div class="banner-mini-section">
-            <h3>
-                <i class="fa-solid fa-bolt"></i>
-                Quick Actions
-            </h3>
+    <div class="banner-mini-section">
+        <h3>
+            <i class="fa-solid fa-toolbox"></i>
+            Item Tools
+        </h3>
 
-            {% if item is defined %}
-                <button class="banner-action-link" type="button" onclick="copyClassname()">
-                    Copy Classname
-                </button>
+        {% if item is defined %}
+            <button class="banner-action-link" type="button" onclick="copyClassname()">
+                <i class="fa-regular fa-copy"></i>
+                Copy Classname
+            </button>
 
-                <button class="banner-action-link" type="button" onclick="toggleReportForm()">
-                    Report Issue
+            <form action="/favorite/{{ item.classname }}" method="post">
+                <button class="banner-action-link" type="submit">
+                    <i class="fa-solid fa-thumbtack"></i>
+                    {% if favorite %}Unpin Item{% else %}Pin Item{% endif %}
                 </button>
-            {% else %}
-                <a href="/">Browse Catalog</a>
-            {% endif %}
-        </div>
+            </form>
+
+            <button class="banner-action-link" type="button" onclick="toggleReportForm()">
+                <i class="fa-solid fa-flag"></i>
+                Report Database Issue
+            </button>
+        {% else %}
+            <a href="/">
+                <i class="fa-solid fa-house"></i>
+                Return Home
+            </a>
+        {% endif %}
+    </div>
+
+</div>
 
         <div class="banner-mini-section">
             <h3>

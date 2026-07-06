@@ -164,60 +164,7 @@
                 <button type="submit">Add Note</button>
             </form>
         </div>
-<div class="info-panel report-panel">
-    <button class="report-toggle" type="button" onclick="toggleReportForm()">
-        <i class="fa-solid fa-flag"></i>
-        Report Item Issue
-    </button>
 
-    <div id="report-form" class="report-form hidden">
-        <form method="POST" action="{{ url_for('flag_item', classname=item.classname) }}">
-
-            <label>Issue</label>
-            <select name="issue_type" class="form-control">
-                <option>Wrong Category</option>
-                <option>Missing Image</option>
-                <option>Missing Description</option>
-                <option>Incorrect Relationships</option>
-                <option>Incorrect Display Name</option>
-                <option>Duplicate Item</option>
-                <option>Other</option>
-            </select>
-
-            <label>Suggested Category</label>
-            <select name="suggested_category" class="form-control">
-                <option value="">-- None --</option>
-                <option>Weapons</option>
-                <option>Attachments</option>
-                <option>Magazines</option>
-                <option>Ammunition</option>
-                <option>Medical</option>
-                <option>Food</option>
-                <option>Tools</option>
-                <option>Clothing</option>
-                <option>Miscellaneous</option>
-            </select>
-
-            <label>Suggested Subcategory</label>
-            <input
-                type="text"
-                name="suggested_subcategory"
-                class="form-control"
-                placeholder="Example: Lights">
-
-            <label>Comments</label>
-            <textarea
-                name="note"
-                rows="3"
-                class="form-control"
-                placeholder="Explain the issue..."></textarea>
-
-            <button class="btn btn-warning mt-3">
-                <i class="fa-solid fa-flag"></i>
-                Submit Report
-            </button>
-        </form>
-    </div>
 </div>
     </div>
 </div>
@@ -281,11 +228,4 @@ function toggleTagForm() {
     document.getElementById("add-tag-form").classList.toggle("hidden");
 }
 </script>
-<script>
-function toggleReportForm() {
-    const form = document.getElementById("report-form");
-    form.classList.toggle("hidden");
-}
-</script>
-
 {% endblock %}
