@@ -125,6 +125,23 @@ def category_page(category):
         grouped_items=grouped_items,
         active_page="catalog"
     )
+@app.route("/category/<category>/<subcategory>")
+def subcategory_page(category, subcategory):
+    items = [
+        item for item in get_items_by_category(category)
+        if (item["subcategory"] or "Other") == subcategory
+    ]
+
+    category_style = get_category_style(category)
+
+    return render_template(
+        "subcategory.html",
+        category=category,
+        subcategory=subcategory,
+        category_style=category_style,
+        items=items,
+        active_page="catalog"
+    )
 
 @app.route("/mod/<mod_name>")
 def mod_page(mod_name):

@@ -1915,3 +1915,26 @@ body {
 .spawn-unknown {
     background: #9ca3af;
 }
+.subcategory-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.subcategory-card {
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    text-decoration: none;
+    color: inherit;
+}
+
+.subcategory-card h3 {
+    margin: 0 0 6px;
+}
+
+.subcategory-card p {
+    margin: 0;
+    opacity: 0.75;
+}

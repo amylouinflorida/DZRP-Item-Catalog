@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ subcategory }} - {{ category }}{% endblock %}
+
+{% block content %}
+{% set banner_title = subcategory %}
+{% set banner_subtitle = category ~ " / " ~ subcategory %}
+{% set banner_icon = category_style.icon %}
+{% set banner_class = category_style.class %}
+{% set banner_context_title = "Items" %}
+{% set banner_context_items = items[:2] %}
+{% include "components/application_banner.html" %}
+
+<div class="app-shell">
+
+    <div class="page-actions">
+        <a class="back-button" href="/category/{{ category }}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to {{ category }}
+        </a>
+    </div>
+
+    <div class="asset-card-grid">
+        {% for item in items %}
+            {% include "components/asset_card.html" %}
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
