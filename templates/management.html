@@ -1,31 +1,141 @@
 {% extends "base.html" %}
 
-{% block title %}Management - DayZRP{% endblock %}
+{% block title %}Management - DayZRP Item Catalog{% endblock %}
 
 {% block content %}
 
-    {% set banner_title = "Management" %}
-    {% set banner_subtitle = "Staff Tools and Catalog Management." %}
-    {% set banner_icon = "fa-solid fa-puzzle-piece" %}
-    {% set banner_class = "category-default" %}
-    {% set banner_context_title = "Popular Mods" %}
-    {% set banner_context_items = [] %}
+{% set banner_title = "Catalog Management" %}
+{% set banner_subtitle = "Database health, review queues, and catalog maintenance." %}
+{% set banner_icon = "fa-solid fa-screwdriver-wrench" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Management Tools" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
 
-    {% include "components/application_banner.html" %}
+<div class="page-wrap">
 
-    <div class="coming-soon">
+    <section class="management-header">
+        <h1>Database Health</h1>
+        <p>Review catalog quality, missing data, staff reports, and classification issues.</p>
+    </section>
 
-        <i class="fa-solid fa-person-digging"></i>
+    <section class="management-stat-grid">
 
-        <h2>Under Construction</h2>
+        <div class="management-stat-card">
+            <span>Total Items</span>
+            <strong>{{ stats.total_items }}</strong>
+        </div>
 
-        <p>
-            The Mods section is currently being built.
-            Soon you'll be able to browse every supported mod,
-            view authors, documentation, dependencies, and every
-            item contributed by each mod.
-        </p>
+        <div class="management-stat-card">
+            <span>Mods</span>
+            <strong>{{ stats.total_mods }}</strong>
+        </div>
 
-    </div>
+        <div class="management-stat-card">
+            <span>Relationships</span>
+            <strong>{{ stats.total_relationships }}</strong>
+        </div>
+
+        <div class="management-stat-card warning">
+            <span>Open Reports</span>
+            <strong>{{ stats.open_flags }}</strong>
+        </div>
+
+        <div class="management-stat-card warning">
+            <span>Miscellaneous</span>
+            <strong>{{ stats.miscellaneous_items }}</strong>
+        </div>
+
+        <div class="management-stat-card warning">
+            <span>Missing Images</span>
+            <strong>{{ stats.missing_images }}</strong>
+        </div>
+
+        <div class="management-stat-card warning">
+            <span>Missing Descriptions</span>
+            <strong>{{ stats.missing_descriptions }}</strong>
+        </div>
+
+    </section>
+
+    <section class="management-panel">
+        <h2>
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Review Queue
+        </h2>
+
+        <div class="management-action-grid">
+
+            <a class="management-action-card" href="{{ url_for('management_flags') }}">
+                <i class="fa-solid fa-flag"></i>
+                <div>
+                    <strong>Review Staff Reports</strong>
+                    <span>{{ stats.open_flags }} open report(s)</span>
+                </div>
+            </a>
+
+            <a class="management-action-card" href="/category/Miscellaneous">
+                <i class="fa-solid fa-box-open"></i>
+                <div>
+                    <strong>Review Miscellaneous Items</strong>
+                    <span>{{ stats.miscellaneous_items }} item(s) need classification review</span>
+                </div>
+            </a>
+
+            <a class="management-action-card disabled" href="#">
+                <i class="fa-solid fa-image"></i>
+                <div>
+                    <strong>Review Missing Images</strong>
+                    <span>{{ stats.missing_images }} item(s) missing images</span>
+                </div>
+            </a>
+
+            <a class="management-action-card disabled" href="#">
+                <i class="fa-solid fa-align-left"></i>
+                <div>
+                    <strong>Review Missing Descriptions</strong>
+                    <span>{{ stats.missing_descriptions }} item(s) need descriptions</span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <section class="management-panel">
+        <h2>
+            <i class="fa-solid fa-database"></i>
+            Catalog Maintenance
+        </h2>
+
+        <div class="management-action-grid">
+
+            <a class="management-action-card disabled" href="#">
+                <i class="fa-solid fa-file-import"></i>
+                <div>
+                    <strong>Import Center</strong>
+                    <span>Future home for mod imports and update logs.</span>
+                </div>
+            </a>
+
+            <a class="management-action-card disabled" href="#">
+                <i class="fa-solid fa-link"></i>
+                <div>
+                    <strong>Relationship Builder</strong>
+                    <span>Future tools for compatibility and spawn relationships.</span>
+                </div>
+            </a>
+
+            <a class="management-action-card disabled" href="#">
+                <i class="fa-solid fa-tags"></i>
+                <div>
+                    <strong>Taxonomy Review</strong>
+                    <span>Future tools for category and subcategory cleanup.</span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</div>
 
 {% endblock %}
