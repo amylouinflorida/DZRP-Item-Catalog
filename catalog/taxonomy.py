@@ -277,5 +277,8 @@ def classify_item(classname, display_name="", mod_name=""):
     # General fallback
     if "ammo" in cls or "bullet" in cls or "round" in cls:
         return "Ammunition", "Rifle"
+    
+    if "heatpack" in cls:
+        return "Equipment", "Survival"
 
     return "Miscellaneous", "Unclassified"
