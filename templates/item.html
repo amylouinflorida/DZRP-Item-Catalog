@@ -8,59 +8,108 @@
 {% set banner_subtitle = item.category ~ " asset from " ~ item.mod_name %}
 {% set banner_icon = "fa-solid fa-box-open" %}
 {% set banner_class = "category-default" %}
-{% set banner_context_title = "Related Items" %}
+{% set banner_context_title = "Item Tools" %}
 {% set banner_context_items = [] %}
 {% include "components/application_banner.html" %}
 
 <div class="page-wrap">
 
-    <div class="item-detail-card">
+    <!-- =====================================================
+         ASSET CARD
+         Left lane: image + tags
+         Right lane: item information + identity
+    ====================================================== -->
+    <section class="item-asset-card">
 
-        <div class="item-visual-panel">
-            <div class="item-image-panel">
+        <!-- LEFT: IMAGE + TAGS -->
+        <div class="asset-card-left">
+
+            <div class="asset-image-frame">
                 <img
-                    class="item-detail-image"
+                    class="asset-image"
                     src="{{ url_for('static', filename='images/items/' ~ (item.image if item.image else 'no-image.png')) }}"
                     alt="{{ item.display_name }}"
                     onerror="this.onerror=null; this.src='/static/images/items/no-image.png';">
             </div>
 
-            <div class="item-visual-footer">
-                {% if item.mod_name %}<span>{{ item.mod_name }}</span>{% endif %}
-                {% if item.category %}<span>{{ item.category }}</span>{% endif %}
-                {% if item.subcategory %}<span>{{ item.subcategory }}</span>{% endif %}
+            <div class="asset-tags">
+                <h2>
+                    <i class="fa-solid fa-tags"></i>
+                    Tags
+                </h2>
+
+                <div class="item-tag-list">
+                    {% for tag in tags %}
+                        <span class="chip">{{ tag.name }}</span>
+                    {% else %}
+                        <span class="muted">No tags yet.</span>
+                    {% endfor %}
+                </div>
+
+                <button class="add-tag-toggle" type="button" onclick="toggleTagForm()">
+                    + Add Tag
+                </button>
+
+                <form
+                    id="add-tag-form"
+                    class="add-tag-form hidden"
+                    action="/item/{{ item.classname }}/tags"
+                    method="post">
+
+                    <input type="text" name="tag" placeholder="Add tag...">
+                    <button type="submit">Add</button>
+
+                </form>
             </div>
+
         </div>
 
 
-            <p class="asset-classname">{{ item.classname }}</p>
+        <!-- RIGHT: DESCRIPTION + IDENTITY -->
+        <div class="asset-card-right">
 
-            <div class="item-chips">
-                {% if item.category %}
-                    <span class="chip"><i class="fa-solid fa-folder"></i>{{ item.category }}</span>
-                {% endif %}
+            <div class="asset-header">
+                <h1>{{ item.display_name }}</h1>
 
-                {% if item.subcategory %}
-                    <span class="chip"><i class="fa-solid fa-layer-group"></i>{{ item.subcategory }}</span>
-                {% endif %}
+                <div class="asset-meta-chips">
 
-                {% if item.item_type %}
-                    <span class="chip"><i class="fa-solid fa-circle-info"></i>{{ item.item_type }}</span>
-                {% endif %}
+                    {% if item.category %}
+                        <span class="chip">
+                            <i class="fa-solid fa-folder"></i>
+                            {{ item.category }}
+                        </span>
+                    {% endif %}
 
-                {% if item.mod_name %}
-                    <span class="chip"><i class="fa-solid fa-puzzle-piece"></i>{{ item.mod_name }}</span>
+                    {% if item.subcategory %}
+                        <span class="chip">
+                            <i class="fa-solid fa-layer-group"></i>
+                            {{ item.subcategory }}
+                        </span>
+                    {% endif %}
+
+                    {% if item.mod_name %}
+                        <span class="chip">
+                            <i class="fa-solid fa-puzzle-piece"></i>
+                            {{ item.mod_name }}
+                        </span>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="asset-description">
+                {% if item.description %}
+                    <p>{{ item.description }}</p>
+                {% else %}
+                    <p class="muted">No description available yet.</p>
                 {% endif %}
             </div>
 
-            {% if item.description %}
-                <p class="item-description">{{ item.description }}</p>
-            {% else %}
-                <p class="item-description muted">No description available yet.</p>
-            {% endif %}
-
             <div class="identity-box">
-                <h2>Identity</h2>
+                <h2>
+                    <i class="fa-solid fa-id-card"></i>
+                    Identity
+                </h2>
 
                 <div class="identity-row">
                     <span>Display Name</span>
@@ -73,15 +122,31 @@
                     <div class="copy-box">
                         <strong id="classname">{{ item.classname }}</strong>
 
-                        <button class="copy-btn" type="button" onclick="copyClassname()">
+                        <button
+                            class="copy-btn"
+                            type="button"
+                            onclick="copyClassname()"
+                            title="Copy classname">
+
                             <i class="fa-regular fa-copy"></i>
+
                         </button>
                     </div>
                 </div>
 
                 <div class="identity-row">
-                    <span>Source</span>
+                    <span>Mod</span>
                     <strong>{{ item.mod_name or "Unknown" }}</strong>
+                </div>
+
+                <div class="identity-row">
+                    <span>Category</span>
+                    <strong>{{ item.category or "Unknown" }}</strong>
+                </div>
+
+                <div class="identity-row">
+                    <span>Subcategory</span>
+                    <strong>{{ item.subcategory or "Unknown" }}</strong>
                 </div>
 
                 <div class="identity-row">
@@ -92,122 +157,125 @@
 
         </div>
 
-    </div>
+    </section>
 
-    <div class="item-dossier-grid">
 
-        <div class="info-panel item-tags-panel">
-            <h2>
-                <i class="fa-solid fa-tags"></i>
-                Tags
-            </h2>
+    <!-- =====================================================
+         COMPATIBILITY & RELATIONSHIPS
+    ====================================================== -->
+    <section class="info-panel relationships-panel">
+        <h2>
+            <i class="fa-solid fa-link"></i>
+            Compatibility & Relationships
+        </h2>
 
-            <div class="item-tag-list">
-                {% for tag in tags %}
-                    <span class="chip">{{ tag.name }}</span>
-                {% endfor %}
-            </div>
+        {% if relationships.spawns_with %}
+            <div class="relationship-section">
+                <h3>Spawns With</h3>
 
-            <button class="add-tag-toggle" type="button" onclick="toggleTagForm()">
-                + Add Tag
-            </button>
+                <div class="relationship-list">
+                    {% for rel in relationships.spawns_with %}
+                        <a
+                            class="relationship-chip"
+                            href="{{ url_for('item_detail', classname=rel.classname) }}">
 
-            <form id="add-tag-form" class="add-tag-form hidden" action="/item/{{ item.classname }}/tags" method="post">
-                <input type="text" name="tag" placeholder="Add tag...">
-                <button type="submit">Add</button>
-            </form>
-        </div>
+                            {{ rel.display_name }}
 
-        <div class="info-panel staff-notes-panel">
-            <h2>
-                <i class="fa-solid fa-note-sticky"></i>
-                Staff Notes
-            </h2>
+                            {% if rel.chance %}
+                                <span>{{ (rel.chance * 100)|round|int }}%</span>
+                            {% endif %}
 
-            {% if notes %}
-                <div class="staff-note-list">
-                    {% for note in notes %}
-                        <div class="staff-note">
-                            <div class="staff-note-meta">
-                                <strong>{{ note.author }}</strong>
-                                <span>{{ note.created_at }}</span>
-                            </div>
-
-                            <p>{{ note.note }}</p>
-
-                            <div class="staff-note-actions">
-                                <span>
-                                    <i class="fa-regular fa-thumbs-up"></i>
-                                    {{ note.helpful_count }} helpful
-                                </span>
-
-                                <form action="/notes/{{ note.id }}/delete/{{ item.classname }}" method="post">
-                                    <button class="note-delete-btn" type="submit" title="Delete note">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                        </a>
                     {% endfor %}
                 </div>
-            {% else %}
-                <p class="muted">No staff notes yet.</p>
-            {% endif %}
+            </div>
+        {% endif %}
 
-            <form class="staff-note-form" action="/item/{{ item.classname }}/notes" method="post">
-                <textarea
-                    name="note"
-                    rows="3"
-                    maxlength="250"
-                    placeholder="Add a staff note about this item..."></textarea>
+        {% if relationships.spawned_in %}
+            <div class="relationship-section">
+                <h3>Commonly Spawns On</h3>
 
-                <button type="submit">Add Note</button>
-            </form>
-        </div>
+                <div class="relationship-list">
+                    {% for rel in relationships.spawned_in %}
+                        <a
+                            class="relationship-chip"
+                            href="{{ url_for('item_detail', classname=rel.classname) }}">
+
+                            {{ rel.display_name }}
+
+                            {% if rel.chance %}
+                                <span>{{ (rel.chance * 100)|round|int }}%</span>
+                            {% endif %}
+
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not relationships.spawns_with and not relationships.spawned_in %}
+            <p class="muted">No relationships imported yet.</p>
+        {% endif %}
+    </section>
+
+
+    <!-- =====================================================
+         STAFF NOTES
+    ====================================================== -->
+    <section class="info-panel staff-notes-panel">
+        <h2>
+            <i class="fa-solid fa-note-sticky"></i>
+            Staff Notes
+        </h2>
+
+        {% if notes %}
+            <div class="staff-note-list">
+                {% for note in notes %}
+                    <div class="staff-note">
+                        <div class="staff-note-meta">
+                            <strong>{{ note.author }}</strong>
+                            <span>{{ note.created_at }}</span>
+                        </div>
+
+                        <p>{{ note.note }}</p>
+
+                        <div class="staff-note-actions">
+                            <span>
+                                <i class="fa-regular fa-thumbs-up"></i>
+                                {{ note.helpful_count }} helpful
+                            </span>
+
+                            <form action="/notes/{{ note.id }}/delete/{{ item.classname }}" method="post">
+                                <button
+                                    class="note-delete-btn"
+                                    type="submit"
+                                    title="Delete note">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="muted">No staff notes yet.</p>
+        {% endif %}
+
+        <form class="staff-note-form" action="/item/{{ item.classname }}/notes" method="post">
+            <textarea
+                name="note"
+                rows="3"
+                maxlength="250"
+                placeholder="Add a staff note about this item..."></textarea>
+
+            <button type="submit">Add Note</button>
+        </form>
+    </section>
 
 </div>
-    </div>
-</div>
-   <div class="info-panel relationships-panel">
-    <h2>
-        <i class="fa-solid fa-link"></i>
-        Compatibility & Relationships
-    </h2>
 
-    {% if relationships.spawns_with %}
-        <h3>Spawns With</h3>
-        <div class="relationship-list">
-            {% for rel in relationships.spawns_with %}
-                <a class="relationship-chip"
-                   href="{{ url_for('item_detail', classname=rel.classname) }}">
-                    {{ rel.display_name }}
-                    {% if rel.chance %}
-                        <span>{{ (rel.chance * 100)|round|int }}%</span>
-                    {% endif %}
-                </a>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if relationships.spawned_in %}
-        <h3>Commonly Spawns On</h3>
-        <div class="relationship-list">
-            {% for rel in relationships.spawned_in %}
-                <a class="relationship-chip"
-                   href="{{ url_for('item_detail', classname=rel.classname) }}">
-                    {{ rel.display_name }}
-                    {% if rel.chance %}
-                        <span>{{ (rel.chance * 100)|round|int }}%</span>
-                    {% endif %}
-                </a>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {% if not relationships.spawns_with and not relationships.spawned_in %}
-        <p class="muted">No relationships imported yet.</p>
-    {% endif %}
-</div>
 
 <script>
 function copyClassname() {
@@ -215,6 +283,9 @@ function copyClassname() {
     navigator.clipboard.writeText(text);
 
     const button = document.querySelector(".copy-btn");
+
+    if (!button) return;
+
     button.innerHTML = '<i class="fa-solid fa-check"></i>';
     button.classList.add("copied");
 
@@ -225,7 +296,12 @@ function copyClassname() {
 }
 
 function toggleTagForm() {
-    document.getElementById("add-tag-form").classList.toggle("hidden");
+    const form = document.getElementById("add-tag-form");
+
+    if (!form) return;
+
+    form.classList.toggle("hidden");
 }
 </script>
+
 {% endblock %}

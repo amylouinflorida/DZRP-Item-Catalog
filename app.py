@@ -4,8 +4,9 @@ from flask import (
     request,
     redirect,
     url_for,
-    abort
+    abort,
 )
+
 
 from database import (
     get_all_items,

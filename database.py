@@ -835,6 +835,7 @@ def add_note_to_item(classname, note, author="Staff"):
 
     conn.commit()
     conn.close()
+    
 
 if __name__ == "__main__":
     reclassify_ajw_by_classname()
