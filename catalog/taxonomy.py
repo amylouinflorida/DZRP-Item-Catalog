@@ -230,14 +230,19 @@ def classify_item(classname, display_name="", mod_name=""):
         if any(x in cls for x in ["splint", "absorbent", "bandagetape"]):
             return "Medical", "Medical Tools"
 
-        if "waterstraw" in cls:
-            return "Equipment", "Survival"
+    if "waterstraw" in cls:
+        return "Equipment", "Survival"
 
-        if "whistle" in cls:
-            return "Tools", "Utility"
+    if "heatpack" in cls:
+        return "Equipment", "Survival"
 
-        if "testkitreport" in cls:
-            return "Medical", "Diagnostics"
+    if "whistle" in cls:
+        return "Tools", "Utility"
+
+    return "Miscellaneous", "Unclassified"
+
+    if "testkitreport" in cls:
+        return "Medical", "Diagnostics"
 
         return "Miscellaneous", "Unclassified"
 
@@ -278,7 +283,4 @@ def classify_item(classname, display_name="", mod_name=""):
     if "ammo" in cls or "bullet" in cls or "round" in cls:
         return "Ammunition", "Rifle"
     
-    if "heatpack" in cls:
-        return "Equipment", "Survival"
-
-    return "Miscellaneous", "Unclassified"
+        return "Miscellaneous", "Unclassified"

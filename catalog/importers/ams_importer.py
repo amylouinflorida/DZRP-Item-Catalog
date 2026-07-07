@@ -82,8 +82,26 @@ def import_ams():
 
     for label, count in summary.most_common():
         print(f"{label}: {count}")
+        for type_node in root.findall("type"):
+            classname = type_node.attrib.get("name")
+
+    if not classname or not classname.startswith("AMS_"):
+        continue
+
+    category, subcategory = classify_item(
+        classname=classname,
+        display_name=classname,
+        mod_name=MOD_NAME,
+    )
+
+    if category == "Miscellaneous":
+        print(f" - {classname}")
 
     print("========================================")
+
+    print("\nUnclassified items:")
+
+
 
 
 if __name__ == "__main__":
