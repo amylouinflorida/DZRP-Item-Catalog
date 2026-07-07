@@ -1,13 +1,21 @@
 import sqlite3
 from pathlib import Path
 
+from catalog.taxonomy import classify_item
+
 DB_PATH = Path("data/database/dayzrp_catalog.db")
+
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 def initialize_database():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -59,9 +67,11 @@ def initialize_database():
             item_id INTEGER UNIQUE NOT NULL,
             use_count INTEGER DEFAULT 0,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            last_used TEXT,
             FOREIGN KEY (item_id) REFERENCES items(id)
         )
     """)
+
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS item_notes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,192 +83,62 @@ def initialize_database():
             FOREIGN KEY (item_id) REFERENCES items(id)
         )
     """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS item_flags (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        item_id INTEGER NOT NULL,
-        issue_type TEXT NOT NULL,
-        note TEXT,
-        status TEXT DEFAULT 'open',
-        created_by TEXT DEFAULT 'Staff',
-        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-        resolved_at TEXT,
-        FOREIGN KEY (item_id) REFERENCES items(id)
-    )
-""")
-
-    try:
-        cursor.execute("ALTER TABLE favorites ADD COLUMN last_used TEXT")
-    except sqlite3.OperationalError:
-        pass
-
-    conn.commit()
-    conn.close()
-
-    try:
-        cursor.execute("ALTER TABLE item_flags ADD COLUMN suggested_category TEXT")
-    except sqlite3.OperationalError:
-        pass
-
-    try:
-        cursor.execute("ALTER TABLE item_flags ADD COLUMN suggested_subcategory TEXT")
-    except sqlite3.OperationalError:
-        pass
-    
-def classify_item(classname, display_name="", mod_name=""):
-    text = f"{classname} {display_name}".lower()
-    mod = (mod_name or "").lower()
-    cls = classname.lower()
-
-    # AJW Weapons-specific rules
-    if "ajw" in mod or cls.startswith("ajw"):
-        if any(x in cls for x in ["bttstock", "buttstock", "stock", "magpul"]):
-            return "Attachments", "Stocks"
-
-        if any(x in cls for x in ["hndgrd", "handguard", "hng"]):
-            return "Attachments", "Handguards"
-
-        if any(x in cls for x in ["optic", "kobra", "acog", "elcan", "scope", "sight"]):
-            return "Attachments", "Optics"
-
-        if any(x in cls for x in ["tlr", "tlrlight", "x300", "weaponlight"]):
-            return "Attachments", "Lights"
-
-        if any(x in cls for x in ["suppressor", "silencer", "muzzle", "brake", "compensator"]):
-            return "Attachments", "Muzzles"
-
-        if any(x in cls for x in ["_mag", " mag", "magazine", "cmag", "stanag"]):
-            return "Magazines", "Weapon Magazines"
-
-        return "Weapons", "Firearms"
-
-    # General fallback rules
-    if any(x in cls for x in ["optic", "scope", "sight"]):
-        return "Attachments", "Optics"
-
-    if any(x in cls for x in ["suppressor", "silencer"]):
-        return "Attachments", "Muzzles"
-
-    if any(x in cls for x in ["_mag", " mag", "magazine"]):
-        return "Magazines", "Weapon Magazines"
-
-    return "Miscellaneous", "Unclassified"
-
-def reclassify_ajw_by_classname():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id, classname, display_name
-        FROM items
-        WHERE LOWER(classname) LIKE '%ajw%'
-           OR LOWER(classname) LIKE 'mag_%'
-           OR LOWER(classname) LIKE '%optic%'
-           OR LOWER(classname) LIKE '%pso%'
-           OR LOWER(classname) LIKE '%kashtan%'
-           OR LOWER(classname) LIKE '%reflex%'
+        CREATE TABLE IF NOT EXISTS item_flags (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            item_id INTEGER NOT NULL,
+            issue_type TEXT NOT NULL,
+            note TEXT,
+            status TEXT DEFAULT 'open',
+            created_by TEXT DEFAULT 'Staff',
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            resolved_at TEXT,
+            suggested_category TEXT,
+            suggested_subcategory TEXT,
+            FOREIGN KEY (item_id) REFERENCES items(id)
+        )
     """)
 
-    items = cursor.fetchall()
-    updated = 0
-
-    for item in items:
-        category, subcategory = classify_item(
-            item["classname"],
-            item["display_name"],
-            "AJW Weapons"
-        )
-
-        cursor.execute("""
-            UPDATE items
-            SET category = ?, subcategory = ?
-            WHERE id = ?
-        """, (category, subcategory, item["id"]))
-
-        updated += 1
-
-    conn.commit()
-    conn.close()
-
-    print(f"✅ Reclassified {updated} AJW-like items by classname.")
-
-def add_item_flag(classname, issue_type, note=None, created_by="Staff", suggested_category=None, suggested_subcategory=None):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
-    item = cursor.fetchone()
-
-    if not item:
-        conn.close()
-        return False
-
     cursor.execute("""
-        INSERT INTO item_flags (
-            item_id,
-            issue_type,
-            note,
-            created_by,
-            suggested_category,
-            suggested_subcategory
+        CREATE TABLE IF NOT EXISTS item_relationships (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source_item_id INTEGER,
+            target_item_id INTEGER,
+            relationship_type TEXT,
+            chance REAL,
+            notes TEXT,
+            UNIQUE (
+                source_item_id,
+                target_item_id,
+                relationship_type
+            ),
+            FOREIGN KEY (source_item_id) REFERENCES items(id),
+            FOREIGN KEY (target_item_id) REFERENCES items(id)
         )
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (
-        item[0],
-        issue_type,
-        note,
-        created_by,
-        suggested_category,
-        suggested_subcategory
-    ))
-
-    conn.commit()
-    conn.close()
-    return True
-
-
-def get_open_item_flags():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            item_flags.*,
-            items.classname,
-            items.display_name,
-            items.category,
-            items.subcategory,
-            mods.name AS mod_name
-        FROM item_flags
-        JOIN items ON item_flags.item_id = items.id
-        LEFT JOIN mods ON items.mod_id = mods.id
-        WHERE item_flags.status = 'open'
-        ORDER BY item_flags.created_at DESC
     """)
 
-    flags = cursor.fetchall()
-    conn.close()
-    return flags
-
-
-def resolve_item_flag(flag_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        UPDATE item_flags
-        SET status = 'resolved',
-            resolved_at = CURRENT_TIMESTAMP
-        WHERE id = ?
-    """, (flag_id,))
+    # Safe migrations for older databases.
+    for table, column, column_type in [
+        ("favorites", "last_used", "TEXT"),
+        ("item_flags", "suggested_category", "TEXT"),
+        ("item_flags", "suggested_subcategory", "TEXT"),
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE {table} ADD COLUMN {column} {column_type}")
+        except sqlite3.OperationalError:
+            pass
 
     conn.commit()
     conn.close()
-   
+
+
+# ============================================================
+# Mods
+# ============================================================
+
 def add_mod(name, author=None, type=None, logo=None, website=None, description=None):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -270,8 +150,51 @@ def add_mod(name, author=None, type=None, logo=None, website=None, description=N
     conn.close()
 
 
+def get_mod_counts():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            mods.name,
+            mods.logo,
+            mods.author,
+            mods.website,
+            COUNT(items.id) AS item_count
+        FROM mods
+        LEFT JOIN items ON items.mod_id = mods.id
+        GROUP BY mods.id
+        ORDER BY mods.name
+    """)
+
+    mods = cursor.fetchall()
+    conn.close()
+    return mods
+
+
+def get_items_by_mod(mod_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.*, mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE mods.name = ?
+        ORDER BY items.display_name
+    """, (mod_name,))
+
+    items = cursor.fetchall()
+    conn.close()
+    return items
+
+
+# ============================================================
+# Items
+# ============================================================
+
 def add_item(classname, display_name, description=None, category=None, subcategory=None, mod_id=None, image=None):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     mod_name = ""
@@ -280,30 +203,134 @@ def add_item(classname, display_name, description=None, category=None, subcatego
         cursor.execute("SELECT name FROM mods WHERE id = ?", (mod_id,))
         mod = cursor.fetchone()
         if mod:
-            mod_name = mod[0]
+            mod_name = mod["name"]
 
     if not category or not subcategory:
-        category, subcategory = classify_item(
-            classname,
-            display_name,
-            mod_name
-        )
+        category, subcategory = classify_item(classname, display_name, mod_name)
 
     cursor.execute("""
-        INSERT OR IGNORE INTO items (classname, display_name, description, category, subcategory, mod_id, image)
+        INSERT OR IGNORE INTO items (
+            classname,
+            display_name,
+            description,
+            category,
+            subcategory,
+            mod_id,
+            image
+        )
         VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (classname, display_name, description, category, subcategory, mod_id, image))
+    """, (
+        classname,
+        display_name,
+        description,
+        category,
+        subcategory,
+        mod_id,
+        image
+    ))
 
     conn.commit()
     conn.close()
 
-def reclassify_mod_items(mod_name):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+
+def get_all_items():
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT items.id, items.classname, items.display_name, items.category, items.subcategory
+        SELECT items.*, mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods ON items.mod_id = mods.id
+        ORDER BY items.display_name
+    """)
+
+    items = cursor.fetchall()
+    conn.close()
+    return items
+
+
+def get_item_by_classname(classname):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            items.*,
+            mods.name AS mod_name,
+            mods.author AS mod_author,
+            mods.type AS mod_type,
+            mods.logo AS mod_logo
+        FROM items
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE items.classname = ?
+    """, (classname,))
+
+    item = cursor.fetchone()
+    conn.close()
+    return item
+
+
+def search_items(query):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    search_term = f"%{query}%"
+
+    cursor.execute("""
+        SELECT items.*, mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE items.display_name LIKE ?
+           OR items.classname LIKE ?
+        ORDER BY items.display_name
+    """, (search_term, search_term))
+
+    results = cursor.fetchall()
+    conn.close()
+    return results
+
+
+def get_items_by_category(category):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.*, mods.name AS mod_name
+        FROM items
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE COALESCE(NULLIF(items.category, ''), 'Uncategorized') = ?
+        ORDER BY items.display_name
+    """, (category,))
+
+    items = cursor.fetchall()
+    conn.close()
+    return items
+
+
+def get_category_counts():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            COALESCE(NULLIF(category, ''), 'Uncategorized') AS category,
+            COUNT(*) AS item_count
+        FROM items
+        GROUP BY COALESCE(NULLIF(category, ''), 'Uncategorized')
+        ORDER BY category
+    """)
+
+    categories = cursor.fetchall()
+    conn.close()
+    return categories
+
+
+def reclassify_mod_items(mod_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.id, items.classname, items.display_name
         FROM items
         JOIN mods ON items.mod_id = mods.id
         WHERE mods.name = ?
@@ -333,264 +360,12 @@ def reclassify_mod_items(mod_name):
     print(f"✅ Reclassified {updated} items from {mod_name}.")
 
 
-def get_all_items():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT items.*, mods.name AS mod_name
-        FROM items
-        LEFT JOIN mods ON items.mod_id = mods.id
-        ORDER BY display_name
-    """)
-
-    items = cursor.fetchall()
-    conn.close()
-
-    return items
-
-
-def get_item_by_classname(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            items.*,
-            mods.name AS mod_name,
-            mods.author AS mod_author,
-            mods.type AS mod_type,
-            mods.logo AS mod_logo
-        FROM items
-        LEFT JOIN mods ON items.mod_id = mods.id
-        WHERE items.classname = ?
-    """, (classname,))
-
-    item = cursor.fetchone()
-    conn.close()
-
-    return item
-
-
-def search_items(query):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    search_term = f"%{query}%"
-
-    cursor.execute("""
-        SELECT items.*, mods.name AS mod_name
-        FROM items
-        LEFT JOIN mods ON items.mod_id = mods.id
-        WHERE
-            items.display_name LIKE ?
-            OR items.classname LIKE ?
-        ORDER BY items.display_name
-    """, (
-        search_term,
-        search_term
-    ))
-
-    results = cursor.fetchall()
-    conn.close()
-
-    return results
-
-
-def get_category_counts():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            COALESCE(NULLIF(category, ''), 'Uncategorized') AS category,
-            COUNT(*) AS item_count
-        FROM items
-        GROUP BY COALESCE(NULLIF(category, ''), 'Uncategorized')
-        ORDER BY category
-    """)
-
-    categories = cursor.fetchall()
-    conn.close()
-
-    return categories
-
-
-def get_mod_counts():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            mods.name,
-            mods.logo,
-            mods.author,
-            mods.website,
-            COUNT(items.id) AS item_count
-        FROM mods
-        LEFT JOIN items
-            ON items.mod_id = mods.id
-        GROUP BY mods.id
-        ORDER BY mods.name
-    """)
-
-    mods = cursor.fetchall()
-    conn.close()
-
-    return mods
-def get_relationships_for_item(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            target.classname,
-            target.display_name,
-            target.category,
-            target.subcategory,
-            target.item_type,
-            item_relationships.relationship_type,
-            item_relationships.chance
-        FROM item_relationships
-        JOIN items source ON source.id = item_relationships.source_item_id
-        JOIN items target ON target.id = item_relationships.target_item_id
-        WHERE source.classname = ?
-        ORDER BY item_relationships.relationship_type, target.display_name
-    """, (classname,))
-
-    relationships = cursor.fetchall()
-    conn.close()
-    return relationships
-
-
-def get_reverse_relationships_for_item(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            source.classname,
-            source.display_name,
-            source.category,
-            source.subcategory,
-            source.item_type,
-            item_relationships.relationship_type,
-            item_relationships.chance
-        FROM item_relationships
-        JOIN items source ON source.id = item_relationships.source_item_id
-        JOIN items target ON target.id = item_relationships.target_item_id
-        WHERE target.classname = ?
-        ORDER BY item_relationships.relationship_type, source.display_name
-    """, (classname,))
-
-    relationships = cursor.fetchall()
-    conn.close()
-    return relationships
-
-
-def get_dashboard_stats():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM items")
-    item_count = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM mods")
-    mod_count = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM tags")
-    tag_count = cursor.fetchone()[0]
-
-    relationship_count = 0
-
-    conn.close()
-
-    return {
-        "items": item_count,
-        "mods": mod_count,
-        "tags": tag_count,
-        "relationships": relationship_count
-    }
-def get_items_by_category(category):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT items.*, mods.name AS mod_name
-        FROM items
-        LEFT JOIN mods ON items.mod_id = mods.id
-        WHERE COALESCE(NULLIF(items.category, ''), 'Uncategorized') = ?
-        ORDER BY items.display_name
-    """, (category,))
-
-    items = cursor.fetchall()
-    conn.close()
-
-    return items
-def get_items_by_mod(mod_name):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT items.*, mods.name AS mod_name
-        FROM items
-        LEFT JOIN mods ON items.mod_id = mods.id
-        WHERE mods.name = ?
-        ORDER BY items.display_name
-    """, (mod_name,))
-
-    items = cursor.fetchall()
-    conn.close()
-    return items
-
-def get_items_by_mod(mod_name):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT items.*, mods.name AS mod_name
-        FROM items
-        LEFT JOIN mods ON items.mod_id = mods.id
-        WHERE mods.name = ?
-        ORDER BY items.display_name
-    """, (mod_name,))
-
-    items = cursor.fetchall()
-    conn.close()
-
-    return items
-def get_favorites():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT items.*, mods.name AS mod_name
-        FROM favorites
-        JOIN items ON favorites.item_id = items.id
-        LEFT JOIN mods ON items.mod_id = mods.id
-        ORDER BY CASE WHEN favorites.last_used IS NULL THEN 1 ELSE 0 END,
-        favorites.last_used DESC,
-        favorites.created_at DESC
-    """)
-
-    favorites = cursor.fetchall()
-    conn.close()
-    return favorites
+# ============================================================
+# Relationships
+# ============================================================
 
 def get_relationships_for_item(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -609,6 +384,7 @@ def get_relationships_for_item(classname):
         WHERE source.classname = ?
         ORDER BY target.display_name
     """, (classname,))
+
     spawns_with = cursor.fetchall()
 
     cursor.execute("""
@@ -627,6 +403,7 @@ def get_relationships_for_item(classname):
         WHERE target.classname = ?
         ORDER BY source.display_name
     """, (classname,))
+
     spawned_in = cursor.fetchall()
 
     conn.close()
@@ -636,8 +413,33 @@ def get_relationships_for_item(classname):
         "spawned_in": spawned_in
     }
 
+
+# ============================================================
+# Favorites / Pins
+# ============================================================
+
+def get_favorites():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT items.*, mods.name AS mod_name
+        FROM favorites
+        JOIN items ON favorites.item_id = items.id
+        LEFT JOIN mods ON items.mod_id = mods.id
+        ORDER BY
+            CASE WHEN favorites.last_used IS NULL THEN 1 ELSE 0 END,
+            favorites.last_used DESC,
+            favorites.created_at DESC
+    """)
+
+    favorites = cursor.fetchall()
+    conn.close()
+    return favorites
+
+
 def is_favorite(classname):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -651,8 +453,9 @@ def is_favorite(classname):
     conn.close()
     return result is not None
 
+
 def mark_favorite_used(classname):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -666,8 +469,9 @@ def mark_favorite_used(classname):
     conn.commit()
     conn.close()
 
+
 def toggle_favorite(classname):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
@@ -677,7 +481,7 @@ def toggle_favorite(classname):
         conn.close()
         return
 
-    item_id = item[0]
+    item_id = item["id"]
 
     cursor.execute("SELECT id FROM favorites WHERE item_id = ?", (item_id,))
     favorite = cursor.fetchone()
@@ -690,9 +494,13 @@ def toggle_favorite(classname):
     conn.commit()
     conn.close()
 
+
+# ============================================================
+# Staff Notes
+# ============================================================
+
 def get_notes_for_item(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -707,121 +515,9 @@ def get_notes_for_item(classname):
     conn.close()
     return notes
 
-def delete_note(note_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
 
-    cursor.execute("DELETE FROM item_notes WHERE id = ?", (note_id,))
-
-    conn.commit()
-    conn.close()
-def get_tags_for_item(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT tags.*
-        FROM tags
-        JOIN item_tags ON tags.id = item_tags.tag_id
-        JOIN items ON items.id = item_tags.item_id
-        WHERE items.classname = ?
-        ORDER BY tags.name
-    """, (classname,))
-
-    tags = cursor.fetchall()
-    conn.close()
-    return tags
-def add_tag_to_item(classname, tag_name):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    tag_name = tag_name.strip().lower()
-
-    if not tag_name:
-        conn.close()
-        return
-
-    cursor.execute(
-        "INSERT OR IGNORE INTO tags(name) VALUES (?)",
-        (tag_name,)
-    )
-
-    cursor.execute(
-        "SELECT id FROM tags WHERE name=?",
-        (tag_name,)
-    )
-    tag_id = cursor.fetchone()[0]
-
-    cursor.execute(
-        "SELECT id FROM items WHERE classname=?",
-        (classname,)
-    )
-    item_id = cursor.fetchone()[0]
-
-    cursor.execute("""
-        INSERT OR IGNORE INTO item_tags(item_id, tag_id)
-        VALUES (?, ?)
-    """, (item_id, tag_id))
-
-    conn.commit()
-    conn.close()
-
-def get_tags_for_item(classname):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT tags.*
-        FROM tags
-        JOIN item_tags ON tags.id = item_tags.tag_id
-        JOIN items ON items.id = item_tags.item_id
-        WHERE items.classname = ?
-        ORDER BY tags.name
-    """, (classname,))
-
-    tags = cursor.fetchall()
-    conn.close()
-    return tags
-
-def add_tag_to_item(classname, tag_name):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    tag_name = tag_name.strip().lower()
-
-    if not tag_name:
-        conn.close()
-        return
-
-    cursor.execute(
-        "INSERT OR IGNORE INTO tags(name) VALUES (?)",
-        (tag_name,)
-    )
-
-    cursor.execute(
-        "SELECT id FROM tags WHERE name=?",
-        (tag_name,)
-    )
-    tag_id = cursor.fetchone()[0]
-
-    cursor.execute(
-        "SELECT id FROM items WHERE classname=?",
-        (classname,)
-    )
-    item_id = cursor.fetchone()[0]
-
-    cursor.execute("""
-        INSERT OR IGNORE INTO item_tags(item_id, tag_id)
-        VALUES (?, ?)
-    """, (item_id, tag_id))
-
-    conn.commit()
-    conn.close()
-    
 def add_note_to_item(classname, note, author="Staff"):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
@@ -831,82 +527,189 @@ def add_note_to_item(classname, note, author="Staff"):
         cursor.execute("""
             INSERT INTO item_notes (item_id, author, note)
             VALUES (?, ?, ?)
-        """, (item[0], author, note))
+        """, (item["id"], author, note))
 
     conn.commit()
     conn.close()
-    
+
+
+def delete_note(note_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM item_notes WHERE id = ?", (note_id,))
+
+    conn.commit()
+    conn.close()
+
+
+# ============================================================
+# Tags
+# ============================================================
+
+def get_tags_for_item(classname):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT tags.*
+        FROM tags
+        JOIN item_tags ON tags.id = item_tags.tag_id
+        JOIN items ON items.id = item_tags.item_id
+        WHERE items.classname = ?
+        ORDER BY tags.name
+    """, (classname,))
+
+    tags = cursor.fetchall()
+    conn.close()
+    return tags
+
+
+def add_tag_to_item(classname, tag_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    tag_name = tag_name.strip().lower()
+
+    if not tag_name:
+        conn.close()
+        return
+
+    cursor.execute(
+        "INSERT OR IGNORE INTO tags(name) VALUES (?)",
+        (tag_name,)
+    )
+
+    cursor.execute(
+        "SELECT id FROM tags WHERE name = ?",
+        (tag_name,)
+    )
+    tag = cursor.fetchone()
+
+    cursor.execute(
+        "SELECT id FROM items WHERE classname = ?",
+        (classname,)
+    )
+    item = cursor.fetchone()
+
+    if tag and item:
+        cursor.execute("""
+            INSERT OR IGNORE INTO item_tags(item_id, tag_id)
+            VALUES (?, ?)
+        """, (item["id"], tag["id"]))
+
+    conn.commit()
+    conn.close()
+
+
+# ============================================================
+# Flags / Reports
+# ============================================================
+
+def add_item_flag(classname, issue_type, note=None, created_by="Staff", suggested_category=None, suggested_subcategory=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
+    item = cursor.fetchone()
+
+    if not item:
+        conn.close()
+        return False
+
+    cursor.execute("""
+        INSERT INTO item_flags (
+            item_id,
+            issue_type,
+            note,
+            created_by,
+            suggested_category,
+            suggested_subcategory
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (
+        item["id"],
+        issue_type,
+        note,
+        created_by,
+        suggested_category,
+        suggested_subcategory
+    ))
+
+    conn.commit()
+    conn.close()
+    return True
+
+
+def get_open_item_flags():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            item_flags.*,
+            items.classname,
+            items.display_name,
+            items.category,
+            items.subcategory,
+            mods.name AS mod_name
+        FROM item_flags
+        JOIN items ON item_flags.item_id = items.id
+        LEFT JOIN mods ON items.mod_id = mods.id
+        WHERE item_flags.status = 'open'
+        ORDER BY item_flags.created_at DESC
+    """)
+
+    flags = cursor.fetchall()
+    conn.close()
+    return flags
+
+
+def resolve_item_flag(flag_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE item_flags
+        SET status = 'resolved',
+            resolved_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    """, (flag_id,))
+
+    conn.commit()
+    conn.close()
+
+
+# ============================================================
+# Dashboard
+# ============================================================
+
+def get_dashboard_stats():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) AS count FROM items")
+    item_count = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) AS count FROM mods")
+    mod_count = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) AS count FROM tags")
+    tag_count = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) AS count FROM item_relationships")
+    relationship_count = cursor.fetchone()["count"]
+
+    conn.close()
+
+    return {
+        "items": item_count,
+        "mods": mod_count,
+        "tags": tag_count,
+        "relationships": relationship_count
+    }
+
 
 if __name__ == "__main__":
-    reclassify_ajw_by_classname()
-
-    add_mod(
-        name="Vanilla DayZ",
-        author="Bohemia Interactive",
-        type="Vanilla",
-        logo="vanilla.png",
-        description="Base game DayZ items."
-    )
-
-    add_item(
-        classname="Rag",
-        display_name="Rag",
-        description="A basic cloth item used for bandaging wounds and basic survival crafting.",
-        category="Medical",
-        subcategory="Bandage",
-        mod_id=1,
-        image="Rag.png"
-    )
-    add_item(
-        classname="M4A1",
-        display_name="M4A1",
-        description="A modular assault rifle used for high-end military encounters.",
-        category="Weapons",
-        subcategory="Rifle",
-        mod_id=1,
-        image="M4A1.png"
-    )
-
-    add_item(
-        classname="TacticalShirt_Black",
-        display_name="Black Tactical Shirt",
-        description="A durable tactical shirt with storage space and basic protection.",
-        category="Clothing",
-        subcategory="Shirt",
-        mod_id=1,
-        image="TacticalShirt_Black.png"
-    )
-
-    add_item(
-        classname="BakedBeansCan",
-        display_name="Baked Beans",
-        description="A canned food item useful for basic survival.",
-        category="Food",
-        subcategory="Canned Food",
-        mod_id=1,
-        image="BakedBeansCan.png"
-    )
-
-    add_item(
-        classname="Screwdriver",
-        display_name="Screwdriver",
-        description="A basic tool used for repairs, crafting, and utility tasks.",
-        category="Tools",
-        subcategory="Hand Tool",
-        mod_id=1,
-        image="Screwdriver.png"
-    )
-
-    add_item(
-        classname="HuntingKnife",
-        display_name="Hunting Knife",
-        description="A survival knife used for skinning, cutting, and general wilderness tasks.",
-        category="Survival",
-        subcategory="Knife",
-        mod_id=1,
-        image="HuntingKnife.png"
-    )
-
-
-
-    print("✅ Starter data added successfully.")
+    initialize_database()
+    print("✅ Database initialized successfully.")

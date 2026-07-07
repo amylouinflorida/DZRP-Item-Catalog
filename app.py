@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from flask import (
     Flask,
     render_template,
@@ -6,7 +8,6 @@ from flask import (
     url_for,
     abort,
 )
-
 
 from database import (
     get_all_items,
@@ -27,13 +28,13 @@ from database import (
     get_tags_for_item,
     add_tag_to_item,
     get_relationships_for_item,
-    get_reverse_relationships_for_item,
     add_item_flag,
     get_open_item_flags,
-    resolve_item_flag
+    resolve_item_flag,
 )
+
 from category_styles import get_category_style
-from services.classification_service import classify_item
+
 
 app = Flask(__name__)
 
@@ -51,7 +52,7 @@ def home():
         categories=categories,
         mods=mods,
         favorites=favorites,
-        active_page="dashboard"
+        active_page="dashboard",
     )
 
 
@@ -60,10 +61,11 @@ def catalog():
     items = get_all_items()
 
     return render_template(
-    "catalog.html",
-    items=items,
-    active_page="catalog"
-)
+        "catalog.html",
+        items=items,
+        active_page="catalog",
+    )
+
 
 @app.route("/item/<classname>")
 def item_detail(classname):
@@ -84,24 +86,22 @@ def item_detail(classname):
         notes=notes,
         tags=tags,
         relationships=relationships,
-        active_page="catalog"
+        active_page="catalog",
     )
+
 
 @app.route("/search")
 def search():
     query = request.args.get("q", "").strip()
-
-    results = []
-
-    if query:
-        results = search_items(query)
+    results = search_items(query) if query else []
 
     return render_template(
         "search.html",
         query=query,
-        results=results
+        results=results,
+        active_page="catalog",
     )
-from collections import defaultdict
+
 
 @app.route("/category/<category>")
 def category_page(category):
@@ -120,8 +120,10 @@ def category_page(category):
         category_style=category_style,
         items=items,
         grouped_items=grouped_items,
-        active_page="catalog"
+        active_page="catalog",
     )
+
+
 @app.route("/category/<category>/<subcategory>")
 def subcategory_page(category, subcategory):
     items = [
@@ -137,8 +139,20 @@ def subcategory_page(category, subcategory):
         subcategory=subcategory,
         category_style=category_style,
         items=items,
-        active_page="catalog"
+        active_page="catalog",
     )
+
+
+@app.route("/mods")
+def mods():
+    mods = get_mod_counts()
+
+    return render_template(
+        "mods.html",
+        mods=mods,
+        active_page="mods",
+    )
+
 
 @app.route("/mod/<mod_name>")
 def mod_page(mod_name):
@@ -148,22 +162,15 @@ def mod_page(mod_name):
         "mod.html",
         mod_name=mod_name,
         items=items,
-        active_page="mods"
+        active_page="mods",
     )
-@app.route("/mods")
-def mods():
-    mods = get_mod_counts()
 
-    return render_template(
-        "mods.html",
-        mods=mods,
-        active_page="mods"
-    )
+
 @app.route("/relationships")
 def relationships():
     return render_template(
         "relationships.html",
-        active_page="relationships"
+        active_page="relationships",
     )
 
 
@@ -171,31 +178,55 @@ def relationships():
 def management():
     return render_template(
         "management.html",
-        active_page="management"
+        active_page="management",
     )
+
+
+@app.route("/management/flags")
+def management_flags():
+    flags = get_open_item_flags()
+
+    return render_template(
+        "management_flags.html",
+        flags=flags,
+        active_page="management",
+    )
+
+
+@app.route("/management/flags/<int:flag_id>/resolve", methods=["POST"])
+def resolve_flag(flag_id):
+    resolve_item_flag(flag_id)
+    return redirect(url_for("management_flags"))
+
+
 @app.route("/favorite/<classname>", methods=["POST"])
 def favorite_item(classname):
     toggle_favorite(classname)
-    return redirect(request.referrer or "/catalog")
+    return redirect(request.referrer or url_for("catalog"))
+
+
 @app.route("/pins")
 def pins():
-
     favorites = get_favorites()
 
     return render_template(
         "pins.html",
         favorites=favorites,
-        active_page="dashboard"
+        active_page="dashboard",
     )
+
+
 @app.route("/pin-open/<classname>")
 def pin_open(classname):
     mark_favorite_used(classname)
-    return redirect(f"/item/{classname}")
+    return redirect(url_for("item_detail", classname=classname))
+
 
 @app.route("/notes/<int:note_id>/delete/<classname>", methods=["POST"])
 def delete_item_note(note_id, classname):
     delete_note(note_id)
-    return redirect(f"/item/{classname}")
+    return redirect(url_for("item_detail", classname=classname))
+
 
 @app.route("/item/<classname>/tags", methods=["POST"])
 def add_item_tag(classname):
@@ -204,7 +235,8 @@ def add_item_tag(classname):
     if tag:
         add_tag_to_item(classname, tag)
 
-    return redirect(f"/item/{classname}")
+    return redirect(url_for("item_detail", classname=classname))
+
 
 @app.route("/item/<classname>/notes", methods=["POST"])
 def add_item_note(classname):
@@ -213,14 +245,13 @@ def add_item_note(classname):
     if note:
         add_note_to_item(classname, note)
 
-    return redirect(f"/item/{classname}")
-@app.route("/item/<classname>/flag", methods=["POST"])
+    return redirect(url_for("item_detail", classname=classname))
+
 
 @app.route("/item/<classname>/flag", methods=["POST"])
 def flag_item(classname):
     issue_type = request.form.get("issue_type")
     note = request.form.get("note")
-
     suggested_category = request.form.get("suggested_category")
     suggested_subcategory = request.form.get("suggested_subcategory")
 
@@ -230,25 +261,11 @@ def flag_item(classname):
         note=note,
         created_by="Staff",
         suggested_category=suggested_category,
-        suggested_subcategory=suggested_subcategory
+        suggested_subcategory=suggested_subcategory,
     )
 
     return redirect(url_for("item_detail", classname=classname))
 
-@app.route("/management/flags")
-def management_flags():
-    flags = get_open_item_flags()
-
-    return render_template(
-        "management_flags.html",
-        flags=flags,
-        active_page="management"
-    )
-
-@app.route("/management/flags/<int:flag_id>/resolve", methods=["POST"])
-def resolve_flag(flag_id):
-    resolve_item_flag(flag_id)
-    return redirect(url_for("management_flags"))
 
 if __name__ == "__main__":
     app.run(debug=True)
