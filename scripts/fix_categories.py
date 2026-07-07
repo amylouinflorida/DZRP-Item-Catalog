@@ -1,22 +1,20 @@
-import sqlite3
+import sys
 from pathlib import Path
 
-DB_PATH = Path("data/database/dayzrp_catalog.db")
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
 
-conn = sqlite3.connect(DB_PATH)
-cur = conn.cursor()
+from database import DB_PATH, update_item_category, debug_item
 
-cur.execute("""
-    UPDATE items
-    SET category = 'Weapons',
-        subcategory = 'Melee',
-        item_type = 'Melee Weapon'
-    WHERE category = 'Survival'
-       OR classname LIKE '%Knife%'
-       OR display_name LIKE '%Knife%'
-""")
+print("Using database:", DB_PATH.resolve())
 
-conn.commit()
-print("Updated rows:", cur.rowcount)
+before = debug_item("AMS_Heatpack")
+print("Before:", dict(before) if before else "NOT FOUND")
 
-conn.close()
+update_item_category("AMS_Heatpack", "Equipment", "Survival")
+
+after = debug_item("AMS_Heatpack")
+
+update_item_category("AJW_TLRLight", "Attachments", "Flashlights")
+
+print("After:", dict(after) if after else "NOT FOUND")

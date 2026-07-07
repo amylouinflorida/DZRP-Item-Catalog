@@ -6,12 +6,7 @@ from collections import Counter
 ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
-from database import (
-    initialize_database,
-    get_or_create_mod,
-    add_item,
-)
-
+from database import initialize_database, get_or_create_mod, add_item
 from catalog.taxonomy import classify_item
 
 
@@ -38,17 +33,14 @@ def import_ams():
     root = tree.getroot()
 
     summary = Counter()
+    unclassified = []
     imported = 0
     skipped = 0
 
     for type_node in root.findall("type"):
         classname = type_node.attrib.get("name")
 
-        if not classname:
-            skipped += 1
-            continue
-
-        if not classname.startswith("AMS_"):
+        if not classname or not classname.startswith("AMS_"):
             skipped += 1
             continue
 
@@ -57,6 +49,9 @@ def import_ams():
             display_name=classname,
             mod_name=MOD_NAME,
         )
+
+        if category == "Miscellaneous":
+            unclassified.append(classname)
 
         add_item(
             classname=classname,
@@ -82,26 +77,17 @@ def import_ams():
 
     for label, count in summary.most_common():
         print(f"{label}: {count}")
-        for type_node in root.findall("type"):
-            classname = type_node.attrib.get("name")
 
-    if not classname or not classname.startswith("AMS_"):
-        continue
+    print("----------------------------------------")
+    print("Unclassified items:")
 
-    category, subcategory = classify_item(
-        classname=classname,
-        display_name=classname,
-        mod_name=MOD_NAME,
-    )
-
-    if category == "Miscellaneous":
-        print(f" - {classname}")
+    if unclassified:
+        for classname in unclassified:
+            print(f" - {classname}")
+    else:
+        print(" None")
 
     print("========================================")
-
-    print("\nUnclassified items:")
-
-
 
 
 if __name__ == "__main__":

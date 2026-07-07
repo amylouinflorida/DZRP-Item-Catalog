@@ -767,6 +767,35 @@ def get_management_stats():
         "missing_images": missing_images,
         "missing_descriptions": missing_descriptions,
     }
+def update_item_category(classname, category, subcategory=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE items
+        SET category = ?,
+            subcategory = ?
+        WHERE classname = ?
+    """, (category, subcategory, classname))
+
+    conn.commit()
+    conn.close()
+
+def debug_item(classname):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT classname, category, subcategory
+        FROM items
+        WHERE classname = ?
+    """, (classname,))
+
+    item = cursor.fetchone()
+    conn.close()
+
+    return item
+
 def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
     conn = get_connection()
     cursor = conn.cursor()

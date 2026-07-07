@@ -195,7 +195,6 @@ def classify_weapon_family(classname):
 
 def classify_item(classname, display_name="", mod_name=""):
     cls = classname.lower()
-    text = f"{classname} {display_name}".lower()
     mod = (mod_name or "").lower()
 
     # Additional Medical Supplies
@@ -223,26 +222,21 @@ def classify_item(classname, display_name="", mod_name=""):
             "energy",
             "goldenstar",
             "pox",
-            "ai2"
+            "ai2",
         ]):
             return "Medical", "Pharmaceuticals"
 
         if any(x in cls for x in ["splint", "absorbent", "bandagetape"]):
             return "Medical", "Medical Tools"
 
-    if "waterstraw" in cls:
-        return "Equipment", "Survival"
+        if any(x in cls for x in ["waterstraw", "heatpack"]):
+            return "Equipment", "Survival"
 
-    if "heatpack" in cls:
-        return "Equipment", "Survival"
+        if "whistle" in cls:
+            return "Tools", "Utility"
 
-    if "whistle" in cls:
-        return "Tools", "Utility"
-
-    return "Miscellaneous", "Unclassified"
-
-    if "testkitreport" in cls:
-        return "Medical", "Diagnostics"
+        if "testkitreport" in cls:
+            return "Medical", "Diagnostics"
 
         return "Miscellaneous", "Unclassified"
 
@@ -278,9 +272,12 @@ def classify_item(classname, display_name="", mod_name=""):
     # Weapons
     if "ajw" in mod or cls.startswith("ajw"):
         return "Weapons", classify_weapon_family(classname)
+    
+    if any(x in cls for x in ["tlr", "tlrlight", "x300", "weaponlight", "gunlight"]):
+        return "Attachments", "Flashlights"
 
     # General fallback
     if "ammo" in cls or "bullet" in cls or "round" in cls:
         return "Ammunition", "Rifle"
-    
-        return "Miscellaneous", "Unclassified"
+
+    return "Miscellaneous", "Unclassified"
