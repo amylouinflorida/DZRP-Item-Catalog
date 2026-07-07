@@ -31,6 +31,7 @@ from database import (
     add_item_flag,
     get_open_item_flags,
     resolve_item_flag,
+    get_management_stats
 )
 
 from category_styles import get_category_style
@@ -176,9 +177,12 @@ def relationships():
 
 @app.route("/management")
 def management():
+    stats = get_management_stats()
+
     return render_template(
         "management.html",
-        active_page="management",
+        stats=stats,
+        active_page="management"
     )
 
 

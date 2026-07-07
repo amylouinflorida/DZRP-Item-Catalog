@@ -708,7 +708,65 @@ def get_dashboard_stats():
         "tags": tag_count,
         "relationships": relationship_count
     }
+# ============================================================
+# Management
+# ============================================================
+def get_management_stats():
+    conn = get_connection()
+    cursor = conn.cursor()
 
+    cursor.execute("SELECT COUNT(*) AS count FROM items")
+    total_items = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) AS count FROM mods")
+    total_mods = cursor.fetchone()["count"]
+
+    cursor.execute("SELECT COUNT(*) AS count FROM item_relationships")
+    total_relationships = cursor.fetchone()["count"]
+
+    cursor.execute("""
+        SELECT COUNT(*) AS count
+        FROM item_flags
+        WHERE status = 'open'
+    """)
+    open_flags = cursor.fetchone()["count"]
+
+    cursor.execute("""
+        SELECT COUNT(*) AS count
+        FROM items
+        WHERE category = 'Miscellaneous'
+           OR category IS NULL
+           OR category = ''
+    """)
+    miscellaneous_items = cursor.fetchone()["count"]
+
+    cursor.execute("""
+        SELECT COUNT(*) AS count
+        FROM items
+        WHERE image IS NULL
+           OR image = ''
+    """)
+    missing_images = cursor.fetchone()["count"]
+
+    cursor.execute("""
+        SELECT COUNT(*) AS count
+        FROM items
+        WHERE description IS NULL
+           OR description = ''
+    """)
+    missing_descriptions = cursor.fetchone()["count"]
+
+    conn.close()
+
+    return {
+        "total_items": total_items,
+        "total_mods": total_mods,
+        "total_relationships": total_relationships,
+        "open_flags": open_flags,
+        "miscellaneous_items": miscellaneous_items,
+        "missing_images": missing_images,
+        "missing_descriptions": missing_descriptions,
+    }
 
 if __name__ == "__main__":
     initialize_database()
