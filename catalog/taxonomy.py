@@ -81,6 +81,7 @@ CATEGORY_TREE = {
         "Footwear",
         "Belts",
         "Armbands",
+        "NBC Equipment",
     ],
 
     "Equipment": [
@@ -91,6 +92,7 @@ CATEGORY_TREE = {
         "Navigation",
         "Lighting",
         "Survival",
+        "Filters",
     ],
 
     "Tools": [
@@ -196,6 +198,49 @@ def classify_item(classname, display_name="", mod_name=""):
     text = f"{classname} {display_name}".lower()
     mod = (mod_name or "").lower()
 
+    # Additional Medical Supplies
+    if cls.startswith("ams_"):
+
+        if any(x in cls for x in ["gasmask", "nbc"]):
+            if "filter" in cls:
+                return "Equipment", "Filters"
+            return "Clothing", "NBC Equipment"
+
+        if any(x in cls for x in ["medchest", "firstaidkit", "mfak", "pouch"]):
+            return "Equipment", "Containers"
+
+        if any(x in cls for x in ["bandage", "bandaid", "tourniquet"]):
+            return "Medical", "Bandages"
+
+        if any(x in cls for x in [
+            "aspirin",
+            "methadone",
+            "narcotics",
+            "antisept",
+            "vikasol",
+            "poter",
+            "polaris",
+            "energy",
+            "goldenstar",
+            "pox",
+            "ai2"
+        ]):
+            return "Medical", "Pharmaceuticals"
+
+        if any(x in cls for x in ["splint", "absorbent", "bandagetape"]):
+            return "Medical", "Medical Tools"
+
+        if "waterstraw" in cls:
+            return "Equipment", "Survival"
+
+        if "whistle" in cls:
+            return "Tools", "Utility"
+
+        if "testkitreport" in cls:
+            return "Medical", "Diagnostics"
+
+        return "Miscellaneous", "Unclassified"
+
     # Attachments
     if any(x in cls for x in ["bttstock", "buttstock", "_stock", "magpul", "prs"]):
         return "Attachments", "Stocks"
@@ -215,7 +260,7 @@ def classify_item(classname, display_name="", mod_name=""):
     if any(x in cls for x in ["muzzle", "brake", "compensator"]):
         return "Attachments", "Muzzle Devices"
 
-    if any(x in cls for x in ["bipod"]):
+    if "bipod" in cls:
         return "Attachments", "Bipods"
 
     if any(x in cls for x in ["grip", "foregrip"]):
