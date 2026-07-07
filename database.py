@@ -767,6 +767,22 @@ def get_management_stats():
         "missing_images": missing_images,
         "missing_descriptions": missing_descriptions,
     }
+def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO mods (name, author, type, logo, website, description)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, author, type, logo, website, description))
+
+    cursor.execute("SELECT id FROM mods WHERE name = ?", (name,))
+    mod = cursor.fetchone()
+
+    conn.commit()
+    conn.close()
+
+    return mod["id"]
 
 if __name__ == "__main__":
     initialize_database()
