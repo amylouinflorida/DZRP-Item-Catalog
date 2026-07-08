@@ -79,7 +79,7 @@
         </div>
     {% endif %}
 
-    {% if selected_item %}
+        {% if selected_item %}
         <div class="dashboard-panel">
 
             <div class="section-nameplate">
@@ -93,7 +93,7 @@
 
                 <label>
                     Category
-                    <select name="category" class="recat-input">
+                    <select name="category" id="category-select" class="recat-input">
                         {% for category in categories %}
                             <option value="{{ category }}"
                                 {% if selected_item.category == category %}selected{% endif %}>
@@ -103,23 +103,48 @@
                     </select>
                 </label>
 
-               <label>
-    Subcategory
-    <select name="subcategory" class="recat-input">
-        {% for subcategory in subcategories_by_category[selected_item.category] %}
-            <option value="{{ subcategory }}"
-                {% if selected_item.subcategory == subcategory %}selected{% endif %}>
-                {{ subcategory }}
-            </option>
-        {% endfor %}
-    </select>
-</label>
+                <label>
+                    Subcategory
+                    <select name="subcategory" id="subcategory-select" class="recat-input"></select>
+                </label>
+
                 <button type="submit" class="recat-button">
                     Save Changes
                 </button>
             </form>
 
         </div>
+
+       <script>
+    var subcategoriesByCategory = {{ subcategories_by_category | tojson | safe }};
+    var categorySelect = document.getElementById("category-select");
+    var subcategorySelect = document.getElementById("subcategory-select");
+    var currentSubcategory = {{ (selected_item.subcategory or '') | tojson | safe }};
+
+    function updateSubcategories() {
+        var selectedCategory = categorySelect.value;
+        var subcategories = subcategoriesByCategory[selectedCategory] || [];
+
+        subcategorySelect.innerHTML = "";
+
+        for (var i = 0; i < subcategories.length; i++) {
+            var subcategory = subcategories[i];
+            var option = document.createElement("option");
+
+            option.value = subcategory;
+            option.textContent = subcategory;
+
+            if (subcategory === currentSubcategory) {
+                option.selected = true;
+            }
+
+            subcategorySelect.appendChild(option);
+        }
+    }
+
+    categorySelect.onchange = updateSubcategories;
+    updateSubcategories();
+</script>
     {% endif %}
 
 </div>

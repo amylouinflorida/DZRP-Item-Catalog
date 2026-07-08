@@ -284,7 +284,7 @@ def recategorize_items():
     selected_item = None
     message = None
 
-    categories = [
+    categories = sorted([
         "Weapons",
         "Clothing",
         "Medical",
@@ -294,7 +294,7 @@ def recategorize_items():
         "Base Building",
         "Electronics",
         "Miscellaneous",
-    ]
+    ])
     subcategories_by_category = {
     "Weapons": [
         "Assault Rifles",
@@ -331,6 +331,8 @@ def recategorize_items():
     "Electronics": ["Radios", "GPS", "Night Vision", "Batteries", "Lighting", "Communication", "Power"],
     "Miscellaneous": ["Quest Items", "Documents", "Books", "Currency", "Keys", "Collectibles", "Toys", "Decorations", "Other"],
 }
+    for category in subcategories_by_category:
+        subcategories_by_category[category].sort()
 
     if request.method == "POST":
         action = request.form.get("action")
@@ -354,7 +356,7 @@ def recategorize_items():
             selected_item = get_item_by_id(item_id)
             message = "Category updated successfully."
 
-    return render_template(
+        return render_template(
         "manage_recategorize.html",
         search_term=search_term,
         results=results,
