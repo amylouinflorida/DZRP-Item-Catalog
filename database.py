@@ -796,6 +796,45 @@ def debug_item(classname):
 
     return item
 
+MAIN_CATEGORIES = {
+    "Weapons": {"image": "weapons.png"},
+    "Clothing": {"image": "clothing.png"},
+    "Medical": {"image": "medical.png"},
+    "Food": {"image": "food.png"},
+    "Tools": {"image": "tools.png"},
+    "Vehicles": {"image": "vehicles.png"},
+    "Base Building": {"image": "base_building.png"},
+    "Electronics": {"image": "electronics.png"},
+    "Miscellaneous": {"image": "miscellaneous.png"},
+}
+
+
+def get_main_category_cards():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    cards = []
+
+    for category_name, data in MAIN_CATEGORIES.items():
+        row = cur.execute(
+            """
+            SELECT COUNT(*) AS item_count
+            FROM items
+            WHERE category = ?
+            """,
+            (category_name,),
+        ).fetchone()
+
+        cards.append({
+            "name": category_name,
+            "image": data["image"],
+            "item_count": row["item_count"],
+        })
+
+    conn.close()
+    return cards
+
 def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
     conn = get_connection()
     cursor = conn.cursor()

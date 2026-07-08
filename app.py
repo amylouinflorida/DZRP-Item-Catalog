@@ -31,7 +31,8 @@ from database import (
     add_item_flag,
     get_open_item_flags,
     resolve_item_flag,
-    get_management_stats
+    get_management_stats,
+    get_main_category_cards,
 )
 
 from category_styles import get_category_style
@@ -48,28 +49,7 @@ def home():
     mods = get_mod_counts()
     favorites = get_favorites()
 
-    conn = get_db_connection()
-
-    category_cards = []
-
-    for category_name, data in MAIN_CATEGORIES.items():
-        count = conn.execute(
-            """
-            SELECT COUNT(*) AS total
-            FROM items
-            WHERE category = ?
-            """,
-            (category_name,),
-        ).fetchone()["total"]
-
-        category_cards.append({
-            "name": category_name,
-            "image": data["image"],
-            "icon": data["icon"],
-            "count": count,
-        })
-
-    conn.close()
+    category_cards = get_main_category_cards()
 
     return render_template(
         "home.html",
@@ -80,7 +60,6 @@ def home():
         favorites=favorites,
         active_page="dashboard",
     )
-
 
 @app.route("/catalog")
 def catalog():
