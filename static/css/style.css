@@ -903,16 +903,15 @@
 =========================== */
 
 .dashboard-panels{
-
     display:grid;
-
     grid-template-columns:repeat(2,1fr);
-
     gap:18px;
 
+    align-items:start;
 }
 
 .dashboard-panel{
+    align-self:start;
 
     background:
         linear-gradient(
@@ -926,7 +925,6 @@
     border-radius:16px;
 
     padding:20px;
-
 }
 
 .dashboard-panel h2{
