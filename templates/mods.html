@@ -24,16 +24,28 @@
             <a class="mod-art-card" href="/mod/{{ mod.name }}">
 
                 <div class="mod-logo-wrap">
-                    {% if mod.logo %}
-                        <img
-                            src="{{ url_for('static', filename='images/mods/' ~ mod.logo) }}"
-                            alt="{{ mod.name }}">
-                    {% else %}
-                        <img
-                            src="{{ url_for('static', filename='images/items/no-image.png') }}"
-                            alt="{{ mod.name }}">
-                    {% endif %}
-                </div>
+
+    {% if mod.name == "Additional Medical Supplies" %}
+
+        <img
+            src="{{ url_for('static', filename='images/mods/ams.png') }}"
+            alt="{{ mod.name }}">
+
+    {% elif mod.logo %}
+
+        <img
+            src="{{ url_for('static', filename='images/mods/' ~ mod.logo) }}"
+            alt="{{ mod.name }}">
+
+    {% else %}
+
+        <img
+            src="{{ url_for('static', filename='images/items/no-image.png') }}"
+            alt="{{ mod.name }}">
+
+    {% endif %}
+
+</div>
 
                 <div class="mod-art-info">
                     <h3>{{ mod.name }}</h3>
