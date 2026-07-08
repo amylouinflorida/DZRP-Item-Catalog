@@ -835,6 +835,12 @@ def get_main_category_cards():
     conn.close()
     return cards
 
+
+
+
+
+
+
 def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
     conn = get_connection()
     cursor = conn.cursor()
