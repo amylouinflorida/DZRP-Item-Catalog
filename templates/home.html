@@ -234,26 +234,23 @@
     <div class="mod-art-grid">
         {% for mod in mods %}
             <a class="mod-art-card" href="/mod/{{ mod.name }}">
-                <div class="mod-logo-wrap">
+
+            <div class="mod-logo-wrap">
 
     {% if mod.name == "Additional Medical Supplies" %}
+        <img src="{{ url_for('static', filename='images/mods/additional_medical_supplies.png') }}" alt="{{ mod.name }}">
 
-        <img
-            src="{{ url_for('static', filename='images/mods/ams.png') }}"
-            alt="{{ mod.name }}">
+    {% elif mod.name == "AJW" %}
+        <img src="{{ url_for('static', filename='images/mods/ajw.png') }}" alt="{{ mod.name }}">
+
+    {% elif mod.name == "Vanilla" %}
+        <img src="{{ url_for('static', filename='images/mods/vanilla.png') }}" alt="{{ mod.name }}">
 
     {% elif mod.logo %}
-
-        <img
-            src="{{ url_for('static', filename='images/mods/' ~ mod.logo) }}"
-            alt="{{ mod.name }}">
+        <img src="{{ url_for('static', filename='images/mods/' ~ mod.logo) }}" alt="{{ mod.name }}">
 
     {% else %}
-
-        <img
-            src="{{ url_for('static', filename='images/items/no-image.png') }}"
-            alt="{{ mod.name }}">
-
+        <img src="{{ url_for('static', filename='images/items/no-image.png') }}" alt="{{ mod.name }}">
     {% endif %}
 
 </div>
