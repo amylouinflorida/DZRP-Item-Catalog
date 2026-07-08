@@ -33,6 +33,9 @@ from database import (
     resolve_item_flag,
     get_management_stats,
     get_main_category_cards,
+    find_items_for_recategory,
+    update_item_category,
+    get_item_by_id,
 )
 
 from category_styles import get_category_style

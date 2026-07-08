@@ -834,11 +834,65 @@ def get_main_category_cards():
 
     conn.close()
     return cards
+def find_items_for_recategory(search_term):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    like = f"%{search_term}%"
+
+    cursor.execute("""
+        SELECT
+            id,
+            classname,
+            display_name,
+            category,
+            subcategory
+        FROM items
+        WHERE classname LIKE ?
+           OR display_name LIKE ?
+        ORDER BY display_name
+        LIMIT 50
+    """, (like, like))
+
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
 
 
+def get_item_by_id(item_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            classname,
+            display_name,
+            category,
+            subcategory
+        FROM items
+        WHERE id = ?
+    """, (item_id,))
+
+    row = cursor.fetchone()
+    conn.close()
+    return row
 
 
+def update_item_category(item_id, category, subcategory):
+    conn = get_connection()
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        UPDATE items
+        SET
+            category = ?,
+            subcategory = ?
+        WHERE id = ?
+    """, (category, subcategory, item_id))
+
+    conn.commit()
+    conn.close()
 
 
 def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
