@@ -127,10 +127,13 @@
 
             <a class="management-action-card disabled" href="#">
                 <i class="fa-solid fa-tags"></i>
-                <div>
-                    <strong>Taxonomy Review</strong>
-                    <span>Future tools for category and subcategory cleanup.</span>
-                </div>
+                <a class="management-action-card" href="{{ url_for('recategorize_items') }}">
+    <i class="fa-solid fa-tags"></i>
+    <div>
+        <strong>Recategorize Items</strong>
+        <span>Search assets and update category or subcategory.</span>
+    </div>
+</a>
             </a>
 
         </div>

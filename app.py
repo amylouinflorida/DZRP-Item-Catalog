@@ -274,6 +274,57 @@ def flag_item(classname):
 
     return redirect(url_for("item_detail", classname=classname))
 
+@app.route("/manage/recategorize", methods=["GET", "POST"])
+def recategorize_items():
+    search_term = ""
+    results = []
+    selected_item = None
+    message = None
+
+    categories = [
+        "Weapons",
+        "Clothing",
+        "Medical",
+        "Food",
+        "Tools",
+        "Vehicles",
+        "Base Building",
+        "Electronics",
+        "Miscellaneous",
+    ]
+
+    if request.method == "POST":
+        action = request.form.get("action")
+
+        if action == "search":
+            search_term = request.form.get("search_term", "").strip()
+            if search_term:
+                results = find_items_for_recategory(search_term)
+
+        elif action == "select":
+            item_id = request.form.get("item_id")
+            selected_item = get_item_by_id(item_id)
+
+        elif action == "save":
+            item_id = request.form.get("item_id")
+            category = request.form.get("category")
+            subcategory = request.form.get("subcategory", "").strip()
+
+            update_item_category(item_id, category, subcategory)
+
+            selected_item = get_item_by_id(item_id)
+            message = "Category updated successfully."
+
+    return render_template(
+        "manage_recategorize.html",
+        search_term=search_term,
+        results=results,
+        selected_item=selected_item,
+        categories=categories,
+        message=message,
+        active_page="management",
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)

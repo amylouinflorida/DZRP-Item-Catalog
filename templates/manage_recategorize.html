@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Recategorize Items - DayZRP Item Catalog{% endblock %}
+
+{% block content %}
+
+{% set banner_title = "Recategorize Items" %}
+{% set banner_subtitle = "Search assets and quickly update their category or subcategory." %}
+{% set banner_icon = "fa-solid fa-tags" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Management Tool" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
+
+<div class="app-shell">
+
+    {% if message %}
+        <div class="success-message">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div class="dashboard-panel">
+
+        <div class="section-nameplate">
+            <h2>Search Item</h2>
+            <p>Search by classname or display name.</p>
+        </div>
+
+        <form method="POST" class="recat-search-form">
+            <input type="hidden" name="action" value="search">
+
+            <input
+                type="text"
+                name="search_term"
+                value="{{ search_term }}"
+                placeholder="Example: TLRLight, AK, Medical"
+                class="recat-input">
+
+            <button type="submit" class="recat-button">
+                Search
+            </button>
+        </form>
+
+    </div>
+
+    {% if results %}
+        <div class="dashboard-panel">
+
+            <div class="section-nameplate">
+                <h2>Search Results</h2>
+                <p>Select an item to edit.</p>
+            </div>
+
+            <div class="recat-results-list">
+                {% for item in results %}
+                    <form method="POST" class="recat-result-row">
+                        <input type="hidden" name="action" value="select">
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+
+                        <div>
+                            <strong>{{ item.display_name }}</strong>
+                            <span>{{ item.classname }}</span>
+                        </div>
+
+                        <div>
+                            {{ item.category or "No Category" }}
+                            /
+                            {{ item.subcategory or "No Subcategory" }}
+                        </div>
+
+                        <button type="submit" class="recat-small-button">
+                            Edit
+                        </button>
+                    </form>
+                {% endfor %}
+            </div>
+
+        </div>
+    {% endif %}
+
+    {% if selected_item %}
+        <div class="dashboard-panel">
+
+            <div class="section-nameplate">
+                <h2>Edit Category</h2>
+                <p>{{ selected_item.display_name }} / {{ selected_item.classname }}</p>
+            </div>
+
+            <form method="POST" class="recat-edit-form">
+                <input type="hidden" name="action" value="save">
+                <input type="hidden" name="item_id" value="{{ selected_item.id }}">
+
+                <label>
+                    Category
+                    <select name="category" class="recat-input">
+                        {% for category in categories %}
+                            <option value="{{ category }}"
+                                {% if selected_item.category == category %}selected{% endif %}>
+                                {{ category }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    Subcategory
+                    <input
+                        type="text"
+                        name="subcategory"
+                        value="{{ selected_item.subcategory or '' }}"
+                        placeholder="Example: Weapon Lights"
+                        class="recat-input">
+                </label>
+
+                <button type="submit" class="recat-button">
+                    Save Changes
+                </button>
+            </form>
+
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
