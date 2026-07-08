@@ -204,23 +204,24 @@
 
     <div class="category-art-grid">
 
-        {% for category in categories %}
-            <a class="category-art-card" href="/category/{{ category.category }}">
+        {% for category in category_cards %}
+            <a class="category-art-card" href="/category/{{ category.name }}">
+
                 <img
-                    src="{{ url_for('static', filename='images/categories/' ~ category.category|lower|replace(' ', '_') ~ '.png') }}"
-                    alt="{{ category.category }}">
+                    src="{{ url_for('static', filename='images/categories/' ~ category.image) }}"
+                    alt="{{ category.name }}">
 
                 <div class="category-art-overlay">
-                    <h3>{{ category.category }}</h3>
-                    <p>{{ category.item_count }} Assets</p>
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.count }} Assets</p>
                 </div>
+
             </a>
         {% endfor %}
 
     </div>
 
 </div>
-
         <!-- Browse by Mod -->
 
         <div class="dashboard-panel">

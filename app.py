@@ -35,6 +35,7 @@ from database import (
 )
 
 from category_styles import get_category_style
+from catalog_config import MAIN_CATEGORIES
 
 
 app = Flask(__name__)
@@ -47,10 +48,34 @@ def home():
     mods = get_mod_counts()
     favorites = get_favorites()
 
+    conn = get_db_connection()
+
+    category_cards = []
+
+    for category_name, data in MAIN_CATEGORIES.items():
+        count = conn.execute(
+            """
+            SELECT COUNT(*) AS total
+            FROM items
+            WHERE category = ?
+            """,
+            (category_name,),
+        ).fetchone()["total"]
+
+        category_cards.append({
+            "name": category_name,
+            "image": data["image"],
+            "icon": data["icon"],
+            "count": count,
+        })
+
+    conn.close()
+
     return render_template(
         "home.html",
         stats=stats,
         categories=categories,
+        category_cards=category_cards,
         mods=mods,
         favorites=favorites,
         active_page="dashboard",

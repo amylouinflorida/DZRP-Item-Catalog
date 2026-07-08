@@ -2348,3 +2348,51 @@
     opacity: 0.55;
     pointer-events: none;
 }
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+.category-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(20, 20, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(200, 160, 90, 0.65);
+}
+
+.category-image-wrap {
+    height: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.category-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-card-body {
+    padding: 1rem;
+}
+
+.category-card-body h3 {
+    margin: 0 0 0.35rem;
+}
+
+.category-card-body p {
+    margin: 0;
+    opacity: 0.75;
+}
