@@ -295,6 +295,42 @@ def recategorize_items():
         "Electronics",
         "Miscellaneous",
     ]
+    subcategories_by_category = {
+    "Weapons": [
+        "Assault Rifles",
+        "Battle Rifles",
+        "Bolt-Action Rifles",
+        "Designated Marksman Rifles",
+        "Sniper Rifles",
+        "Submachine Guns",
+        "Shotguns",
+        "Machine Guns",
+        "Pistols",
+        "Revolvers",
+        "Melee",
+        "Magazines",
+        "Ammunition",
+        "Ammo Boxes",
+        "Optics",
+        "Suppressors",
+        "Muzzle Devices",
+        "Stocks",
+        "Handguards",
+        "Grips",
+        "Weapon Lights",
+        "Lasers",
+        "Bipods",
+        "Rail Attachments",
+    ],
+    "Clothing": ["Headwear", "Facewear", "Eyewear", "Shirts", "Jackets", "Pants", "Gloves", "Footwear", "Vests", "Belts", "Holsters", "Backpacks", "Armbands", "Ghillie"],
+    "Medical": ["Medication", "Bandages", "Blood", "IV Supplies", "Surgical Supplies", "Diagnostics", "Medical Equipment"],
+    "Food": ["Food", "Drinks", "Ingredients", "Prepared Meals", "Fishing", "Hunting"],
+    "Tools": ["Hand Tools", "Repair Kits", "Crafting", "Utility", "Navigation", "Fire Starting", "Containers"],
+    "Vehicles": ["Engine Parts", "Wheels", "Body Parts", "Electrical", "Fuel", "Repair", "Vehicle Tools"],
+    "Base Building": ["Building Materials", "Storage", "Locks", "Containers", "Furniture", "Lighting", "Gardening"],
+    "Electronics": ["Radios", "GPS", "Night Vision", "Batteries", "Lighting", "Communication", "Power"],
+    "Miscellaneous": ["Quest Items", "Documents", "Books", "Currency", "Keys", "Collectibles", "Toys", "Decorations", "Other"],
+}
 
     if request.method == "POST":
         action = request.form.get("action")
@@ -326,6 +362,7 @@ def recategorize_items():
         categories=categories,
         message=message,
         active_page="management",
+        subcategories_by_category=subcategories_by_category,
     )
 
 

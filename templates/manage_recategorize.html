@@ -103,24 +103,16 @@
                     </select>
                 </label>
 
-                <label>
-                    Subcategory
-                    <input
-                        type="text"
-                        name="subcategory"
-                        value="{{ selected_item.subcategory or '' }}"
-                        placeholder="Example: Weapon Lights"
-                        class="recat-input">
-                </label>
-
-                <button type="submit" class="recat-button">
-                    Save Changes
-                </button>
-            </form>
-
-        </div>
-    {% endif %}
-
-</div>
+               <label>
+    Subcategory
+    <select name="subcategory" class="recat-input">
+        {% for subcategory in subcategories_by_category[selected_item.category] %}
+            <option value="{{ subcategory }}"
+                {% if selected_item.subcategory == subcategory %}selected{% endif %}>
+                {{ subcategory }}
+            </option>
+        {% endfor %}
+    </select>
+</label>
 
 {% endblock %}

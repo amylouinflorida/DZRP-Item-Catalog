@@ -834,6 +834,24 @@ def get_main_category_cards():
 
     conn.close()
     return cards
+
+def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO mods (name, author, type, logo, website, description)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, author, type, logo, website, description))
+
+    cursor.execute("SELECT id FROM mods WHERE name = ?", (name,))
+    mod = cursor.fetchone()
+
+    conn.commit()
+    conn.close()
+
+    return mod["id"]
+
 def find_items_for_recategory(search_term):
     conn = get_connection()
     cursor = conn.cursor()
@@ -893,24 +911,6 @@ def update_item_category(item_id, category, subcategory):
 
     conn.commit()
     conn.close()
-
-
-def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        INSERT OR IGNORE INTO mods (name, author, type, logo, website, description)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (name, author, type, logo, website, description))
-
-    cursor.execute("SELECT id FROM mods WHERE name = ?", (name,))
-    mod = cursor.fetchone()
-
-    conn.commit()
-    conn.close()
-
-    return mod["id"]
 
 if __name__ == "__main__":
     initialize_database()
