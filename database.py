@@ -132,6 +132,123 @@ def initialize_database():
     conn.commit()
     conn.close()
 
+# ============================================================
+# Preset Tables
+# ============================================================
+
+def initialize_preset_tables():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS presets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT,
+            preset_type TEXT NOT NULL DEFAULT 'personal',
+            created_by TEXT,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS preset_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            preset_id INTEGER NOT NULL,
+            slot_name TEXT NOT NULL,
+            item_id INTEGER,
+            quantity INTEGER NOT NULL DEFAULT 1,
+            notes TEXT,
+            sort_order INTEGER DEFAULT 0,
+            FOREIGN KEY (preset_id) REFERENCES presets(id),
+            FOREIGN KEY (item_id) REFERENCES items(id)
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS slot_definitions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            slot_name TEXT UNIQUE NOT NULL,
+            slot_group TEXT NOT NULL,
+            sort_order INTEGER DEFAULT 0
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+def seed_slot_definitions():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    slots = [
+        ("Head", "Character", 10),
+        ("Face", "Character", 20),
+        ("Torso", "Character", 30),
+        ("Chest / Vest", "Character", 40),
+        ("Hands", "Character", 50),
+        ("Legs", "Character", 60),
+        ("Feet", "Character", 70),
+        ("Backpack", "Character", 80),
+
+        ("Primary Weapon 1", "Weapons", 100),
+        ("Primary Weapon 1 - Magazine", "Weapons", 110),
+        ("Primary Weapon 1 - Handguard", "Weapons", 120),
+        ("Primary Weapon 1 - Handguard Light / Laser", "Weapons", 130),
+        ("Primary Weapon 1 - Handguard Foregrip", "Weapons", 140),
+        ("Primary Weapon 1 - Handguard Rails", "Weapons", 150),
+        ("Primary Weapon 1 - Buttstock", "Weapons", 160),
+        ("Primary Weapon 1 - Pistol Grip", "Weapons", 170),
+        ("Primary Weapon 1 - Muzzle / Suppressor / Compensator", "Weapons", 180),
+        ("Primary Weapon 1 - Optic", "Weapons", 190),
+        ("Primary Weapon 1 - Light / Laser", "Weapons", 200),
+        ("Primary Weapon 1 - Ghillie Wrap", "Weapons", 210),
+        ("Primary Weapon 1 - Bipod / Tripod", "Weapons", 220),
+        ("Primary Weapon 1 - Trigger", "Weapons", 230),
+        ("Primary Weapon 1 - Charging Bolt", "Weapons", 240),
+        ("Primary Weapon 1 - Under-Barrel Launcher", "Weapons", 250),
+
+        ("Primary Weapon 2", "Weapons", 300),
+        ("Primary Weapon 2 - Magazine", "Weapons", 310),
+        ("Primary Weapon 2 - Handguard", "Weapons", 320),
+        ("Primary Weapon 2 - Handguard Light / Laser", "Weapons", 330),
+        ("Primary Weapon 2 - Handguard Foregrip", "Weapons", 340),
+        ("Primary Weapon 2 - Handguard Rails", "Weapons", 350),
+        ("Primary Weapon 2 - Buttstock", "Weapons", 360),
+        ("Primary Weapon 2 - Pistol Grip", "Weapons", 370),
+        ("Primary Weapon 2 - Muzzle / Suppressor / Compensator", "Weapons", 380),
+        ("Primary Weapon 2 - Optic", "Weapons", 390),
+        ("Primary Weapon 2 - Light / Laser", "Weapons", 400),
+        ("Primary Weapon 2 - Ghillie Wrap", "Weapons", 410),
+        ("Primary Weapon 2 - Bipod / Tripod", "Weapons", 420),
+        ("Primary Weapon 2 - Trigger", "Weapons", 430),
+        ("Primary Weapon 2 - Charging Bolt", "Weapons", 440),
+        ("Primary Weapon 2 - Under-Barrel Launcher", "Weapons", 450),
+
+        ("Handgun", "Weapons", 500),
+        ("Handgun - Magazine", "Weapons", 510),
+        ("Handgun - Optic", "Weapons", 520),
+        ("Handgun - Muzzle / Suppressor / Compensator", "Weapons", 530),
+        ("Handgun - Light / Laser", "Weapons", 540),
+
+        ("Melee", "Weapons", 600),
+
+        ("Medical", "Supplies", 700),
+        ("Tools", "Supplies", 710),
+        ("Communications", "Supplies", 720),
+        ("Navigation", "Supplies", 730),
+        ("Food / Drink", "Supplies", 740),
+        ("Miscellaneous", "Supplies", 750),
+    ]
+
+    cursor.executemany("""
+        INSERT OR IGNORE INTO slot_definitions
+            (slot_name, slot_group, sort_order)
+        VALUES (?, ?, ?)
+    """, slots)
+
+    conn.commit()
+    conn.close()
 
 # ============================================================
 # Mods
