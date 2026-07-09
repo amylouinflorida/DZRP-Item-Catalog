@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}My Presets - DayZRP Item Catalog{% endblock %}
+
+{% block content %}
+
+{% set banner_title = "My Presets" %}
+{% set banner_subtitle = "Create and manage your personal loadout presets." %}
+{% set banner_icon = "fa-solid fa-clipboard-list" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Loadout Builder" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
+
+<div class="app-shell">
+
+    <div class="dashboard-panel">
+        <div class="section-nameplate">
+            <h2>Create New Preset</h2>
+            <p>Name a preset now. Equipment slots come next.</p>
+        </div>
+
+        <form method="POST" class="recat-edit-form">
+            <label>
+                Preset Name
+                <input
+                    type="text"
+                    name="name"
+                    class="recat-input"
+                    placeholder="Example: New Ares, Casual, Creepy Outfit"
+                    required>
+            </label>
+
+            <label>
+                Description
+                <input
+                    type="text"
+                    name="description"
+                    class="recat-input"
+                    placeholder="Optional notes">
+            </label>
+
+            <button type="submit" class="recat-button">
+                Create Preset
+            </button>
+        </form>
+    </div>
+
+    <div class="dashboard-panel">
+        <div class="section-nameplate">
+            <h2>Saved Presets</h2>
+            <p>Select a preset to edit its equipment.</p>
+        </div>
+
+        <div class="preset-card-grid">
+            {% for preset in presets %}
+                <a class="preset-card" href="/my-presets/{{ preset.id }}">
+                    <strong>{{ preset.name }}</strong>
+                    {% if preset.description %}
+                        <span>{{ preset.description }}</span>
+                    {% else %}
+                        <span>No description yet.</span>
+                    {% endif %}
+                </a>
+            {% else %}
+                <p>No presets yet. Create your first one above.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

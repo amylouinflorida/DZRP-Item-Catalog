@@ -2,48 +2,55 @@ from collections import defaultdict
 
 from flask import (
     Flask,
+    abort,
+    redirect,
     render_template,
     request,
-    redirect,
     url_for,
-    abort,
-)
-
-from database import (
-    get_all_items,
-    get_item_by_classname,
-    search_items,
-    get_dashboard_stats,
-    get_category_counts,
-    get_mod_counts,
-    get_items_by_category,
-    get_items_by_mod,
-    get_favorites,
-    is_favorite,
-    toggle_favorite,
-    mark_favorite_used,
-    get_notes_for_item,
-    add_note_to_item,
-    delete_note,
-    get_tags_for_item,
-    add_tag_to_item,
-    get_relationships_for_item,
-    add_item_flag,
-    get_open_item_flags,
-    resolve_item_flag,
-    get_management_stats,
-    get_main_category_cards,
-    find_items_for_recategory,
-    update_item_category,
-    get_item_by_id,
 )
 
 from category_styles import get_category_style
-from catalog_config import MAIN_CATEGORIES
+
+from database import (
+    add_item_flag,
+    add_note_to_item,
+    add_tag_to_item,
+    create_preset,
+    delete_note,
+    find_items_for_recategory,
+    get_all_items,
+    get_category_counts,
+    get_dashboard_stats,
+    get_favorites,
+    get_item_by_classname,
+    get_item_by_id,
+    get_items_by_category,
+    get_items_by_mod,
+    get_main_category_cards,
+    get_management_stats,
+    get_mod_counts,
+    get_notes_for_item,
+    get_open_item_flags,
+    get_preset_by_id,
+    get_presets_by_type,
+    get_relationships_for_item,
+    get_slot_definitions,
+    get_tags_for_item,
+    is_favorite,
+    mark_favorite_used,
+    resolve_item_flag,
+    search_items,
+    toggle_favorite,
+    update_item_category,
+)
 
 
 app = Flask(__name__)
 
+
+# ============================================================
+# Dashboard
+# ============================================================
 
 @app.route("/")
 def home():
@@ -51,7 +58,6 @@ def home():
     categories = get_category_counts()
     mods = get_mod_counts()
     favorites = get_favorites()
-
     category_cards = get_main_category_cards()
 
     return render_template(
@@ -64,6 +70,11 @@ def home():
         active_page="dashboard",
     )
 
+
+# ============================================================
+# Catalog
+# ============================================================
+
 @app.route("/catalog")
 def catalog():
     items = get_all_items()
@@ -71,6 +82,19 @@ def catalog():
     return render_template(
         "catalog.html",
         items=items,
+        active_page="catalog",
+    )
+
+
+@app.route("/search")
+def search():
+    query = request.args.get("q", "").strip()
+    results = search_items(query) if query else []
+
+    return render_template(
+        "search.html",
+        query=query,
+        results=results,
         active_page="catalog",
     )
 
@@ -94,19 +118,6 @@ def item_detail(classname):
         notes=notes,
         tags=tags,
         relationships=relationships,
-        active_page="catalog",
-    )
-
-
-@app.route("/search")
-def search():
-    query = request.args.get("q", "").strip()
-    results = search_items(query) if query else []
-
-    return render_template(
-        "search.html",
-        query=query,
-        results=results,
         active_page="catalog",
     )
 
@@ -151,13 +162,17 @@ def subcategory_page(category, subcategory):
     )
 
 
+# ============================================================
+# Mods
+# ============================================================
+
 @app.route("/mods")
 def mods():
-    mods = get_mod_counts()
+    mod_list = get_mod_counts()
 
     return render_template(
         "mods.html",
-        mods=mods,
+        mods=mod_list,
         active_page="mods",
     )
 
@@ -174,6 +189,10 @@ def mod_page(mod_name):
     )
 
 
+# ============================================================
+# Relationships
+# ============================================================
+
 @app.route("/relationships")
 def relationships():
     return render_template(
@@ -182,33 +201,9 @@ def relationships():
     )
 
 
-@app.route("/management")
-def management():
-    stats = get_management_stats()
-
-    return render_template(
-        "management.html",
-        stats=stats,
-        active_page="management"
-    )
-
-
-@app.route("/management/flags")
-def management_flags():
-    flags = get_open_item_flags()
-
-    return render_template(
-        "management_flags.html",
-        flags=flags,
-        active_page="management",
-    )
-
-
-@app.route("/management/flags/<int:flag_id>/resolve", methods=["POST"])
-def resolve_flag(flag_id):
-    resolve_item_flag(flag_id)
-    return redirect(url_for("management_flags"))
-
+# ============================================================
+# Pins / Favorites
+# ============================================================
 
 @app.route("/favorite/<classname>", methods=["POST"])
 def favorite_item(classname):
@@ -233,11 +228,9 @@ def pin_open(classname):
     return redirect(url_for("item_detail", classname=classname))
 
 
-@app.route("/notes/<int:note_id>/delete/<classname>", methods=["POST"])
-def delete_item_note(note_id, classname):
-    delete_note(note_id)
-    return redirect(url_for("item_detail", classname=classname))
-
+# ============================================================
+# Item Actions
+# ============================================================
 
 @app.route("/item/<classname>/tags", methods=["POST"])
 def add_item_tag(classname):
@@ -259,6 +252,12 @@ def add_item_note(classname):
     return redirect(url_for("item_detail", classname=classname))
 
 
+@app.route("/notes/<int:note_id>/delete/<classname>", methods=["POST"])
+def delete_item_note(note_id, classname):
+    delete_note(note_id)
+    return redirect(url_for("item_detail", classname=classname))
+
+
 @app.route("/item/<classname>/flag", methods=["POST"])
 def flag_item(classname):
     issue_type = request.form.get("issue_type")
@@ -276,6 +275,39 @@ def flag_item(classname):
     )
 
     return redirect(url_for("item_detail", classname=classname))
+
+
+# ============================================================
+# Management
+# ============================================================
+
+@app.route("/management")
+def management():
+    stats = get_management_stats()
+
+    return render_template(
+        "management.html",
+        stats=stats,
+        active_page="management",
+    )
+
+
+@app.route("/management/flags")
+def management_flags():
+    flags = get_open_item_flags()
+
+    return render_template(
+        "management_flags.html",
+        flags=flags,
+        active_page="management",
+    )
+
+
+@app.route("/management/flags/<int:flag_id>/resolve", methods=["POST"])
+def resolve_flag(flag_id):
+    resolve_item_flag(flag_id)
+    return redirect(url_for("management_flags"))
+
 
 @app.route("/manage/recategorize", methods=["GET", "POST"])
 def recategorize_items():
@@ -295,50 +327,122 @@ def recategorize_items():
         "Electronics",
         "Miscellaneous",
     ])
+
     subcategories_by_category = {
-    "Weapons": [
-        "Assault Rifles",
-        "Battle Rifles",
-        "Bolt-Action Rifles",
-        "Designated Marksman Rifles",
-        "Sniper Rifles",
-        "Submachine Guns",
-        "Shotguns",
-        "Machine Guns",
-        "Pistols",
-        "Revolvers",
-        "Melee",
-        "Magazines",
-        "Ammunition",
-        "Ammo Boxes",
-        "Optics",
-        "Suppressors",
-        "Muzzle Devices",
-        "Stocks",
-        "Handguards",
-        "Grips",
-        "Weapon Lights",
-        "Lasers",
-        "Bipods",
-        "Rail Attachments",
-    ],
-    "Clothing": ["Headwear", "Facewear", "Eyewear", "Shirts", "Jackets", "Pants", "Gloves", "Footwear", "Vests", "Belts", "Holsters", "Backpacks", "Armbands", "Ghillie"],
-    "Medical": ["Medication", "Bandages", "Blood", "IV Supplies", "Surgical Supplies", "Diagnostics", "Medical Equipment"],
-    "Food": ["Food", "Drinks", "Ingredients", "Prepared Meals", "Fishing", "Hunting"],
-    "Tools": ["Hand Tools", "Repair Kits", "Crafting", "Utility", "Navigation", "Fire Starting", "Containers"],
-    "Vehicles": ["Engine Parts", "Wheels", "Body Parts", "Electrical", "Fuel", "Repair", "Vehicle Tools"],
-    "Base Building": ["Building Materials", "Storage", "Locks", "Containers", "Furniture", "Lighting", "Gardening"],
-    "Electronics": ["Radios", "GPS", "Night Vision", "Batteries", "Lighting", "Communication", "Power"],
-    "Miscellaneous": ["Quest Items", "Documents", "Books", "Currency", "Keys", "Collectibles", "Toys", "Decorations", "Other"],
-}
-    for category in subcategories_by_category:
-        subcategories_by_category[category].sort()
+        "Base Building": [
+            "Building Materials",
+            "Containers",
+            "Furniture",
+            "Gardening",
+            "Lighting",
+            "Locks",
+            "Storage",
+        ],
+        "Clothing": [
+            "Armbands",
+            "Backpacks",
+            "Belts",
+            "Eyewear",
+            "Facewear",
+            "Footwear",
+            "Ghillie",
+            "Gloves",
+            "Headwear",
+            "Holsters",
+            "Jackets",
+            "Pants",
+            "Shirts",
+            "Vests",
+        ],
+        "Electronics": [
+            "Batteries",
+            "Communication",
+            "GPS",
+            "Lighting",
+            "Night Vision",
+            "Power",
+            "Radios",
+        ],
+        "Food": [
+            "Drinks",
+            "Fishing",
+            "Food",
+            "Hunting",
+            "Ingredients",
+            "Prepared Meals",
+        ],
+        "Medical": [
+            "Bandages",
+            "Blood",
+            "Diagnostics",
+            "IV Supplies",
+            "Medical Equipment",
+            "Medication",
+            "Surgical Supplies",
+        ],
+        "Miscellaneous": [
+            "Books",
+            "Collectibles",
+            "Currency",
+            "Decorations",
+            "Documents",
+            "Keys",
+            "Other",
+            "Quest Items",
+            "Toys",
+        ],
+        "Tools": [
+            "Containers",
+            "Crafting",
+            "Fire Starting",
+            "Hand Tools",
+            "Navigation",
+            "Repair Kits",
+            "Utility",
+        ],
+        "Vehicles": [
+            "Body Parts",
+            "Electrical",
+            "Engine Parts",
+            "Fuel",
+            "Repair",
+            "Vehicle Tools",
+            "Wheels",
+        ],
+        "Weapons": [
+            "Ammunition",
+            "Ammo Boxes",
+            "Assault Rifles",
+            "Battle Rifles",
+            "Bipods",
+            "Bolt-Action Rifles",
+            "Designated Marksman Rifles",
+            "Grips",
+            "Handguards",
+            "Lasers",
+            "Machine Guns",
+            "Magazines",
+            "Melee",
+            "Muzzle Devices",
+            "Optics",
+            "Pistols",
+            "Rail Attachments",
+            "Revolvers",
+            "Shotguns",
+            "Sniper Rifles",
+            "Stocks",
+            "Submachine Guns",
+            "Suppressors",
+            "Weapon Lights",
+        ],
+    }
 
     if request.method == "POST":
         action = request.form.get("action")
 
         if action == "search":
             search_term = request.form.get("search_term", "").strip()
+
             if search_term:
                 results = find_items_for_recategory(search_term)
 
@@ -362,11 +466,60 @@ def recategorize_items():
         results=results,
         selected_item=selected_item,
         categories=categories,
+        subcategories_by_category=subcategories_by_category,
         message=message,
         active_page="management",
-        subcategories_by_category=subcategories_by_category,
     )
 
+
+# ============================================================
+# Presets
+# ============================================================
+
+@app.route("/my-presets", methods=["GET", "POST"])
+def my_presets():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        description = request.form.get("description", "").strip()
+
+        if name:
+            create_preset(name, description, "personal")
+
+        return redirect(url_for("my_presets"))
+
+    presets = get_presets_by_type("personal")
+
+    return render_template(
+        "my_presets.html",
+        presets=presets,
+        active_page="presets",
+    )
+
+
+@app.route("/my-presets/<int:preset_id>")
+def preset_detail(preset_id):
+    preset = get_preset_by_id(preset_id)
+
+    if not preset:
+        return "Preset not found", 404
+
+    slots = get_slot_definitions()
+
+    grouped_slots = defaultdict(list)
+    for slot in slots:
+        grouped_slots[slot["slot_group"]].append(slot)
+
+    return render_template(
+        "preset_detail.html",
+        preset=preset,
+        grouped_slots=grouped_slots,
+        active_page="presets",
+    )
+
+
+# ============================================================
+# Main
+# ============================================================
 
 if __name__ == "__main__":
     app.run(debug=True)

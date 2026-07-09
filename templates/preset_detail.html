@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ preset.name }} - Preset{% endblock %}
+
+{% block content %}
+
+{% set banner_title = preset.name %}
+{% set banner_subtitle = preset.description or "Preset loadout builder." %}
+{% set banner_icon = "fa-solid fa-clipboard-list" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Preset Editor" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
+
+<div class="app-shell">
+
+    {% for group_name, slots in grouped_slots.items() %}
+        <section class="dashboard-panel preset-slot-section">
+
+            <div class="section-nameplate">
+                <h2>{{ group_name }}</h2>
+                <p>Select equipment for each preset slot.</p>
+            </div>
+
+            <div class="preset-slot-grid">
+                {% for slot in slots %}
+                    <div class="preset-slot-card">
+                        <strong>{{ slot.slot_name }}</strong>
+                        <span>Empty Slot</span>
+                        <button class="recat-small-button" type="button">
+                            Select Item
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </section>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

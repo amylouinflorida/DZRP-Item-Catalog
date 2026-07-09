@@ -2517,3 +2517,67 @@
     letter-spacing:.08em;
     text-transform:uppercase;
 }
+
+.preset-card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+}
+
+.preset-card{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+
+    padding:18px;
+    border-radius:14px;
+    border:1px solid rgba(201,162,77,.24);
+    background:rgba(0,0,0,.32);
+
+    text-decoration:none;
+    color:inherit;
+}
+
+.preset-card:hover{
+    border-color:rgba(201,162,77,.65);
+    transform:translateY(-2px);
+}
+
+.preset-card strong{
+    color:#d8b66a;
+    font-size:18px;
+}
+
+.preset-card span{
+    opacity:.72;
+    font-size:14px;
+}
+.preset-slot-section{
+    margin-bottom:18px;
+}
+
+.preset-slot-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+}
+
+.preset-slot-card{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+
+    padding:14px;
+    border-radius:14px;
+    border:1px solid rgba(201,162,77,.22);
+    background:rgba(0,0,0,.28);
+}
+
+.preset-slot-card strong{
+    color:#d8b66a;
+}
+
+.preset-slot-card span{
+    opacity:.7;
+    font-size:14px;
+}

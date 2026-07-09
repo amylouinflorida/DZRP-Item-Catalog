@@ -6,11 +6,19 @@ from catalog.taxonomy import classify_item
 DB_PATH = Path("data/database/dayzrp_catalog.db")
 
 
+# ============================================================
+# Connection
+# ============================================================
+
 def get_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
+
+# ============================================================
+# Database Initialization
+# ============================================================
 
 def initialize_database():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -108,37 +116,46 @@ def initialize_database():
             relationship_type TEXT,
             chance REAL,
             notes TEXT,
-            UNIQUE (
-                source_item_id,
-                target_item_id,
-                relationship_type
-            ),
+            UNIQUE (source_item_id, target_item_id, relationship_type),
             FOREIGN KEY (source_item_id) REFERENCES items(id),
             FOREIGN KEY (target_item_id) REFERENCES items(id)
         )
     """)
 
-    # Safe migrations for older databases.
-    for table, column, column_type in [
+    initialize_preset_tables(cursor)
+    initialize_slot_filter_table(cursor)
+
+    run_safe_migrations(cursor)
+
+    conn.commit()
+    conn.close()
+
+
+def run_safe_migrations(cursor):
+    migrations = [
         ("favorites", "last_used", "TEXT"),
         ("item_flags", "suggested_category", "TEXT"),
         ("item_flags", "suggested_subcategory", "TEXT"),
-    ]:
+    ]
+
+    for table, column, column_type in migrations:
         try:
             cursor.execute(f"ALTER TABLE {table} ADD COLUMN {column} {column_type}")
         except sqlite3.OperationalError:
             pass
 
-    conn.commit()
-    conn.close()
 
 # ============================================================
 # Preset Tables
 # ============================================================
 
-def initialize_preset_tables():
-    conn = get_connection()
-    cursor = conn.cursor()
+def initialize_preset_tables(cursor=None):
+    close_connection = False
+
+    if cursor is None:
+        conn = get_connection()
+        cursor = conn.cursor()
+        close_connection = True
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS presets (
@@ -175,11 +192,16 @@ def initialize_preset_tables():
         )
     """)
 
-    conn.commit()
-    conn.close()
+    if close_connection:
+        conn.commit()
+        conn.close()
+
+
 def seed_slot_definitions():
     conn = get_connection()
     cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM slot_definitions")
 
     slots = [
         ("Head", "Character", 10),
@@ -192,63 +214,125 @@ def seed_slot_definitions():
         ("Backpack", "Character", 80),
 
         ("Primary Weapon 1", "Weapons", 100),
-        ("Primary Weapon 1 - Magazine", "Weapons", 110),
-        ("Primary Weapon 1 - Handguard", "Weapons", 120),
-        ("Primary Weapon 1 - Handguard Light / Laser", "Weapons", 130),
-        ("Primary Weapon 1 - Handguard Foregrip", "Weapons", 140),
-        ("Primary Weapon 1 - Handguard Rails", "Weapons", 150),
-        ("Primary Weapon 1 - Buttstock", "Weapons", 160),
-        ("Primary Weapon 1 - Pistol Grip", "Weapons", 170),
-        ("Primary Weapon 1 - Muzzle / Suppressor / Compensator", "Weapons", 180),
-        ("Primary Weapon 1 - Optic", "Weapons", 190),
-        ("Primary Weapon 1 - Light / Laser", "Weapons", 200),
-        ("Primary Weapon 1 - Ghillie Wrap", "Weapons", 210),
-        ("Primary Weapon 1 - Bipod / Tripod", "Weapons", 220),
-        ("Primary Weapon 1 - Trigger", "Weapons", 230),
-        ("Primary Weapon 1 - Charging Bolt", "Weapons", 240),
-        ("Primary Weapon 1 - Under-Barrel Launcher", "Weapons", 250),
+        ("Primary Weapon 2", "Weapons", 110),
+        ("Handgun", "Weapons", 120),
+        ("Melee", "Weapons", 130),
 
-        ("Primary Weapon 2", "Weapons", 300),
-        ("Primary Weapon 2 - Magazine", "Weapons", 310),
-        ("Primary Weapon 2 - Handguard", "Weapons", 320),
-        ("Primary Weapon 2 - Handguard Light / Laser", "Weapons", 330),
-        ("Primary Weapon 2 - Handguard Foregrip", "Weapons", 340),
-        ("Primary Weapon 2 - Handguard Rails", "Weapons", 350),
-        ("Primary Weapon 2 - Buttstock", "Weapons", 360),
-        ("Primary Weapon 2 - Pistol Grip", "Weapons", 370),
-        ("Primary Weapon 2 - Muzzle / Suppressor / Compensator", "Weapons", 380),
-        ("Primary Weapon 2 - Optic", "Weapons", 390),
-        ("Primary Weapon 2 - Light / Laser", "Weapons", 400),
-        ("Primary Weapon 2 - Ghillie Wrap", "Weapons", 410),
-        ("Primary Weapon 2 - Bipod / Tripod", "Weapons", 420),
-        ("Primary Weapon 2 - Trigger", "Weapons", 430),
-        ("Primary Weapon 2 - Charging Bolt", "Weapons", 440),
-        ("Primary Weapon 2 - Under-Barrel Launcher", "Weapons", 450),
-
-        ("Handgun", "Weapons", 500),
-        ("Handgun - Magazine", "Weapons", 510),
-        ("Handgun - Optic", "Weapons", 520),
-        ("Handgun - Muzzle / Suppressor / Compensator", "Weapons", 530),
-        ("Handgun - Light / Laser", "Weapons", 540),
-
-        ("Melee", "Weapons", 600),
-
-        ("Medical", "Supplies", 700),
-        ("Tools", "Supplies", 710),
-        ("Communications", "Supplies", 720),
-        ("Navigation", "Supplies", 730),
-        ("Food / Drink", "Supplies", 740),
-        ("Miscellaneous", "Supplies", 750),
+        ("Medical", "Supplies", 200),
+        ("Tools", "Supplies", 210),
+        ("Communications", "Supplies", 220),
+        ("Navigation", "Supplies", 230),
+        ("Food / Drink", "Supplies", 240),
+        ("Miscellaneous", "Supplies", 250),
     ]
 
     cursor.executemany("""
-        INSERT OR IGNORE INTO slot_definitions
-            (slot_name, slot_group, sort_order)
+        INSERT INTO slot_definitions (slot_name, slot_group, sort_order)
         VALUES (?, ?, ?)
     """, slots)
 
     conn.commit()
     conn.close()
+
+
+# ============================================================
+# Slot Filters
+# ============================================================
+
+def initialize_slot_filter_table(cursor=None):
+    close_connection = False
+
+    if cursor is None:
+        conn = get_connection()
+        cursor = conn.cursor()
+        close_connection = True
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS slot_filters (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            slot_name TEXT NOT NULL,
+            category TEXT,
+            subcategory TEXT,
+            sort_order INTEGER DEFAULT 0
+        )
+    """)
+
+    if close_connection:
+        conn.commit()
+        conn.close()
+
+
+def seed_slot_filters():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM slot_filters")
+
+    filters = [
+        ("Head", "Clothing", "Headwear", 10),
+        ("Face", "Clothing", "Facewear", 20),
+        ("Torso", "Clothing", "Shirts", 30),
+        ("Torso", "Clothing", "Jackets", 31),
+        ("Chest / Vest", "Clothing", "Vests", 40),
+        ("Hands", "Clothing", "Gloves", 50),
+        ("Legs", "Clothing", "Pants", 60),
+        ("Feet", "Clothing", "Footwear", 70),
+        ("Backpack", "Clothing", "Backpacks", 80),
+
+        ("Primary Weapon 1", "Weapons", "Assault Rifles", 100),
+        ("Primary Weapon 1", "Weapons", "Battle Rifles", 101),
+        ("Primary Weapon 1", "Weapons", "Bolt-Action Rifles", 102),
+        ("Primary Weapon 1", "Weapons", "Designated Marksman Rifles", 103),
+        ("Primary Weapon 1", "Weapons", "Sniper Rifles", 104),
+        ("Primary Weapon 1", "Weapons", "Submachine Guns", 105),
+        ("Primary Weapon 1", "Weapons", "Shotguns", 106),
+        ("Primary Weapon 1", "Weapons", "Machine Guns", 107),
+
+        ("Primary Weapon 2", "Weapons", "Assault Rifles", 110),
+        ("Primary Weapon 2", "Weapons", "Battle Rifles", 111),
+        ("Primary Weapon 2", "Weapons", "Bolt-Action Rifles", 112),
+        ("Primary Weapon 2", "Weapons", "Designated Marksman Rifles", 113),
+        ("Primary Weapon 2", "Weapons", "Sniper Rifles", 114),
+        ("Primary Weapon 2", "Weapons", "Submachine Guns", 115),
+        ("Primary Weapon 2", "Weapons", "Shotguns", 116),
+        ("Primary Weapon 2", "Weapons", "Machine Guns", 117),
+
+        ("Handgun", "Weapons", "Pistols", 120),
+        ("Handgun", "Weapons", "Revolvers", 121),
+        ("Melee", "Weapons", "Melee", 130),
+
+        ("Medical", "Medical", None, 200),
+        ("Tools", "Tools", None, 210),
+        ("Communications", "Electronics", "Radios", 220),
+        ("Navigation", "Electronics", "GPS", 230),
+        ("Food / Drink", "Food", None, 240),
+        ("Miscellaneous", "Miscellaneous", None, 250),
+    ]
+
+    cursor.executemany("""
+        INSERT INTO slot_filters (slot_name, category, subcategory, sort_order)
+        VALUES (?, ?, ?, ?)
+    """, filters)
+
+    conn.commit()
+    conn.close()
+
+
+def get_slot_filters(slot_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT slot_name, category, subcategory
+        FROM slot_filters
+        WHERE slot_name = ?
+        ORDER BY sort_order
+    """, (slot_name,))
+
+    filters = cursor.fetchall()
+    conn.close()
+    return filters
+
 
 # ============================================================
 # Mods
@@ -265,6 +349,24 @@ def add_mod(name, author=None, type=None, logo=None, website=None, description=N
 
     conn.commit()
     conn.close()
+
+
+def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO mods (name, author, type, logo, website, description)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, author, type, logo, website, description))
+
+    cursor.execute("SELECT id FROM mods WHERE name = ?", (name,))
+    mod = cursor.fetchone()
+
+    conn.commit()
+    conn.close()
+
+    return mod["id"]
 
 
 def get_mod_counts():
@@ -343,7 +445,7 @@ def add_item(classname, display_name, description=None, category=None, subcatego
         category,
         subcategory,
         mod_id,
-        image
+        image,
     ))
 
     conn.commit()
@@ -364,6 +466,21 @@ def get_all_items():
     items = cursor.fetchall()
     conn.close()
     return items
+
+
+def get_item_by_id(item_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, classname, display_name, category, subcategory
+        FROM items
+        WHERE id = ?
+    """, (item_id,))
+
+    item = cursor.fetchone()
+    conn.close()
+    return item
 
 
 def get_item_by_classname(classname):
@@ -407,6 +524,26 @@ def search_items(query):
     return results
 
 
+def find_items_for_recategory(search_term):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    like = f"%{search_term}%"
+
+    cursor.execute("""
+        SELECT id, classname, display_name, category, subcategory
+        FROM items
+        WHERE classname LIKE ?
+           OR display_name LIKE ?
+        ORDER BY display_name
+        LIMIT 50
+    """, (like, like))
+
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
 def get_items_by_category(category):
     conn = get_connection()
     cursor = conn.cursor()
@@ -424,22 +561,19 @@ def get_items_by_category(category):
     return items
 
 
-def get_category_counts():
+def update_item_category(item_id, category, subcategory):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT
-            COALESCE(NULLIF(category, ''), 'Uncategorized') AS category,
-            COUNT(*) AS item_count
-        FROM items
-        GROUP BY COALESCE(NULLIF(category, ''), 'Uncategorized')
-        ORDER BY category
-    """)
+        UPDATE items
+        SET category = ?,
+            subcategory = ?
+        WHERE id = ?
+    """, (category, subcategory, item_id))
 
-    categories = cursor.fetchall()
+    conn.commit()
     conn.close()
-    return categories
 
 
 def reclassify_mod_items(mod_name):
@@ -460,7 +594,7 @@ def reclassify_mod_items(mod_name):
         category, subcategory = classify_item(
             item["classname"],
             item["display_name"],
-            mod_name
+            mod_name,
         )
 
         cursor.execute("""
@@ -475,6 +609,64 @@ def reclassify_mod_items(mod_name):
     conn.close()
 
     print(f"✅ Reclassified {updated} items from {mod_name}.")
+
+
+# ============================================================
+# Categories / Dashboard Cards
+# ============================================================
+
+MAIN_CATEGORIES = {
+    "Weapons": {"image": "weapons.png"},
+    "Clothing": {"image": "clothing.png"},
+    "Medical": {"image": "medical.png"},
+    "Food": {"image": "food.png"},
+    "Tools": {"image": "tools.png"},
+    "Vehicles": {"image": "vehicles.png"},
+    "Base Building": {"image": "base_building.png"},
+    "Electronics": {"image": "electronics.png"},
+    "Miscellaneous": {"image": "miscellaneous.png"},
+}
+
+
+def get_category_counts():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            COALESCE(NULLIF(category, ''), 'Uncategorized') AS category,
+            COUNT(*) AS item_count
+        FROM items
+        GROUP BY COALESCE(NULLIF(category, ''), 'Uncategorized')
+        ORDER BY category
+    """)
+
+    categories = cursor.fetchall()
+    conn.close()
+    return categories
+
+
+def get_main_category_cards():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cards = []
+
+    for category_name, data in MAIN_CATEGORIES.items():
+        row = cursor.execute("""
+            SELECT COUNT(*) AS item_count
+            FROM items
+            WHERE category = ?
+        """, (category_name,)).fetchone()
+
+        cards.append({
+            "name": category_name,
+            "image": data["image"],
+            "item_count": row["item_count"],
+        })
+
+    conn.close()
+    return cards
 
 
 # ============================================================
@@ -522,12 +714,11 @@ def get_relationships_for_item(classname):
     """, (classname,))
 
     spawned_in = cursor.fetchall()
-
     conn.close()
 
     return {
         "spawns_with": spawns_with,
-        "spawned_in": spawned_in
+        "spawned_in": spawned_in,
     }
 
 
@@ -692,21 +883,11 @@ def add_tag_to_item(classname, tag_name):
         conn.close()
         return
 
-    cursor.execute(
-        "INSERT OR IGNORE INTO tags(name) VALUES (?)",
-        (tag_name,)
-    )
-
-    cursor.execute(
-        "SELECT id FROM tags WHERE name = ?",
-        (tag_name,)
-    )
+    cursor.execute("INSERT OR IGNORE INTO tags(name) VALUES (?)", (tag_name,))
+    cursor.execute("SELECT id FROM tags WHERE name = ?", (tag_name,))
     tag = cursor.fetchone()
 
-    cursor.execute(
-        "SELECT id FROM items WHERE classname = ?",
-        (classname,)
-    )
+    cursor.execute("SELECT id FROM items WHERE classname = ?", (classname,))
     item = cursor.fetchone()
 
     if tag and item:
@@ -750,7 +931,7 @@ def add_item_flag(classname, issue_type, note=None, created_by="Staff", suggeste
         note,
         created_by,
         suggested_category,
-        suggested_subcategory
+        suggested_subcategory,
     ))
 
     conn.commit()
@@ -798,7 +979,7 @@ def resolve_item_flag(flag_id):
 
 
 # ============================================================
-# Dashboard
+# Dashboard / Management
 # ============================================================
 
 def get_dashboard_stats():
@@ -823,11 +1004,10 @@ def get_dashboard_stats():
         "items": item_count,
         "mods": mod_count,
         "tags": tag_count,
-        "relationships": relationship_count
+        "relationships": relationship_count,
     }
-# ============================================================
-# Management
-# ============================================================
+
+
 def get_management_stats():
     conn = get_connection()
     cursor = conn.cursor()
@@ -884,151 +1064,79 @@ def get_management_stats():
         "missing_images": missing_images,
         "missing_descriptions": missing_descriptions,
     }
-def update_item_category(classname, category, subcategory=None):
+
+
+# ============================================================
+# Presets
+# ============================================================
+
+def get_presets_by_type(preset_type="personal"):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        UPDATE items
-        SET category = ?,
-            subcategory = ?
-        WHERE classname = ?
-    """, (category, subcategory, classname))
+        SELECT id, name, description, preset_type, created_at, updated_at
+        FROM presets
+        WHERE preset_type = ?
+        ORDER BY name
+    """, (preset_type,))
+
+    presets = cursor.fetchall()
+    conn.close()
+    return presets
+
+
+def create_preset(name, description="", preset_type="personal"):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO presets (name, description, preset_type)
+        VALUES (?, ?, ?)
+    """, (name, description, preset_type))
 
     conn.commit()
+    preset_id = cursor.lastrowid
     conn.close()
+    return preset_id
 
-def debug_item(classname):
+
+def get_preset_by_id(preset_id):
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT classname, category, subcategory
-        FROM items
-        WHERE classname = ?
-    """, (classname,))
-
-    item = cursor.fetchone()
-    conn.close()
-
-    return item
-
-MAIN_CATEGORIES = {
-    "Weapons": {"image": "weapons.png"},
-    "Clothing": {"image": "clothing.png"},
-    "Medical": {"image": "medical.png"},
-    "Food": {"image": "food.png"},
-    "Tools": {"image": "tools.png"},
-    "Vehicles": {"image": "vehicles.png"},
-    "Base Building": {"image": "base_building.png"},
-    "Electronics": {"image": "electronics.png"},
-    "Miscellaneous": {"image": "miscellaneous.png"},
-}
-
-
-def get_main_category_cards():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-
-    cards = []
-
-    for category_name, data in MAIN_CATEGORIES.items():
-        row = cur.execute(
-            """
-            SELECT COUNT(*) AS item_count
-            FROM items
-            WHERE category = ?
-            """,
-            (category_name,),
-        ).fetchone()
-
-        cards.append({
-            "name": category_name,
-            "image": data["image"],
-            "item_count": row["item_count"],
-        })
-
-    conn.close()
-    return cards
-
-def get_or_create_mod(name, author=None, type=None, logo=None, website=None, description=None):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        INSERT OR IGNORE INTO mods (name, author, type, logo, website, description)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (name, author, type, logo, website, description))
-
-    cursor.execute("SELECT id FROM mods WHERE name = ?", (name,))
-    mod = cursor.fetchone()
-
-    conn.commit()
-    conn.close()
-
-    return mod["id"]
-
-def find_items_for_recategory(search_term):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    like = f"%{search_term}%"
-
-    cursor.execute("""
-        SELECT
-            id,
-            classname,
-            display_name,
-            category,
-            subcategory
-        FROM items
-        WHERE classname LIKE ?
-           OR display_name LIKE ?
-        ORDER BY display_name
-        LIMIT 50
-    """, (like, like))
-
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
-
-
-def get_item_by_id(item_id):
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT
-            id,
-            classname,
-            display_name,
-            category,
-            subcategory
-        FROM items
+        SELECT id, name, description, preset_type, created_at, updated_at
+        FROM presets
         WHERE id = ?
-    """, (item_id,))
+    """, (preset_id,))
 
-    row = cursor.fetchone()
+    preset = cursor.fetchone()
     conn.close()
-    return row
+    return preset
 
 
-def update_item_category(item_id, category, subcategory):
+def get_slot_definitions():
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        UPDATE items
-        SET
-            category = ?,
-            subcategory = ?
-        WHERE id = ?
-    """, (category, subcategory, item_id))
+        SELECT id, slot_name, slot_group, sort_order
+        FROM slot_definitions
+        ORDER BY slot_group, sort_order
+    """)
 
-    conn.commit()
+    slots = cursor.fetchall()
     conn.close()
+    return slots
+
+
+# ============================================================
+# Main
+# ============================================================
 
 if __name__ == "__main__":
     initialize_database()
+    seed_slot_definitions()
+    seed_slot_filters()
     print("✅ Database initialized successfully.")
