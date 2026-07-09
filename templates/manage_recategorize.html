@@ -115,11 +115,22 @@
 
         </div>
 
-       <script>
+       <input
+            type="hidden"
+            id="current-subcategory"
+            value="{{ selected_item.subcategory or '' }}">
+        <script type="application/json" id="subcategory-data">
+            {{ subcategories_by_category | tojson }}
+</script>
+    <script>
+    var subcategoriesByCategory = JSON.parse(
+        document.getElementById("subcategory-data").textContent
+);
     var subcategoriesByCategory = {{ subcategories_by_category | tojson | safe }};
     var categorySelect = document.getElementById("category-select");
     var subcategorySelect = document.getElementById("subcategory-select");
-    var currentSubcategory = {{ (selected_item.subcategory or '') | tojson | safe }};
+    var currentSubcategory =
+        document.getElementById("current-subcategory").value;
 
     function updateSubcategories() {
         var selectedCategory = categorySelect.value;

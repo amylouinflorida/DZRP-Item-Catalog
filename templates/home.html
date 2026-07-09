@@ -124,54 +124,35 @@
 
         <!-- Quick Access -->
 
-        <div class="dashboard-panel">
+        <div class="quick-access-grid">
 
-            <h2>
-                <i class="fa-solid fa-bolt"></i>
-                Quick Access
-            </h2>
+    <a href="/my-presets" class="quick-access-card">
+        <img src="{{ url_for('static', filename='images/logo/my_presets.png') }}" alt="My Presets">
+    </a>
 
-            <div class="quick-access-grid">
+    <a href="/event-presets" class="quick-access-card">
+        <img src="{{ url_for('static', filename='images/logo/event_presets.png') }}" alt="Event Presets">
+    </a>
 
-                <a class="quick-card catalog" href="/catalog">
-                    <i class="fa-solid fa-cube"></i>
-                    <h3>Item Catalog</h3>
-                    <p>Browse every searchable item.</p>
-                </a>
+    <a href="/pins" class="quick-access-card">
+        <img src="{{ url_for('static', filename='images/logo/pins.png') }}" alt="Pins">
+    </a>
 
-                <a class="quick-card mods" href="/mods">
-                    <i class="fa-solid fa-puzzle-piece"></i>
-                    <h3>Mods</h3>
-                    <p>Explore all mods and content packs.</p>
-                </a>
+    <a href="/management" class="quick-access-card">
+        <img src="{{ url_for('static', filename='images/logo/management_tools.png') }}" alt="Management Tools">
+    </a>
 
-                <a class="quick-card pins" href="/pins">
-                <i class="fa-solid fa-thumbtack"></i>
-                <h3>Pins</h3>
-                <p>View your pinned items.</p>
-                </a>
+    <a href="#" class="quick-access-card placeholder">
+        <img src="{{ url_for('static', filename='images/items/no-image.png') }}" alt="">
+        <span></span>
+    </a>
 
-                <a class="quick-card tags" href="#">
-                    <i class="fa-solid fa-tag"></i>
-                    <h3>Tags</h3>
-                    <p>Browse by tags and keywords.</p>
-                </a>
+    <a href="#" class="quick-access-card placeholder">
+        <img src="{{ url_for('static', filename='images/items/no-image.png') }}" alt="">
+        <span></span>
+    </a>
 
-                <a class="quick-card spawn" href="#">
-                    <i class="fa-solid fa-map"></i>
-                    <h3>Spawn & Loot</h3>
-                    <p>Explore spawn and loot data.</p>
-                </a>
-
-                <a class="quick-card management" href="/management">
-                    <i class="fa-solid fa-gear"></i>
-                    <h3>Management Tools</h3>
-                    <p>Staff tools and catalog management.</p>
-                </a>
-
-            </div>
-
-        </div>
+</div>
 
         <!-- Most Searched -->
 

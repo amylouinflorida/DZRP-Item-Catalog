@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Reports - DayZRP Item Catalog{% endblock %}
+
+{% block content %}
+
+{% set banner_title = "Staff Reports" %}
+{% set banner_subtitle = "Review open item reports and classification issues." %}
+{% set banner_icon = "fa-solid fa-flag" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Review Queue" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
+
+<div class="page-wrap">
+
+    <section class="management-panel">
+        <h2>
+            <i class="fa-solid fa-flag"></i>
+            Open Staff Reports
+        </h2>
+
+        {% if flags %}
+            <div class="management-action-grid">
+                {% for flag in flags %}
+                    <div class="management-action-card">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div>
+                            <strong>{{ flag.display_name }}</strong>
+                            <span>{{ flag.classname }}</span>
+                            <p>{{ flag.reason }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No open staff reports.</p>
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

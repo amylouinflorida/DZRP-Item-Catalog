@@ -356,7 +356,7 @@ def recategorize_items():
             selected_item = get_item_by_id(item_id)
             message = "Category updated successfully."
 
-        return render_template(
+    return render_template(
         "manage_recategorize.html",
         search_term=search_term,
         results=results,
