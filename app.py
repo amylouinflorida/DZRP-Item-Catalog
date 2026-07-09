@@ -42,6 +42,10 @@ from database import (
     search_items,
     toggle_favorite,
     update_item_category,
+    get_items_for_slot,
+    get_preset_items,
+    set_preset_slot_item,
+    
 )
 
 
@@ -494,8 +498,6 @@ def my_presets():
         presets=presets,
         active_page="presets",
     )
-
-
 @app.route("/my-presets/<int:preset_id>")
 def preset_detail(preset_id):
     preset = get_preset_by_id(preset_id)
@@ -504,6 +506,7 @@ def preset_detail(preset_id):
         return "Preset not found", 404
 
     slots = get_slot_definitions()
+    preset_items = get_preset_items(preset_id)
 
     grouped_slots = defaultdict(list)
     for slot in slots:
@@ -513,6 +516,33 @@ def preset_detail(preset_id):
         "preset_detail.html",
         preset=preset,
         grouped_slots=grouped_slots,
+        preset_items=preset_items,
+        active_page="presets",
+    )
+
+
+@app.route("/my-presets/<int:preset_id>/slot/<path:slot_name>", methods=["GET", "POST"])
+def preset_slot_picker(preset_id, slot_name):
+    preset = get_preset_by_id(preset_id)
+
+    if not preset:
+        return "Preset not found", 404
+
+    if request.method == "POST":
+        item_id = request.form.get("item_id")
+
+        if item_id:
+            set_preset_slot_item(preset_id, slot_name, item_id)
+
+        return redirect(url_for("preset_detail", preset_id=preset_id))
+
+    items = get_items_for_slot(slot_name)
+
+    return render_template(
+        "preset_slot_picker.html",
+        preset=preset,
+        slot_name=slot_name,
+        items=items,
         active_page="presets",
     )
 

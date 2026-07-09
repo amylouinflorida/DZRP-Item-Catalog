@@ -198,6 +198,7 @@ def initialize_preset_tables(cursor=None):
 
 
 def seed_slot_definitions():
+    
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -233,6 +234,7 @@ def seed_slot_definitions():
 
     conn.commit()
     conn.close()
+    
 
 
 # ============================================================
@@ -1130,6 +1132,97 @@ def get_slot_definitions():
     conn.close()
     return slots
 
+
+def get_preset_items(preset_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            preset_items.slot_name,
+            items.id,
+            items.display_name,
+            items.classname,
+            items.image
+        FROM preset_items
+        JOIN items ON preset_items.item_id = items.id
+        WHERE preset_items.preset_id = ?
+    """, (preset_id,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return {row["slot_name"]: row for row in rows}
+
+
+def set_preset_slot_item(preset_id, slot_name, item_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        DELETE FROM preset_items
+        WHERE preset_id = ?
+          AND slot_name = ?
+    """, (preset_id, slot_name))
+
+    cursor.execute("""
+        INSERT INTO preset_items
+            (preset_id, slot_name, item_id)
+        VALUES (?, ?, ?)
+    """, (preset_id, slot_name, item_id))
+
+    conn.commit()
+    conn.close()
+
+
+def get_items_for_slot(slot_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT category, subcategory
+        FROM slot_filters
+        WHERE slot_name = ?
+        ORDER BY sort_order
+    """, (slot_name,))
+
+    filters = cursor.fetchall()
+
+    print("SLOT CLICKED:", slot_name)
+    print("FILTERS FOUND:", [dict(row) for row in filters])
+
+    if not filters:
+        conn.close()
+        return []
+
+    clauses = []
+    values = []
+
+    for item_filter in filters:
+        if item_filter["subcategory"]:
+            clauses.append("(category = ? AND subcategory = ?)")
+            values.extend([item_filter["category"], item_filter["subcategory"]])
+        else:
+            clauses.append("(category = ?)")
+            values.append(item_filter["category"])
+
+    sql = f"""
+        SELECT id, display_name, classname, image, category, subcategory
+        FROM items
+        WHERE {" OR ".join(clauses)}
+        ORDER BY display_name
+    """
+
+    print("SQL:", sql)
+    print("VALUES:", values)
+
+    cursor.execute(sql, values)
+    items = cursor.fetchall()
+
+    print("ITEMS FOUND:", len(items))
+
+    conn.close()
+    return items
 
 # ============================================================
 # Main

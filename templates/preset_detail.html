@@ -26,10 +26,21 @@
                 {% for slot in slots %}
                     <div class="preset-slot-card">
                         <strong>{{ slot.slot_name }}</strong>
-                        <span>Empty Slot</span>
-                        <button class="recat-small-button" type="button">
-                            Select Item
-                        </button>
+                        {% if slot.slot_name in preset_items %}
+    <span>{{ preset_items[slot.slot_name].display_name }}</span>
+{% else %}
+    <span>Empty Slot</span>
+{% endif %}
+
+<a
+    class="recat-small-button"
+    href="{{ url_for('preset_slot_picker', preset_id=preset.id, slot_name=slot.slot_name) }}">
+    {% if slot.slot_name in preset_items %}
+        Change Item
+    {% else %}
+        Select Item
+    {% endif %}
+</a>
                     </div>
                 {% endfor %}
             </div>

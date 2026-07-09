@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Select {{ slot_name }} - {{ preset.name }}{% endblock %}
+
+{% block content %}
+
+{% set banner_title = "Select " ~ slot_name %}
+{% set banner_subtitle = "Choose an item for " ~ preset.name %}
+{% set banner_icon = "fa-solid fa-list-check" %}
+{% set banner_class = "category-default" %}
+{% set banner_context_title = "Preset Builder" %}
+{% set banner_context_items = [] %}
+{% include "components/application_banner.html" %}
+
+<div class="app-shell">
+    <a class="recat-small-button" href="{{ url_for('preset_detail', preset_id=preset.id) }}">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Preset
+</a>
+
+    <div class="dashboard-panel">
+
+        <div class="section-nameplate">
+            <h2>{{ slot_name }}</h2>
+            <p>{{ items|length }} matching item(s)</p>
+        </div>
+
+        <div class="preset-card-grid">
+            {% for item in items %}
+                <form method="POST" class="preset-card">
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+
+                    <strong>{{ item.display_name }}</strong>
+                    <span>{{ item.classname }}</span>
+                    <span>{{ item.category }} / {{ item.subcategory }}</span>
+
+                    <button type="submit" class="recat-small-button">
+                        Select Item
+                    </button>
+                </form>
+            {% else %}
+                <p>No items found for this slot yet.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
